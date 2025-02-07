@@ -41,7 +41,12 @@ public class ReviewServiceImpl implements ReviewService {
                 reviewDto.getComment()
         );
 
-        return reviewRepository.save(review);
+        Review savedReview = reviewRepository.save(review);
+        company.getReviews().add(savedReview);
+        company.updateRating();
+        companyRepository.save(company);
+
+        return savedReview;
     }
 
     @Override
@@ -50,11 +55,21 @@ public class ReviewServiceImpl implements ReviewService {
         review.setTitle(reviewDto.getTitle());
         review.setRating(reviewDto.getRating());
         review.setComment(reviewDto.getComment());
-
         return reviewRepository.save(review);
     }
 
+    public Review deleteReview(Long id) {
+        Review review = reviewRepository.findById(id).orElseThrow(InvalidReviewIdException::new);
 
+        Company company = review.getCompany();
+        company.getReviews().remove(review);
+        company.updateRating();
+
+        companyRepository.save(company);
+        reviewRepository.delete(review);
+
+        return review;
+    }
 
     @Override
     public Review findById(Long id) {

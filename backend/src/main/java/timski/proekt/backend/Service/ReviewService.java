@@ -2,6 +2,7 @@ package timski.proekt.backend.Service;
 
 import timski.proekt.backend.Model.Company;
 import timski.proekt.backend.Model.Dto.ReviewDto;
+import timski.proekt.backend.Model.JobPost;
 import timski.proekt.backend.Model.Review;
 import timski.proekt.backend.Model.User;
 
@@ -16,6 +17,7 @@ public interface ReviewService {
     Review update(Long id, ReviewDto reviewDto);
 
     Review findById(Long id);
+    Review deleteReview(Long id);
 
     List<Review> findAllById(long id);
 

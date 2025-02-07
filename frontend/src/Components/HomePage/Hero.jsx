@@ -50,7 +50,6 @@ export default function Hero() {
                             fontSize: 'clamp(3.5rem, 10vw, 4rem)',
                         }}
                     >
-                        explore through&nbsp;
                         <Typography
                             component="span"
                             variant="h1"
@@ -60,15 +59,17 @@ export default function Hero() {
                                     theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
                             }}
                         >
-                            companies
+                        explore&nbsp;
                         </Typography>
+                        through companies
+
                     </Typography>
                     <Typography
                         textAlign="center"
                         color="text.secondary"
                         sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
                     >
-                        Explore through companies, find the answers to your questions and check the potential jobposts
+                        Explore through companies, find the answers to your questions and check the jobposts
                         for a potential job!
                     </Typography>
                     <Stack
