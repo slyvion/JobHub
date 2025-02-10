@@ -1,13 +1,17 @@
 package timski.proekt.backend.Service.impl;
 
 import org.springframework.stereotype.Service;
-import timski.proekt.backend.Model.Dto.UserEmailUpdateDto;
-import timski.proekt.backend.Model.Dto.UserPasswordUpdateDto;
+import org.springframework.web.multipart.MultipartFile;
+import timski.proekt.backend.Model.Dto.User.UserEmailUpdateDto;
+import timski.proekt.backend.Model.Dto.User.UserImgUpdateDto;
+import timski.proekt.backend.Model.Dto.User.UserPasswordUpdateDto;
 import timski.proekt.backend.Model.User;
 import timski.proekt.backend.Repository.UserRepository;
 import timski.proekt.backend.Service.UserService;
 import timski.proekt.backend.exceptions.InvalidUserIdException;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,18 +42,33 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public User uploadUserLogo(Long id, UserImgUpdateDto userImgUpdateDto) {
+
+            User user = userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
+
+            byte[] logoBytes = Base64.getDecoder().decode(userImgUpdateDto.getUserImage());
+            user.setUserImage(logoBytes);
+
+            return userRepository.save(user);
+    }
+
+    @Override
+    public byte[] getUserLogo(Long id) {
+        User user = userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
+        return user.getUserImage();
+    }
+
+    @Override
     public User PasswordUpdate(long id, UserPasswordUpdateDto passwordUpdateDto) {
         User user = this.findById(id);
 
-        if(user.getPassword() != passwordUpdateDto.getOldPassword()){
+        if (!user.getPassword().equals(passwordUpdateDto.getOldPassword())) {
             throw new IllegalArgumentException("Old password is incorrect");
         }
-        if(passwordUpdateDto.getNewPassword() != passwordUpdateDto.getConfirmPassword()){
+        if (!passwordUpdateDto.getNewPassword().equals(passwordUpdateDto.getConfirmPassword())) {
             throw new IllegalArgumentException("New password and confirm password do not match");
         }
-        else {
-            user.setPassword(passwordUpdateDto.getNewPassword());
-        }
+        user.setPassword(passwordUpdateDto.getNewPassword());
 
         return userRepository.save(user);
     }

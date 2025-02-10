@@ -48,9 +48,7 @@ public class JobPostController {
 
     @PostMapping
     public JobPost create(@Valid @RequestBody JobPostDto jobPostDto) {
-        return jobPostService.create(
-                jobPostDto
-        );
+        return jobPostService.create(jobPostDto);
     }
 
     @PutMapping("/{id}/edit")
@@ -58,10 +56,7 @@ public class JobPostController {
                           @Valid  @RequestBody JobPostDto jobPostDto) {
 
 
-        return jobPostService.update(
-                id,
-                jobPostDto
-        );
+        return jobPostService.update(id, jobPostDto);
     }
 
     @PostMapping("/{id}/delete")

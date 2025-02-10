@@ -1,4 +1,4 @@
-package timski.proekt.backend.Model.Dto;
+package timski.proekt.backend.Model.Dto.User;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

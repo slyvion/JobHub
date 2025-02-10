@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import jakarta.persistence.Id;
 import timski.proekt.backend.Model.Constants.EmploymentType;
 import timski.proekt.backend.Model.Constants.JobType;
+import timski.proekt.backend.Model.Constants.Tags;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -30,6 +33,10 @@ public class JobPost {
     private EmploymentType employmentType;
 
     private String location;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private List<Tags> tags;
 
     public JobPost(String title, String description, Company company, JobType jobType, EmploymentType employmentType, String location) {
         this.title = title;

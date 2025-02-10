@@ -26,6 +26,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @Lob
+    private byte[] userImage;
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;

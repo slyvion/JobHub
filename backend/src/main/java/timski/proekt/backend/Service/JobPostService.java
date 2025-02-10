@@ -2,6 +2,7 @@ package timski.proekt.backend.Service;
 
 import timski.proekt.backend.Model.Company;
 import timski.proekt.backend.Model.Constants.EmploymentType;
+import timski.proekt.backend.Model.Constants.Tags;
 import timski.proekt.backend.Model.Dto.JobPostDto;
 import timski.proekt.backend.Model.JobPost;
 import timski.proekt.backend.Model.Constants.JobType;
@@ -19,6 +20,7 @@ public interface JobPostService {
     JobPost update(Long id, JobPostDto jobPostDto);
 
     JobPost delete(Long id);
+
 
     List<JobPost> findAllByTitle(String title);
 

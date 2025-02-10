@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import timski.proekt.backend.Model.Company;
 import timski.proekt.backend.Model.Constants.EmploymentType;
+import timski.proekt.backend.Model.Constants.Tags;
 import timski.proekt.backend.Model.Dto.JobPostDto;
 import timski.proekt.backend.Model.JobPost;
 import timski.proekt.backend.Model.Constants.JobType;
@@ -58,11 +59,12 @@ public class JobPostServiceImpl implements JobPostService {
     @Override
     public JobPost update(Long id, JobPostDto jobPostDto) {
         JobPost jobPost = this.findById(id);
-            jobPost.setTitle(jobPost.getTitle());
+            jobPost.setTitle(jobPostDto.getTitle());
             jobPost.setJobType(jobPostDto.getJobType());
             jobPost.setDescription(jobPostDto.getDescription());
             jobPost.setEmploymentType(jobPostDto.getEmploymentType());
             jobPost.setLocation(jobPostDto.getLocation());
+            jobPost.setTags(jobPostDto.getTags());
 
         return jobPostRepository.save(jobPost);
     }
@@ -73,6 +75,7 @@ public class JobPostServiceImpl implements JobPostService {
         jobPostRepository.delete(jobPost);
         return jobPost;
     }
+
 
     @Override
     public List<JobPost> findAllByTitle(String title) {

@@ -3,8 +3,10 @@ package timski.proekt.backend.Model;
 import jakarta.persistence.*;
 
 import lombok.*;
-import org.hibernate.annotations.Fetch;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,12 +27,19 @@ public class Company {
     private String password;
 
     private String website;
+
     private String description;
+
     private String location;
 
     @Column(nullable = true)
     private double rating;
 
+    @Lob
+    private byte[] companyLogo;
+
+    @Lob
+    private byte[] companyCover;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
@@ -44,6 +53,15 @@ public class Company {
         this.location = location;
         this.reviews = new ArrayList<>();
         this.rating = 0;
+
+        try {
+            this.companyLogo = Files.readAllBytes(Paths.get("src/main/resources/static/defaultLogo.png"));
+            this.companyCover = Files.readAllBytes(Paths.get("src/main/resources/static/defaultCover.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+            this.companyLogo = null;
+            this.companyCover = null;
+        }
     }
 
     public void updateRating() {

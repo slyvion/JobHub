@@ -1,5 +1,4 @@
-package timski.proekt.backend.Model.Dto;
-
+package timski.proekt.backend.Model.Dto.Company;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,17 +6,10 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-
 @Data
 @NoArgsConstructor
-public class UserEmailUpdateDto {
-
+public class CompanyEmailUpdateDto {
     @NotBlank(message = "Email is required")
     @Email
     private String email;
-
-    public UserEmailUpdateDto(String email) {
-
-        this.email = email;
-    }
 }
