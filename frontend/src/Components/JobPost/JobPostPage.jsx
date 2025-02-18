@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Box } from "@mui/material"; // Import Box component
+import { Box, Typography } from "@mui/material"; // Import Typography for empty state message
 import JobPostFilter from "./JobPostFilter.jsx";
 import JobPost from "./JobPost.jsx";
 import AppAppBar from "../AppAppBar.jsx";
+import Footer from "../HomePage/Footer.jsx";
 
 export default function JobPostPage() {
     const [jobPosts, setJobPosts] = useState([]);
@@ -41,21 +42,53 @@ export default function JobPostPage() {
     }, []);
 
     return (
-        <div style={{ background: 'white', paddingTop: '100px', minHeight: '100vh' }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+                backgroundColor: "#f0f0f0",
+            }}
+        >
             <AppAppBar />
-            <JobPostFilter onFilter={fetchJobPosts} />
 
-            {loading ? (
-                <p>Loading...</p>
-            ) : error ? (
-                <p>Error: {error}</p>
-            ) : (
-                <Box sx={{ paddingLeft: '600px' }}>
-                    {jobPosts.map((job) => (
-                        <JobPost key={job.id} job={job} />
-                    ))}
-                </Box>
-            )}
-        </div>
+            <Box
+                sx={{
+                    backgroundColor: "white",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    padding: "20px",
+                    paddingTop: "100px",
+                    marginTop: 0,
+                    position: "relative",
+                    zIndex: 10,
+                }}
+            >
+                <JobPostFilter onFilter={fetchJobPosts} />
+            </Box>
+
+            <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 4 }}>
+                {loading ? (
+                    <Typography variant="body1">Loading...</Typography>
+                ) : error ? (
+                    <Typography variant="body1" color="error">
+                        Error: {error}
+                    </Typography>
+                ) : jobPosts.length === 0 ? (
+                    <Typography variant="body1" color="textSecondary">
+                        No job posts available.
+                    </Typography>
+                ) : (
+                    <Box display="flex" flexDirection="column" alignItems="center">
+                        {jobPosts.map((job) => (
+                            <Box key={job.id} width="100%" maxWidth="800px">
+                                <JobPost job={job} />
+                            </Box>
+                        ))}
+                    </Box>
+                )}
+            </Box>
+
+            <Footer />
+        </Box>
     );
 }

@@ -3,7 +3,7 @@ import { Grid, TextField, Rating, Button, FormControl, FormHelperText, Box } fro
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function CreateReview() {
+export default function CreateReview({ onClose }) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             title: '',
@@ -20,6 +20,7 @@ export default function CreateReview() {
         console.log(data);
         reset();
         navigate(`/company/${id}`);
+        onClose();
     };
 
     return (
@@ -32,6 +33,7 @@ export default function CreateReview() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                flexDirection: 'column',
             }}
         >
             <Box
@@ -44,6 +46,14 @@ export default function CreateReview() {
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 }}
             >
+                <Grid item sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+                    <img
+                        src="/Logo.png"
+                        alt="Logo"
+                        style={{ width: '400px', height: 'auto' }}
+                    />
+                </Grid>
+
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -81,7 +91,7 @@ export default function CreateReview() {
                                                 size="large"
                                                 onChange={(_, value) => field.onChange(value)}
                                             />
-                                            {errors.rating && <FormHelperText>{errors.rating.message}</FormHelperText>}
+                                            <FormHelperText>{errors.rating ? errors.rating.message : ''}</FormHelperText>
                                         </>
                                     )}
                                 />
@@ -95,20 +105,19 @@ export default function CreateReview() {
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
-                                        id="outlined-multiline-static"
                                         label="Comment"
+                                        variant="outlined"
                                         multiline
                                         rows={4}
-                                        variant="outlined"
                                         fullWidth
                                     />
                                 )}
                             />
                         </Grid>
 
-                        <Grid item xs={12}>
+                        <Grid item xs={12} textAlign="center">
                             <Button type="submit" variant="contained" color="primary">
-                                Submit
+                                Submit Review
                             </Button>
                         </Grid>
                     </Grid>

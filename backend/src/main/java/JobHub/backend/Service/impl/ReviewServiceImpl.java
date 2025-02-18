@@ -38,7 +38,8 @@ public class ReviewServiceImpl implements ReviewService {
                 user,
                 company,
                 reviewDto.getRating(),
-                reviewDto.getComment()
+                reviewDto.getPros(),
+                reviewDto.getCons()
         );
 
         Review savedReview = reviewRepository.save(review);
@@ -54,7 +55,8 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = this.findById(id);
         review.setTitle(reviewDto.getTitle());
         review.setRating(reviewDto.getRating());
-        review.setComment(reviewDto.getComment());
+        review.setPros(reviewDto.getPros());
+        review.setCons(reviewDto.getCons());
         return reviewRepository.save(review);
     }
 

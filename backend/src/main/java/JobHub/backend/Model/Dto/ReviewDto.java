@@ -18,19 +18,22 @@ public class ReviewDto {
     private Long rating; // req
 
 
-    private String comment; // non-required
+    private String pros;
+
+    private String cons;
 
     private Date postDate;
 
     public ReviewDto() {
     }
 
-    public ReviewDto(String title, long userId, long companyId, Long rating, String comment) {
+    public ReviewDto(String title, long userId, long companyId, Long rating, String cons, String pros) {
         this.title = title;
         this.userId = userId;
         this.companyId = companyId;
         this.rating = rating;
-        this.comment = comment;
+        this.pros = pros;
+        this.cons = cons;
 
     }
 }

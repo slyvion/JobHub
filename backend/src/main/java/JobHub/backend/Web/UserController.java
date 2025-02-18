@@ -4,7 +4,6 @@ import JobHub.backend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
-import JobHub.backend.Model.Dto.User.UserImgUpdateDto;
 import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
 import JobHub.backend.Model.User;
 
@@ -23,8 +22,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/passwordUpdate")
-    public User updatePassword(@PathVariable Long id,
-                                 @Valid @RequestBody UserPasswordUpdateDto userDto) {
+    public User updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordUpdateDto userDto) {
         return userService.PasswordUpdate(id, userDto);
     }
     @PutMapping("/{id}/emailUpdate")
@@ -32,9 +30,5 @@ public class UserController {
         return userService.EmailUpdate(id, userDto);
     }
 
-    @PutMapping("/{id}/imageUpdate")
-    public User updateImage(@PathVariable Long id, @Valid @RequestBody UserImgUpdateDto userImgUpdateDto){
-        return userService.uploadUserLogo(id, userImgUpdateDto);
-    }
 
 }

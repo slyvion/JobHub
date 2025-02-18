@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
@@ -40,7 +39,6 @@ const scrollToSection = (sectionId) => {
             top: targetScroll,
             behavior: 'smooth',
         });
-        setOpen(false);
     }
 };
 
@@ -55,8 +53,11 @@ export default function Footer() {
     const id = open ? 'simple-popper' : undefined;
 
     return (
-        <Container
+        <Box
             sx={{
+                marginTop: 5,
+                width: '100%',
+                backgroundColor: 'white',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -71,6 +72,7 @@ export default function Footer() {
                     flexDirection: { xs: 'column', sm: 'row' },
                     width: '100%',
                     justifyContent: 'space-between',
+                    maxWidth: '1200px',
                 }}
             >
                 <Box
@@ -84,12 +86,12 @@ export default function Footer() {
                     <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
                         <Box sx={{ ml: '-15px' }}>
                             <img
-                                src={'src/Logo.png'}
+                                src={'/Logo.png'}
                                 style={logoStyle}
                                 alt="logo of jobhub"
                             />
                         </Box>
-                        <Typography variant="body2" fontWeight={600} gutterBottom>
+                        <Typography variant="body2" fontWeight={600} gutterBottom sx={{ color: 'black' }}>
                             Newsletter
                         </Typography>
                         <Typography variant="body2" color="text.secondary" mb={2}>
@@ -132,19 +134,38 @@ export default function Footer() {
                         gap: 1,
                     }}
                 >
-                    <Typography variant="body2" fontWeight={600}>
+                    <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
                         Product
                     </Typography>
-                    <Link color="text.secondary" onClick={() => scrollToSection('features')}>
+                    <Link
+                        color="text.secondary"
+                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        onClick={() => scrollToSection('features')}
+                    >
                         Features
                     </Link>
-                    <Link color="text.secondary" onClick={() => scrollToSection('highlights')}>
+
+                    <Link
+                        color="text.secondary"
+                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        onClick={() => scrollToSection('highlights')}
+                    >
                         Highlights
                     </Link>
-                    <Link color="text.secondary" href="companies">
+
+                    <Link
+                        color="text.secondary"
+                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        href="companies"
+                    >
                         Companies
                     </Link>
-                    <Link color="text.secondary" href="jobposts">
+
+                    <Link
+                        color="text.secondary"
+                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        href="jobposts"
+                    >
                         JobPosts
                     </Link>
                 </Box>
@@ -155,10 +176,13 @@ export default function Footer() {
                         gap: 1,
                     }}
                 >
-                    <Typography variant="body2" fontWeight={600}>
+                    <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
                         Company
                     </Typography>
-                    <Link color="text.secondary" href="/about-us">
+                    <Link
+                        color="text.secondary"
+                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        href="/about-us">
                         About us
                     </Link>
                 </Box>
@@ -169,7 +193,7 @@ export default function Footer() {
                         gap: 1,
                     }}
                 >
-                    <Typography variant="body2" fontWeight={600}>
+                    <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
                         Legal
                     </Typography>
                     <Terms />
@@ -185,6 +209,7 @@ export default function Footer() {
                     width: '100%',
                     borderTop: '1px solid',
                     borderColor: 'divider',
+                    maxWidth: '1200px',
                 }}
             >
                 <div>
@@ -201,7 +226,7 @@ export default function Footer() {
                 >
                     <IconButton
                         color="inherit"
-                        href="https://github.com/slyvion/timskiProekt"
+                        href="https://github.com/slyvion/JobHub"
                         aria-label="GitHub"
                         sx={{ alignSelf: 'center' }}
                     >
@@ -218,6 +243,6 @@ export default function Footer() {
                     </IconButton>
                 </Stack>
             </Box>
-        </Container>
+        </Box>
     );
 }

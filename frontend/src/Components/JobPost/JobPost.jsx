@@ -8,19 +8,23 @@ export default function JobPost({ job }) {
         <Card sx={{
             display: 'flex',
             alignItems: 'center',
-            p: 2,
+            p: 3,
             border: '1px solid #ddd',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            maxWidth: 600,
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
+            maxWidth: 700,
             mb: 2,
-            mt: 2
+            mt: 2,
+            '&:hover': {
+                outline: '2px solid rgba(51, 153, 255, 0.6)',
+            }
         }}>
             <CardMedia
                 component="img"
                 sx={{
-                    width: 80,
-                    height: 80,
-                    objectFit: 'contain'
+                    width: 100,
+                    height: 100,
+                    objectFit: 'contain',
+                    boxShadow: '0px 0px 5px 2px rgba(169, 169, 169, 0.6)',
                 }}
                 image="/joblogo.jpg"
                 alt={job.companyName}
@@ -30,17 +34,22 @@ export default function JobPost({ job }) {
                     {job.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
-                    {job.jobType}
+                    {job.jobType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                     <Box sx={{ mx: 1, height: '1.2em' }}>
-                        <Divider orientation="vertical"  flexItem sx={{ height: '100%', borderColor: 'text.secondary' }} />
+                        <Divider orientation="vertical" flexItem sx={{ height: '100%' }} />
                     </Box>
-                    {job.employmentType}
+                    {job.employmentType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                 </Typography>
+
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    {job.description && job.description.slice(0, 100)}{job.description && job.description.length > 100 ? '...' : ''}
+                </Typography>
+
                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                    <Link to={`/company/${job.company.id}`}>
-                    <Typography variant="body2" color="text.secondary" noWrap sx={{ mr: 1 }}>
-                        {job.company.companyName}
-                    </Typography>
+                    <Link to={`/company/${job.company.id}`} style={{ textDecoration: 'none' }}>
+                        <Typography variant="body2" sx={{ mr: 1, color: '#6495ED' }}>
+                            {job.company.companyName}
+                        </Typography>
                     </Link>
                     <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                         <StarIcon sx={{ color: 'gold', fontSize: 18 }} />

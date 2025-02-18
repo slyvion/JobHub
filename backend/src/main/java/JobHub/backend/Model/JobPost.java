@@ -1,5 +1,6 @@
 package JobHub.backend.Model;
 
+import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -21,7 +22,13 @@ public class JobPost {
 
     private String title;
 
-    private String description;
+    private String description; //JobInfo
+
+    private String requirements; // requirements
+
+    private String jobInfo;
+
+    private String applicationLink;
 
     @ManyToOne
     private Company company;
@@ -32,18 +39,26 @@ public class JobPost {
     @Enumerated(EnumType.STRING)
     private EmploymentType employmentType;
 
+    @Enumerated(EnumType.STRING)
+    private Seniority seniority;
+
     private String location;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<Tags> tags;
 
-    public JobPost(String title, String description, Company company, JobType jobType, EmploymentType employmentType, String location) {
+    public JobPost(String title, String description, String requirements, String jobInfo, String applicationLink, Company company, JobType jobType, EmploymentType employmentType, Seniority seniority, String location, List<Tags> tags) {
         this.title = title;
         this.description = description;
+        this.requirements = requirements;
+        this.jobInfo = jobInfo;
+        this.applicationLink = applicationLink;
         this.company = company;
         this.jobType = jobType;
         this.employmentType = employmentType;
+        this.seniority = seniority;
         this.location = location;
+        this.tags = tags;
     }
 }

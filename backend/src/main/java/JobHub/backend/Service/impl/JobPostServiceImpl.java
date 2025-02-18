@@ -1,6 +1,7 @@
 package JobHub.backend.Service.impl;
 
 
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -47,12 +48,18 @@ public class JobPostServiceImpl implements JobPostService {
         JobPost jobPost = new JobPost(
                 jobPostDto.getTitle(),
                 jobPostDto.getDescription(),
+                jobPostDto.getRequirements(),
+                jobPostDto.getJobInfo(),
+                jobPostDto.getApplicationLink(),
                 company,
                 jobPostDto.getJobType(),
                 jobPostDto.getEmploymentType(),
-                jobPostDto.getLocation()
+                jobPostDto.getSeniority(),
+                jobPostDto.getLocation(),
+                jobPostDto.getTags()
         );
-    return null;
+
+    return jobPostRepository.save(jobPost);
     }
 
     @Override
@@ -79,6 +86,11 @@ public class JobPostServiceImpl implements JobPostService {
     @Override
     public List<JobPost> findAllByTitle(String title) {
         return jobPostRepository.findJobPostsByTitle(title);
+    }
+
+    @Override
+    public List<JobPost> findAllByCompanyName(String companyName) {
+        return jobPostRepository.findJobPostsByCompanyCompanyName(companyName);
     }
 
     @Override
@@ -112,15 +124,16 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public List<JobPost> jobPostFilter(String title, Company company, String location, JobType jobType, EmploymentType employmentType) {
+    public List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType) {
         return jobPostRepository.findAll((Specification<JobPost>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (title != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
             }
-            if (company != null) {
-                predicates.add(criteriaBuilder.equal(root.get("company"), company));
+            if (companyName != null) {
+                Join<JobPost, Company> companyJoin = root.join("company");
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(companyJoin.get("companyName")), "%" + companyName.toLowerCase() + "%"));
             }
             if (location != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("location")), "%" + location.toLowerCase() + "%"));

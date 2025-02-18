@@ -12,7 +12,7 @@ export default function Terms() {
     const [scroll, setScroll] = React.useState('paper');
 
     const handleClickOpen = (event) => {
-        event.preventDefault(); // Prevent the default behavior of the link
+        event.preventDefault();
         setOpen(true);
     };
 
@@ -32,7 +32,10 @@ export default function Terms() {
 
     return (
         <React.Fragment>
-            <Link color="text.secondary" onClick={handleClickOpen} sx={{ cursor: 'pointer' }}>
+            <Link
+                color="text.secondary"
+                sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer'}}
+                onClick={handleClickOpen}>
                 Terms
             </Link>
             <Dialog

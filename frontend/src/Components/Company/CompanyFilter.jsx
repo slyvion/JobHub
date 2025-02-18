@@ -46,26 +46,22 @@ export default function CompanyFilter({ onFilter }) {
     }, []);
 
     return (
-        <Box sx={{ width: '100%', backgroundColor: '#fff', padding: '16px' }}>
-            <Grid container spacing={2} alignItems="center" justifyContent="center">
-                <Grid item xs={12} sm={2}>
+        <Box sx={{ width: '100%', backgroundColor: '#fff', padding: '16px', display: 'flex', gap: 1, justifyContent: 'center'}}>
+
                     <TextField
                         label="Company Name"
                         variant="outlined"
-                        fullWidth
+                        sx={{width: '350px'}}
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
                     />
-                </Grid>
-                <Grid item xs={12} sm={2}>
                     <CountrySelect value={country} onChange={setCountry} />
-                </Grid>
-                <Grid item xs={12} sm={1}>
-                    <FormControl variant="outlined" fullWidth>
+                    <FormControl variant="outlined" >
                         <InputLabel>Rating</InputLabel>
                         <Select
                             label="Rating"
                             value={rating}
+                            sx={{width: '100px'}}
                             onChange={(e) => setRating(e.target.value)}
                         >
                             <MenuItem value="">
@@ -78,13 +74,10 @@ export default function CompanyFilter({ onFilter }) {
                             <MenuItem value={5}>5</MenuItem>
                         </Select>
                     </FormControl>
-                </Grid>
-                <Grid item xs={12} sm={1}>
-                    <Button variant="contained" color="primary" fullWidth onClick={handleFilter}>
+                    <Button variant="contained" color="primary" fullWidth onClick={handleFilter} sx={{width: '90px'}}>
                         Filter
                     </Button>
-                </Grid>
-            </Grid>
+
         </Box>
     );
 }

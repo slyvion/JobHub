@@ -1,14 +1,17 @@
 package JobHub.backend.Service.impl;
 
+import JobHub.backend.Model.Dto.User.UserDto;
 import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
-import JobHub.backend.Model.Dto.User.UserImgUpdateDto;
 import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
 import JobHub.backend.Model.User;
 import JobHub.backend.Repository.UserRepository;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -39,22 +42,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email);
     }
 
-    @Override
-    public User uploadUserLogo(Long id, UserImgUpdateDto userImgUpdateDto) {
-
-            User user = userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
-
-            byte[] logoBytes = Base64.getDecoder().decode(userImgUpdateDto.getUserImage());
-            user.setUserImage(logoBytes);
-
-            return userRepository.save(user);
-    }
-
-    @Override
-    public byte[] getUserLogo(Long id) {
-        User user = userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
-        return user.getUserImage();
-    }
 
     @Override
     public User PasswordUpdate(long id, UserPasswordUpdateDto passwordUpdateDto) {
@@ -86,6 +73,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public User create(UserDto userDto) {
+        User user = new User(
+                userDto.getUsername(),
+                userDto.getEmail(),
+                userDto.getPassword()
+                );
+
+        return userRepository.save(user);
+    }
 
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -198,10 +198,7 @@ public class CompanyServiceImpl implements CompanyService {
             List<Predicate> predicates = new ArrayList<>();
 
             if (companyName != null) {
-                predicates.add(criteriaBuilder.like(
-                        criteriaBuilder.lower(root.get("companyName")),
-                        "%" + companyName.toLowerCase() + "%"
-                ));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("companyName")), "%" + companyName.toLowerCase() + "%"));
             }
 
             if (location != null) {

@@ -1,55 +1,52 @@
-import { useState, useEffect } from "react";
-import { Avatar, Typography, Paper, Grid, Tabs, Tab, Box, Button, IconButton } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Avatar, Typography, Paper, Box, Tabs, Tab, Button, IconButton, CircularProgress } from "@mui/material";
 import { styled } from "@mui/system";
 import StarIcon from "@mui/icons-material/Star";
 import EditIcon from "@mui/icons-material/Edit";
-import Review from '../Review/Review.jsx';
-import JobPost from '../JobPost/JobPost.jsx';
+import Review from "../Review/Review.jsx";
+import JobPost from "../JobPost/JobPost.jsx";
 import { useParams, useNavigate } from "react-router-dom";
+import EditCompanyProfile from "./EditCompanyProfile";
+import CompanyCover from "./CompanyCover.jsx";
+import Footer from "../HomePage/Footer.jsx";
+import AppAppBar from "../AppAppBar.jsx";
+import CompanyOverview from "./CompanyTabs/CompanyOverview.jsx"
+import AboutUs from "./CompanyTabs/AboutUs.jsx";
+
+
+
 
 const Root = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(3),
-    maxWidth: 600,
+    maxWidth: 800,
     margin: "auto",
-    marginTop: theme.spacing(5),
-    position: "relative", // Add relative positioning to contain the button
+    marginTop: theme.spacing(1),
+    position: "relative",
+    boxShadow: "none",
+}));
+
+const LogoContainer = styled("div")(({ theme }) => ({
+    display: "flex",
+    alignItems: "center",
+    paddingLeft: theme.spacing(3),
 }));
 
 const StyledAvatar = styled(Avatar)(({ theme }) => ({
-    width: theme.spacing(12),
-    height: theme.spacing(12),
-    margin: theme.spacing(2),
+    width: theme.spacing(14),
+    height: theme.spacing(14),
+    borderRadius: "4px",
+    boxShadow: `0 0 3px 1px rgba(0, 123, 255, 0.6)`,
 }));
 
-const CompanyName = styled(Typography)({
-    fontWeight: "bold",
-    fontSize: "24px",
-});
 
-const Details = styled(Grid)(({ theme }) => ({
-    marginTop: theme.spacing(2),
-    display: "flex",
-    justifyContent: "space-between",
-}));
-
-const Rating = styled(Grid)({
-    display: "flex",
-    alignItems: "center",
-});
-
-const Location = styled(Grid)({
-    display: "flex",
-    alignItems: "center",
-});
-
-const TabContent = styled(Box)(({ theme }) => ({
-    marginTop: theme.spacing(2),
+const CompanyInfo = styled(Box)(({ theme }) => ({
+    marginLeft: theme.spacing(2),
 }));
 
 const EditButton = styled(IconButton)(({ theme }) => ({
-    position: "absolute", // Position it in the top-right corner
-    top: theme.spacing(1),
-    right: theme.spacing(1),
+    position: "absolute",
+    top: theme.spacing(8),
+    right: theme.spacing(5),
 }));
 
 function CompanyProfile() {
@@ -61,6 +58,7 @@ function CompanyProfile() {
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -71,7 +69,11 @@ function CompanyProfile() {
     };
 
     const handleEditClick = () => {
-        console.log("Edit button clicked");
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
     };
 
     useEffect(() => {
@@ -114,70 +116,98 @@ function CompanyProfile() {
             }
         };
 
-        Promise.all([fetchCompanyData(), fetchJobPosts(), fetchReviews()])
-            .finally(() => setLoading(false));
+        Promise.all([fetchCompanyData(), fetchJobPosts(), fetchReviews()]).finally(() => setLoading(false));
     }, [id]);
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) {
+        return (
+            <div style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+            }}>
+                <CircularProgress style={{ width: '10rem', height: '10rem' }} />
+            </div>
+        );
+    }
+
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <Root>
-            <EditButton onClick={handleEditClick}>
-                <EditIcon />
-            </EditButton>
+        <div style={{ backgroundColor: '#FFF', minHeight: '100vh'}}>
+            <AppAppBar />
+            <CompanyCover image={company.companyCover || "/companyLogo.jpg"} />
+            <Root>
+                <EditButton onClick={handleEditClick}>
+                    <EditIcon />
+                </EditButton>
 
-            <Grid container alignItems="center" justifyContent="center">
-                <StyledAvatar src={company.image || "/joblogo.jpg"} />
-                <CompanyName>{company.companyName}</CompanyName>
-            </Grid>
-            <Details container>
-                <Rating item>
-                    <StarIcon sx={{ color: '#FFD700' }} />
-                    <Typography>{company.rating || 'N/A'}</Typography>
-                </Rating>
-                <Location item>
-                    <Typography>{company.location}</Typography>
-                </Location>
-            </Details>
-            <Tabs value={value} onChange={handleChange} centered>
-                <Tab label="About Us" />
-                <Tab label="JobPosts" />
-                <Tab label="Reviews" />
-            </Tabs>
-            <TabContent>
-                {value === 0 && <Typography>{company.description}</Typography>}
-
-                {value === 1 && (
-                    <Box>
-                        {jobPosts.length > 0 ? (
-                            jobPosts.map((job) => (
-                                <JobPost key={job.id} job={job} />
-                            ))
-                        ) : (
-                            <Typography>No job posts available</Typography>
-                        )}
-                    </Box>
-                )}
-
-                {value === 2 && (
-                    <Box>
-                        {reviews.length > 0 ? (
-                            reviews.map((review) => (
-                                <Review key={review.id} review={review} />
-                            ))
-                        ) : (
-                            <Typography>No reviews available</Typography>
-                        )}
-                        <Box display="flex" justifyContent="center" mt={2}>
-                            <Button variant="contained" color="primary" onClick={handleAddReviewClick}>
-                                Add Review
-                            </Button>
+                <LogoContainer>
+                    <StyledAvatar src={company.image || "/joblogo.jpg"} variant="square" />
+                    <CompanyInfo>
+                        <Typography variant="h5" fontWeight="bold">{company.companyName}</Typography>
+                        <Typography>{company.location}</Typography>
+                        <Box display="flex" alignItems="center">
+                            <StarIcon sx={{ color: "#FFD700" }} />
+                            <Typography>{company.rating || "N/A"}</Typography>
                         </Box>
+                    </CompanyInfo>
+                </LogoContainer>
+            </Root>
+                {/* Tabs Section */}
+                <Box>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        variant="fullWidth"
+                        TabIndicatorProps={{ style: { backgroundColor: "blue" } }}
+                    >
+                        <Tab label="About Us" />
+                        <Tab label="JobPosts" />
+                        <Tab label="Reviews" />
+                    </Tabs>
+                </Box>
+                <Box sx={{ backgroundColor: "#F5F5F5", padding: 2, width: "100%", minHeight: "60vh" }}>
+                    <Box>
+                        {value === 0 && (
+                            <Box sx={{ display: 'flex', flexDirection: 'row', margin: 2, gap: 2 }}>
+                                <CompanyOverview company={company} />
+                                <AboutUs company={company} />
+                            </Box>
+                        )}
+
+
+                        {value === 1 && (
+                            <Box>
+                                {jobPosts.length > 0 ? (
+                                    jobPosts.map((job) => <JobPost key={job.id} job={job} />)
+                                ) : (
+                                    <Typography>No job posts available</Typography>
+                                )}
+                            </Box>
+                        )}
+
+                        {value === 2 && (
+                            <Box>
+                                {reviews.length > 0 ? (
+                                    reviews.map((review) => <Review key={review.id} review={review} />)
+                                ) : (
+                                    <Typography>No reviews available</Typography>
+                                )}
+                                <Box display="flex" justifyContent="center" mt={2}>
+                                    <Button variant="contained" color="primary" onClick={handleAddReviewClick}>
+                                        Add Review
+                                    </Button>
+                                </Box>
+                            </Box>
+                        )}
                     </Box>
-                )}
-            </TabContent>
-        </Root>
+                </Box>
+
+                <EditCompanyProfile open={isModalOpen} handleClose={handleCloseModal} companyData={company} />
+            <Footer />
+        </div>
     );
 }
 

@@ -28,7 +28,9 @@ public class Review {
 
     private Long rating; // req
 
-    private String comment; // non-required
+    private String pros;
+
+    private String cons;
 
     private Date postDate;
     
@@ -36,12 +38,13 @@ public class Review {
     protected void onCreate() {
         this.postDate = new Date();
     }
-    public Review(String title, User user, Company company, Long rating, String comment) {
+    public Review(String title, User user, Company company, Long rating, String pros, String cons) {
         this.title = title;
         this.user = user;
         this.company = company;
         this.rating = rating;
-        this.comment = comment;
+        this.pros = pros;
+        this.cons = cons;
 
     }
 }

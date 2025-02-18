@@ -84,7 +84,7 @@ function AppAppBar() {
                         >
                             <Link to="/">
                                 <img
-                                    src={'src/Logo.png'}
+                                    src={'/Logo.png'}
                                     style={logoStyle}
                                     alt="logo of JobHub"
                                 />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TextField, Button, MenuItem, Grid, Paper, Typography } from "@mui/material";
+import { TextField, Button, MenuItem, Grid, Paper } from "@mui/material";
 import { styled } from "@mui/system";
 
 const FormContainer = styled(Paper)(({ theme }) => ({
@@ -13,7 +13,6 @@ export default function CreateJobPost() {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
-        company: "",
         jobType: "",
         employmentType: "",
         location: "",
@@ -34,9 +33,11 @@ export default function CreateJobPost() {
 
     return (
         <FormContainer>
-            <Typography variant="h5" align="center" gutterBottom>
-                Create Job Post
-            </Typography>
+            <Grid container justifyContent="center" alignItems="center">
+                <Grid item>
+                    <img src={'src/Logo.png'} alt="Logo" style={{ width: '400px', height: 'auto'}} />
+                </Grid>
+            </Grid>
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
@@ -63,10 +64,12 @@ export default function CreateJobPost() {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            label="Company"
-                            name="company"
+                            label="JobInfo"
+                            name="JobInfo"
                             fullWidth
-                            value={formData.company}
+                            multiline
+                            rows={4}
+                            value={formData.description}
                             onChange={handleChange}
                             required
                         />
@@ -81,9 +84,9 @@ export default function CreateJobPost() {
                             onChange={handleChange}
                             required
                         >
-                            <MenuItem value="Full-time">Full-time</MenuItem>
-                            <MenuItem value="Part-time">Part-time</MenuItem>
-                            <MenuItem value="Contract">Contract</MenuItem>
+                            <MenuItem value="ON_SITE">On Site< /MenuItem>
+                            <MenuItem value="HYBRID">Hybrid< /MenuItem>
+                            <MenuItem value="REMOTE">Remote</MenuItem>
                         </TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -96,9 +99,9 @@ export default function CreateJobPost() {
                             onChange={handleChange}
                             required
                         >
-                            <MenuItem value="Permanent">Permanent</MenuItem>
-                            <MenuItem value="Temporary">Temporary</MenuItem>
-                            <MenuItem value="Internship">Internship</MenuItem>
+                            <MenuItem value="FULL_TIME">Full Time</MenuItem>
+                            <MenuItem value="PART_TIME">Part Time</MenuItem>
+                            <MenuItem value="INTERN">Internship</MenuItem>
                         </TextField>
                     </Grid>
                     <Grid item xs={12}>
@@ -120,4 +123,4 @@ export default function CreateJobPost() {
             </form>
         </FormContainer>
     );
-};
+}

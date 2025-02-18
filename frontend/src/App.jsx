@@ -13,6 +13,7 @@ import CompanyProfile from "./Components/Company/CompanyProfile.jsx";
 import UserProfile from "./Components/User/UserProfile.jsx";
 import CreateReview from "./Components/Review/CreateReview.jsx";
 import ErrorPage from "./Components/ErrorPage.jsx";
+import CreateJobPost from "./Components/JobPost/CreateJobPost.jsx";
 
 function App() {
 
@@ -39,6 +40,7 @@ function App() {
 
                 <Route path="companies" element={<CompaniesPage />} />
                 <Route path="jobposts" element={<JobPostPage />} />
+                <Route path="createJobPost" element={<CreateJobPost />} />
 
                 <Route path="/*" element={<ErrorPage />} />
 

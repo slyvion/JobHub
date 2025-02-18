@@ -8,18 +8,49 @@ export default function CompanyCard({ company }) {
         <Card sx={{ maxWidth: 345 }}>
             <CardMedia
                 component="img"
-                height="60"
-                image="/companyLogo.jpg"
+                height="200"
+                image={company.companyImage || '/companyLogo.jpg'}
+                alt={`${company.companyName} cover`}
+                sx={{
+                    objectFit: 'cover',
+                }}
             />
+
             <CardContent>
-                <Link to={`/company/${company.id}`}>
-                <Typography gutterBottom variant="h5" component="div">
-                    {company.companyName}
-                </Typography>
-                </Link>
-                <Typography variant="body2" color="text.secondary">
+                {/* Logo & Company Name */}
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <CardMedia
+                        component="img"
+                        image={company.companyCover || '/joblogo.jpg'}
+                        alt="Company Logo"
+                        sx={{
+                            width: 50,
+                            height: 50,
+                            mr: 2,
+                        }}
+                    />
+                    <Link to={`/company/${company.id}`}>
+                        <Typography variant="h6" component="div" noWrap>
+                            {company.companyName}
+                        </Typography>
+                    </Link>
+                </Box>
+
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        display: 'block',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                    }}
+                >
                     {company.description}
                 </Typography>
+
+                {/* Rating & Location */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <StarIcon sx={{ color: 'gold' }} />

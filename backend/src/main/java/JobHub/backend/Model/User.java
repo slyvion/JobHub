@@ -6,6 +6,10 @@ import lombok.Data;
 
 import lombok.NoArgsConstructor;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 
 @Entity
 @NoArgsConstructor
@@ -23,16 +27,17 @@ public class User {
 
     private String password;
 
+
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Lob
-    private byte[] userImage;
 
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = UserRole.USER; // Default role set here
+
     }
 }

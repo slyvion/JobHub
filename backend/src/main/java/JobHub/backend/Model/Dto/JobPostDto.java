@@ -1,5 +1,6 @@
 package JobHub.backend.Model.Dto;
 
+import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
 import lombok.Data;
 import JobHub.backend.Model.Constants.EmploymentType;
@@ -12,13 +13,19 @@ import java.util.List;
 @Data
 public class JobPostDto {
 
-    private long companyId;
+    private Long companyId;
 
     @NotBlank(message = "Title is required")
     private String title;
 
     @NotBlank(message = "Job post description is required")
     private String description;
+
+    @NotBlank(message = "Job post requirements are required")
+    private String requirements;
+
+    @NotBlank(message = "Job post info is required")
+    private String jobInfo;
 
     @NotNull(message = "Job Type is required")
     private JobType jobType;
@@ -29,15 +36,24 @@ public class JobPostDto {
     @NotBlank(message = "Location is required")
     private String location;
 
+    private Seniority seniority;
+
     private List<Tags> tags;
+
+    @NotBlank(message = "Link for candidates to apply is required")
+    private String applicationLink;
 
     public JobPostDto() {
     }
 
-    public JobPostDto(String title, String description, long companyId, JobType jobType, EmploymentType employmentType, String location, List<Tags> tags) {
+    public JobPostDto(Long companyId, String title,String applicationLink ,Seniority seniority, String description, String requirements, String jobInfo, JobType jobType, EmploymentType employmentType, String location, List<Tags> tags) {
+        this.companyId = companyId;
         this.title = title;
         this.description = description;
-        this.companyId = companyId;
+        this.requirements = requirements;
+        this.seniority = seniority;
+        this.applicationLink = applicationLink;
+        this.jobInfo = jobInfo;
         this.jobType = jobType;
         this.employmentType = employmentType;
         this.location = location;

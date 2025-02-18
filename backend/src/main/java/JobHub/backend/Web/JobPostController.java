@@ -28,20 +28,20 @@ public class JobPostController {
     @GetMapping
     public List<JobPost> jobPostsFilter(
             @RequestParam(required = false) String title,
-            @RequestParam(required = false) Company company,
+            @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) JobType jobType,
             @RequestParam(required = false) EmploymentType employmentType) {
 
         if( title == null &&
-            company == null &&
+            companyName == null &&
             location == null &&
             jobType == null &&
             employmentType == null){
             return jobPostService.listAll();
         }
         return jobPostService.jobPostFilter(
-                title, company, location, jobType, employmentType);
+                title, companyName, location, jobType, employmentType);
     }
 
     @PostMapping

@@ -20,10 +20,11 @@ public interface JobPostService {
 
     JobPost delete(Long id);
 
-
     List<JobPost> findAllByTitle(String title);
 
     List<JobPost> findAllByCompany(Company company);
+
+    List<JobPost> findAllByCompanyName(String companyName);
 
     List<JobPost> findAllByDescription(String description);
 
@@ -35,5 +36,5 @@ public interface JobPostService {
 
     List<JobType> findAllByEmploymentType(EmploymentType employmentType);
 
-    List<JobPost> jobPostFilter(String title, Company company, String location, JobType jobType, EmploymentType employmentType);
+    List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType);
 }
