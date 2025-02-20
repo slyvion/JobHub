@@ -1,5 +1,6 @@
 package JobHub.backend.Service.impl;
 
+import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Dto.Company.*;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -53,7 +54,8 @@ public class CompanyServiceImpl implements CompanyService {
                 companyDto.getPassword(),
                 companyDto.getWebsite(),
                 companyDto.getDescription(),
-                companyDto.getLocation()
+                companyDto.getLocation(),
+                companyDto.getEmployeeNumber()
         );
 
         try {
@@ -84,6 +86,7 @@ public class CompanyServiceImpl implements CompanyService {
         company.setPassword(companyDto.getPassword());
         company.setDescription(companyDto.getDescription());
         company.setLocation(companyDto.getLocation());
+        company.setEmployeeNumber(companyDto.getEmployeeNumber());
 
         try {
             if (companyDto.getCompanyLogo() != null && !companyDto.getCompanyLogo().isEmpty()) {
@@ -102,6 +105,13 @@ public class CompanyServiceImpl implements CompanyService {
     public Company nameUpdate(Long id, CompanyNameUpdateDto companyNameUpdateDto) {
         Company company = this.findById(id);
         company.setCompanyName(companyNameUpdateDto.getCompanyName());
+        return companyRepository.save(company);
+    }
+
+    @Override
+    public Company employeeNumberUpdate(Long id, CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto) {
+        Company company = this.findById(id);
+        company.setEmployeeNumber(companyEmployeeNumberUpdateDto.getEmployeeNumber());
         return companyRepository.save(company);
     }
 
@@ -193,7 +203,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> companyFilter(String companyName, String location, Double rating) {
+    public List<Company> companyFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber) {
         return companyRepository.findAll((Specification<Company>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -207,6 +217,9 @@ public class CompanyServiceImpl implements CompanyService {
 
             if (rating != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), rating));
+            }
+            if (employeeNumber != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("employeeNumber").as(String.class)), "%" + employeeNumber.toString().toLowerCase() + "%"));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

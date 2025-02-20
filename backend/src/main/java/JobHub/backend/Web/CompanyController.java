@@ -82,6 +82,10 @@ public class CompanyController {
     public Company updateCompanyCover(@PathVariable Long id, @Valid @RequestBody CompanyCoverUpdateDto companyCoverUpdateDto){
         return companyService.companyCoverUpdate(id, companyCoverUpdateDto);
     }
+    @PutMapping("/{id}/updateEmployeeNumber")
+    public Company updateEmployeeNumber(@PathVariable Long id, @Valid @RequestBody CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto){
+        return companyService.employeeNumberUpdate(id, companyEmployeeNumberUpdateDto);
+    }
     @PutMapping("/{id}/updateLogo")
     public Company updateCompanyLogo(@PathVariable Long id, @Valid @RequestBody CompanyLogoUpdateDto companyLogoUpdateDto){
         return companyService.companyLogoUpdate(id, companyLogoUpdateDto);

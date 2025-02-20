@@ -1,5 +1,6 @@
 package JobHub.backend.Service;
 
+import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Dto.Company.*;
 import JobHub.backend.Model.Company;
 import java.util.List;
@@ -16,6 +17,8 @@ public interface CompanyService {
     Company update(Long id, CompanyDto companyDto);
 
     Company nameUpdate(Long id, CompanyNameUpdateDto companyNameUpdateDto);
+
+    Company employeeNumberUpdate(Long id, CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto);
 
     Company emailUpdate(Long id, CompanyEmailUpdateDto companyEmailUpdateDto);
 
@@ -41,6 +44,6 @@ public interface CompanyService {
 
     List<Company> findAllByLocation(String Location);
 
-    List<Company> companyFilter(String name, String location, Double rating);
+    List<Company> companyFilter(String name, String location, Double rating, EmployeeNumber employeeNumber);
 
 }

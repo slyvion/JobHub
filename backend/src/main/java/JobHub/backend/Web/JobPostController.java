@@ -1,5 +1,6 @@
 package JobHub.backend.Web;
 
+import JobHub.backend.Model.Constants.Seniority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Company;
@@ -31,17 +32,19 @@ public class JobPostController {
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) JobType jobType,
-            @RequestParam(required = false) EmploymentType employmentType) {
+            @RequestParam(required = false) EmploymentType employmentType,
+            @RequestParam(required = false)Seniority seniority) {
 
         if( title == null &&
             companyName == null &&
             location == null &&
             jobType == null &&
-            employmentType == null){
+            employmentType == null &&
+            seniority == null){
             return jobPostService.listAll();
         }
         return jobPostService.jobPostFilter(
-                title, companyName, location, jobType, employmentType);
+                title, companyName, location, jobType, employmentType, seniority);
     }
 
     @PostMapping

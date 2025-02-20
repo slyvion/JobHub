@@ -1,6 +1,7 @@
 package JobHub.backend.Model.Dto.Company;
 
 import JobHub.backend.Model.Company;
+import JobHub.backend.Model.Constants.EmployeeNumber;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -36,6 +37,8 @@ public class CompanyDto {
 
     private Double rating;
 
+    private EmployeeNumber employeeNumber;
+
     private String companyLogo;
 
     private String companyCover;
@@ -48,6 +51,7 @@ public class CompanyDto {
         this.description = company.getDescription();
         this.location = company.getLocation();
         this.rating = company.getRating();
+        this.employeeNumber = company.getEmployeeNumber();
 
         this.companyLogo = company.getCompanyLogo() != null
                 ? "data:image/png;base64," + Base64.getEncoder().encodeToString(company.getCompanyLogo())

@@ -1,5 +1,6 @@
 package JobHub.backend.Web;
 
+import JobHub.backend.Model.Constants.EmployeeNumber;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Company;
@@ -19,15 +20,18 @@ public class CompaniesController {
     public List<Company> companiesFilter(
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) Double rating) {
+            @RequestParam(required = false) Double rating,
+            @RequestParam(required = false)EmployeeNumber employeeNumber
+            ) {
 
         if ( companyName == null &&
              location == null &&
-             rating == null) {
+             rating == null &&
+             employeeNumber == null){
             return companyService.listAll();
         }
 
-        return companyService.companyFilter(companyName, location, rating);
+        return companyService.companyFilter(companyName, location, rating, employeeNumber);
     }
 
 

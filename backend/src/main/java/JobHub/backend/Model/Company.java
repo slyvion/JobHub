@@ -1,5 +1,6 @@
 package JobHub.backend.Model;
 
+import JobHub.backend.Model.Constants.EmployeeNumber;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -32,6 +33,11 @@ public class Company {
 
     private String location;
 
+
+
+    @Enumerated(EnumType.STRING)
+    private EmployeeNumber employeeNumber;
+
     @Column(nullable = true)
     private double rating;
 
@@ -44,13 +50,14 @@ public class Company {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
-    public Company(String companyName, String email, String password, String website, String description, String location) {
+    public Company(String companyName, String email, String password, String website, String description, String location, EmployeeNumber employeeNumber) {
         this.companyName = companyName;
         this.email = email;
         this.password = password;
         this.website = website;
         this.description = description;
         this.location = location;
+        this.employeeNumber = employeeNumber;
         this.reviews = new ArrayList<>();
         this.rating = 0;
 
