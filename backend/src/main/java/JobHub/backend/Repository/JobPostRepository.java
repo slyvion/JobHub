@@ -3,6 +3,8 @@ package JobHub.backend.Repository;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Constants.EmploymentType;
 import JobHub.backend.Model.Constants.JobType;
+import JobHub.backend.Model.Constants.Seniority;
+import JobHub.backend.Model.Constants.Tags;
 import JobHub.backend.Model.JobPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,6 +18,8 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long>, JpaSpec
     List<JobPost> findJobPostsByTitle(String title);
     List<JobPost> findJobPostsByCompany(Company company);
 
+    List<JobPost> findJobPostsByTags(List<Tags> tags);
+    List<JobPost> findJobPostsBySeniority(Seniority seniority);
     List<JobPost> findJobPostsByCompanyCompanyName(String companyName);
     List<JobPost> findJobPostsByCompanyId(long id);
     List<JobPost> findJobPostsByDescription(String description);

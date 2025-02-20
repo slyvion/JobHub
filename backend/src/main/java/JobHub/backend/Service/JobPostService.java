@@ -3,6 +3,8 @@ package JobHub.backend.Service;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Constants.EmploymentType;
 import JobHub.backend.Model.Constants.JobType;
+import JobHub.backend.Model.Constants.Seniority;
+import JobHub.backend.Model.Constants.Tags;
 import JobHub.backend.Model.Dto.JobPostDto;
 import JobHub.backend.Model.JobPost;
 
@@ -36,5 +38,9 @@ public interface JobPostService {
 
     List<JobType> findAllByEmploymentType(EmploymentType employmentType);
 
-    List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType);
+    List<JobPost> findAllByTags(List<Tags> tags);
+
+    List<JobPost> findAllBySeniority(Seniority seniority);
+
+    List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority);
 }

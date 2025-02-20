@@ -67,7 +67,7 @@ export default function EditCompanyProfile({ open, handleClose, companyData }) {
         <Modal open={open} onClose={handleClose}>
             <ModalContainer>
                 <Grid container spacing={2}>
-                    {/* Left Side */}
+
                     <Grid item xs={6}>
                         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
                             <TextField
@@ -142,7 +142,7 @@ export default function EditCompanyProfile({ open, handleClose, companyData }) {
                         <Button variant="contained" color="success" sx={{ marginX: 1 }}>Confirm</Button>
                     </Grid>
 
-                    {/* Right Side */}
+
                     <Grid item xs={6}>
                         <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
                             <TextField

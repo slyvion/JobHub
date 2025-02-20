@@ -5,6 +5,8 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
+import {Typography} from "@mui/material";
+import NoCompFound from './NoCompFound.jsx'
 
 export default function CompaniesPage() {
     const [companyData, setCompanyData] = useState([]);
@@ -60,7 +62,9 @@ export default function CompaniesPage() {
                 ) : error ? (
                     <p>Error: {error}</p>
                 ) : companyData.length === 0 ? (
-                    <p style={{ textAlign: 'center', marginTop: 20 }}>No companies found.</p>
+                    <Typography variant="body1" color="textSecondary">
+                        <NoCompFound />
+                    </Typography>
                 ) : (
                     <Box mt={4} ml={6}>
                         <Grid container spacing={3}>

@@ -5,49 +5,49 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import AutoFixHighRoundedIcon from '@mui/icons-material/AutoFixHighRounded';
-import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
-import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
-import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
-import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
-import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import RateReviewRoundedIcon from '@mui/icons-material/RateReviewRounded';
+import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import TouchAppRoundedIcon from '@mui/icons-material/TouchAppRounded';
+import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
+import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
+import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 
 const items = [
     {
-        icon: <SettingsSuggestRoundedIcon />,
-        title: 'Adaptable performance',
+        icon: <RateReviewRoundedIcon />,
+        title: 'Trusted Company Reviews',
         description:
-            'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+            'Read and share authentic reviews from employees about companies, workplaces and cultures.',
     },
     {
-        icon: <ConstructionRoundedIcon />,
-        title: 'Built to last',
+        icon: <VisibilityOffRoundedIcon />,
+        title: 'Anonymous Contributions',
         description:
-            'Experience unmatched durability that goes above and beyond with lasting investment.',
+            'Share your experiences anonymously to help others make better career decisions.',
     },
     {
-        icon: <ThumbUpAltRoundedIcon />,
-        title: 'Great user experience',
+        icon: <TouchAppRoundedIcon />,
+        title: 'Easy-to-Use Interface',
         description:
-            'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+            'Navigate seamlessly with a user-friendly design and powerful search tools.',
     },
     {
-        icon: <AutoFixHighRoundedIcon />,
-        title: 'Innovative functionality',
+        icon: <BusinessRoundedIcon />,
+        title: 'Employer Branding Opportunities',
         description:
-            'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+            'Companies can showcase their culture and values to attract top talent.',
     },
     {
-        icon: <SupportAgentRoundedIcon />,
-        title: 'Reliable support',
+        icon: <InsightsRoundedIcon />,
+        title: 'Employee-Driven Insights',
         description:
-            'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+            'Get honest feedback from employees about work-life balance, management, and career growth opportunities.',
     },
     {
-        icon: <QueryStatsRoundedIcon />,
-        title: 'Precision in every detail',
+        icon: <BarChartRoundedIcon />,
+        title: 'Company Ratings and Rankings',
         description:
-            'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+            'Compare companies based on ratings for culture, diversity, benefits, and more.',
     },
 ];
 
@@ -81,9 +81,7 @@ export default function Highlights() {
                         Highlights
                     </Typography>
                     <Typography variant="body1" sx={{ color: 'grey.400' }}>
-                        Explore why our product stands out: adaptability, durability,
-                        user-friendly design, and innovation. Enjoy reliable customer support and
-                        precision in every detail.
+                        Your Career, Your Insights. Discover companies and reviews to make smarter career decisions.
                     </Typography>
                 </Box>
                 <Grid container spacing={2.5}>

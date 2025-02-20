@@ -17,7 +17,6 @@ export default function CompanyCard({ company }) {
             />
 
             <CardContent>
-                {/* Logo & Company Name */}
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <CardMedia
                         component="img"
@@ -50,7 +49,6 @@ export default function CompanyCard({ company }) {
                     {company.description}
                 </Typography>
 
-                {/* Rating & Location */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <StarIcon sx={{ color: 'gold' }} />

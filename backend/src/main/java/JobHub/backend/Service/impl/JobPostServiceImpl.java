@@ -1,6 +1,8 @@
 package JobHub.backend.Service.impl;
 
 
+import JobHub.backend.Model.Constants.Seniority;
+import JobHub.backend.Model.Constants.Tags;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -124,7 +126,18 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType) {
+    public List<JobPost> findAllByTags(List<Tags> tags) {
+        return jobPostRepository.findJobPostsByTags(tags);
+    }
+
+    @Override
+    public List<JobPost> findAllBySeniority(Seniority seniority) {
+        return jobPostRepository.findJobPostsBySeniority(seniority);
+    }
+
+
+    @Override
+    public List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority) {
         return jobPostRepository.findAll((Specification<JobPost>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -143,6 +156,9 @@ public class JobPostServiceImpl implements JobPostService {
             }
             if (employmentType != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("employmentType").as(String.class)), "%" + employmentType.toString().toLowerCase() + "%"));
+            }
+            if (seniority != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("seniority").as(String.class)), "%" + seniority.toString().toLowerCase() + "%"));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });

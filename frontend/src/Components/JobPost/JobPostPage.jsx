@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material"; // Import Typography for empty state message
+import { Box, Typography } from "@mui/material";
 import JobPostFilter from "./JobPostFilter.jsx";
 import JobPost from "./JobPost.jsx";
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
-
+import NoJobsFound from "./NoJobsFound.jsx";
 export default function JobPostPage() {
     const [jobPosts, setJobPosts] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -75,7 +75,7 @@ export default function JobPostPage() {
                     </Typography>
                 ) : jobPosts.length === 0 ? (
                     <Typography variant="body1" color="textSecondary">
-                        No job posts available.
+                        <NoJobsFound />
                     </Typography>
                 ) : (
                     <Box display="flex" flexDirection="column" alignItems="center">

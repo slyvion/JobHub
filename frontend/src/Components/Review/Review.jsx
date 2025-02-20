@@ -34,8 +34,18 @@ export default function Review({ review }) {
 
                 <Divider sx={{ mb: 1 }} />
 
+                <Typography variant="body2" sx={{ opacity: 0.7}}>
+                    Pros
+                </Typography>
+                <Typography variant="body2" sx={{ mb: 1 }}>
+                    {review.pros|| "The user has not given any Pros"}
+                </Typography>
+
+                <Typography variant="body2" sx={{ opacity: 0.7}}>
+                    Cons
+                </Typography>
                 <Typography variant="body2">
-                    {review.comment}
+                    {review.cons || "The user has not given any Cons"}
                 </Typography>
 
             </CardContent>

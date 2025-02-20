@@ -100,12 +100,28 @@ export default function CreateReview({ onClose }) {
 
                         <Grid item xs={12}>
                             <Controller
-                                name="comment"
+                                name="Pros"
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
-                                        label="Comment"
+                                        label="Pros"
+                                        variant="outlined"
+                                        multiline
+                                        rows={4}
+                                        fullWidth
+                                    />
+                                )}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Controller
+                                name="Cons"
+                                control={control}
+                                render={({ field }) => (
+                                    <TextField
+                                        {...field}
+                                        label="Cons"
                                         variant="outlined"
                                         multiline
                                         rows={4}

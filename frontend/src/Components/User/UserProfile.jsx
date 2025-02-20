@@ -1,44 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Typography, Paper, Grid, Tabs, Tab, Box, IconButton } from "@mui/material";
-import { Edit } from "@mui/icons-material";
-import { styled } from "@mui/system";
 import { useParams } from "react-router-dom";
-import Review from '../Review/Review';
-
-const Root = styled(Paper)(({ theme }) => ({
-    padding: theme.spacing(3),
-    maxWidth: 600,
-    margin: "auto",
-    marginTop: theme.spacing(5),
-    position: 'relative',
-}));
-
-const StyledAvatar = styled(Avatar)(({ theme }) => ({
-    width: theme.spacing(12),
-    height: theme.spacing(12),
-    margin: theme.spacing(2),
-}));
-
-const UserName = styled(Typography)({
-    fontWeight: "bold",
-    fontSize: "24px",
-});
-
-const TabContent = styled(Box)(({ theme }) => ({
-    marginTop: theme.spacing(2),
-}));
+import AppAppBar from "../AppAppBar.jsx";
+import { Box, Tabs, Tab, Typography, Avatar, CircularProgress } from "@mui/material";
+import Footer from "../HomePage/Footer.jsx";
+import PersonIcon from "@mui/icons-material/Person";
+import WorkIcon from "@mui/icons-material/Work";
+import RateReviewIcon from "@mui/icons-material/RateReview";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import UserData from "./UserTabs/UserData.jsx";
+import UserReviews from "./UserTabs/UserReviews.jsx";
 
 function UserProfile() {
     const { id } = useParams();
-    const [value, setValue] = useState(0);
     const [user, setUser] = useState(null);
-    const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -55,7 +33,6 @@ function UserProfile() {
                 setLoading(false);
             }
         };
-
         const fetchUserReviews = async () => {
             try {
                 const response = await fetch(`http://localhost:8080/reviews/user/${id}`);
@@ -68,48 +45,75 @@ function UserProfile() {
                 setError(err.message);
             }
         };
-
-        fetchUserData();
         fetchUserReviews();
+        fetchUserData();
     }, [id]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
-
     return (
-        <Root>
-            <IconButton
-                color="primary"
-                aria-label="edit user"
-                sx={{ position: 'absolute', top: 8, right: 8 }}
-            >
-                <Edit />
-            </IconButton>
+        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: "#f0f0f0", justifyContent: "center", alignItems: "center" }}>
+            <AppAppBar />
 
-            <Grid container alignItems="center" justifyContent="center">
-                <StyledAvatar src={user.image || "/default-user.png"} />
-                <UserName>{user.username}</UserName>
-            </Grid>
-            <Tabs value={value} onChange={handleChange} centered>
-                <Tab label="Reviews" />
-                <Tab label="Saved JobPosts" />
-            </Tabs>
-            <TabContent>
-                {value === 0 && (
-                    <Box>
-                        {reviews.length === 0 ? (
-                            <Typography>No reviews available</Typography>
-                        ) : (
-                            reviews.map((review) => (
-                                <Review key={review.id} review={review} />
-                            ))
-                        )}
+            <Box
+                sx={{
+                    backgroundColor: "white",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    padding: "20px",
+                    paddingTop: "100px",
+                    marginTop: 0,
+                    position: "relative",
+                    zIndex: 10,
+                    width: 1,
+                }}
+            />
+
+            <Box sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", width: "100%", maxWidth: "1200px"}}> {/* Set maxWidth */}
+                <Box sx={{ display: "flex", alignItems: "center", paddingLeft: '90px'}}>
+                    {loading ? (
+                        <CircularProgress />
+                    ) : error ? (
+                        <Typography color="error">{error}</Typography>
+                    ) : (
+                        <>
+                            <Avatar src={user?.profilePicture} sx={{ width: 100, height: 100 }} />
+                            <Typography variant="h5" sx={{ paddingLeft: "30px", color: "black" }}>
+                                {user?.username}
+                            </Typography>
+                        </>
+                    )}
+                </Box>
+
+                <Box sx={{ display: "flex", paddingTop: "20px", width: "100%" }}>
+                    <Tabs
+                        orientation="vertical"
+                        value={value}
+                        onChange={(event, newValue) => setValue(newValue)}
+                        aria-label="User Profile Tabs"
+                        sx={{ width: "250px", paddingLeft: "0px" }}
+                    >
+                        <Tab icon={<PersonIcon />} iconPosition="start" label="User Data" sx={tabStyle} />
+                        <Tab icon={<WorkIcon />} iconPosition="start" label="JobPosts" sx={tabStyle} />
+                        <Tab icon={<RateReviewIcon />} iconPosition="start" label="Reviews" sx={tabStyle} />
+                        <Tab icon={<HelpOutlineIcon />} iconPosition="start" label="Help" sx={tabStyle} />
+                    </Tabs>
+
+                    <Box sx={{ flex: 1 }}>
+                        {value === 0 && user && <UserData user={user} />}
+                        {value === 1 && <Typography>Saved job posts </Typography>}
+                        {value === 2 && <UserReviews reviews={reviews} />}
+                        {value === 3 && <Typography>Help content </Typography>}
                     </Box>
-                )}
-                {value === 1 && <Typography> to be implemented </Typography>}
-            </TabContent>
-        </Root>
+                </Box>
+            </Box>
+
+            <Footer />
+        </Box>
     );
 }
+
+const tabStyle = {
+    textTransform: "none",
+    color: "black",
+    ":hover": { color: "primary.main" },
+};
 
 export default UserProfile;

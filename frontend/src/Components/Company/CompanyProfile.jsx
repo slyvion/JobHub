@@ -155,23 +155,23 @@ function CompanyProfile() {
                     </CompanyInfo>
                 </LogoContainer>
             </Root>
-                {/* Tabs Section */}
+
                 <Box>
                     <Tabs
                         value={value}
                         onChange={handleChange}
-                        variant="fullWidth"
+                        centered
                         TabIndicatorProps={{ style: { backgroundColor: "blue" } }}
                     >
-                        <Tab label="About Us" />
-                        <Tab label="JobPosts" />
-                        <Tab label="Reviews" />
+                        <Tab label="About Us" sx={{ minWidth: 300 }} />
+                        <Tab label="JobPosts" sx={{ minWidth: 300 }} />
+                        <Tab label="Reviews" sx={{ minWidth: 300 }} />
                     </Tabs>
                 </Box>
                 <Box sx={{ backgroundColor: "#F5F5F5", padding: 2, width: "100%", minHeight: "60vh" }}>
                     <Box>
                         {value === 0 && (
-                            <Box sx={{ display: 'flex', flexDirection: 'row', margin: 2, gap: 2 }}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2 , alignItems: 'center'}}>
                                 <CompanyOverview company={company} />
                                 <AboutUs company={company} />
                             </Box>
@@ -179,7 +179,7 @@ function CompanyProfile() {
 
 
                         {value === 1 && (
-                            <Box>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2 , alignItems: 'center'}}>
                                 {jobPosts.length > 0 ? (
                                     jobPosts.map((job) => <JobPost key={job.id} job={job} />)
                                 ) : (
@@ -189,7 +189,7 @@ function CompanyProfile() {
                         )}
 
                         {value === 2 && (
-                            <Box>
+                            <Box sx={{ margin: 2, gap: 2 }}>
                                 {reviews.length > 0 ? (
                                     reviews.map((review) => <Review key={review.id} review={review} />)
                                 ) : (

@@ -5,6 +5,7 @@ import {useSearchParams} from "react-router-dom";
 export default function JobPostFilter({ onFilter }) {
     const [companyName, setCompanyName] = useState('');
     const [title, setTitle] = useState('');
+    const [seniority, setSeniority] = useState('');
     const [jobType, setJobType] = useState('');
     const [employmentType, setEmploymentType] = useState('');
     const [searchParams, setSearchParams] = useSearchParams();
@@ -15,6 +16,7 @@ export default function JobPostFilter({ onFilter }) {
             title: title || undefined,
             jobType: jobType || undefined,
             employmentType: employmentType || undefined,
+            seniority: seniority || undefined,
         };
 
         const params = {};
@@ -22,6 +24,7 @@ export default function JobPostFilter({ onFilter }) {
         if (title) params.title = title;
         if (jobType) params.jobType = jobType;
         if (employmentType) params.employmentType = employmentType;
+        if (seniority) params.seniority = seniority;
 
         setSearchParams(params);
         onFilter(filterParams);
@@ -31,17 +34,20 @@ export default function JobPostFilter({ onFilter }) {
         const titleParam = searchParams.get('title') || '';
         const jobTypeParam = searchParams.get('jobType') || '';
         const employmentTypeParam = searchParams.get('employmentType') || '';
+        const seniorityParam = searchParams.get('seniority') || '';
 
         setCompanyName(companyNameParam);
         setTitle(titleParam);
         setJobType(jobTypeParam);
         setEmploymentType(employmentTypeParam);
+        setSeniority(seniorityParam);
 
         onFilter({
             companyName: companyNameParam || undefined,
             title: titleParam || undefined,
             jobType: jobTypeParam || undefined,
-            employmentType: employmentTypeParam || undefined
+            employmentType: employmentTypeParam || undefined,
+            seniority: seniorityParam || undefined
         });
     }, []);
 
@@ -97,6 +103,25 @@ export default function JobPostFilter({ onFilter }) {
                             <MenuItem value="FULL_TIME">Full Time</MenuItem>
                             <MenuItem value="PART_TIME">Part Time</MenuItem>
                             <MenuItem value="CONTRACT">Contract</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel>Seniority</InputLabel>
+                        <Select
+                            value={seniority}
+                            onChange={(e) => setSeniority(e.target.value)}
+                            label="Seniority"
+                        >
+                            <MenuItem value="">
+                                <em>None</em>
+                            </MenuItem>
+                            <MenuItem value="INTERN">Intern</MenuItem>
+                            <MenuItem value="JUNIOR">Junior</MenuItem>
+                            <MenuItem value="INTERMEDIATE">Intermediate</MenuItem>
+                            <MenuItem value="SENIOR">Senior</MenuItem>
+
                         </Select>
                     </FormControl>
                 </Grid>
