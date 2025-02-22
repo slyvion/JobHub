@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 
 @Entity
@@ -27,6 +28,8 @@ public class User {
 
     private String password;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SavedJobPosts> savedJobPosts;
 
 
     @Enumerated(EnumType.STRING)

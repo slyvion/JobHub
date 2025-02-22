@@ -12,10 +12,12 @@ const FormContainer = styled(Paper)(({ theme }) => ({
 export default function CreateJobPost() {
     const [formData, setFormData] = useState({
         title: "",
-        description: "",
         jobType: "",
         employmentType: "",
-        location: "",
+        description: "",
+        jobInfo: "",
+        requirements: "",
+        seniority: "",
     });
 
     const handleChange = (event) => {
@@ -52,8 +54,8 @@ export default function CreateJobPost() {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            label="Description"
-                            name="description"
+                            label="About the role"
+                            name="About the role"
                             fullWidth
                             multiline
                             rows={4}
@@ -64,15 +66,43 @@ export default function CreateJobPost() {
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
-                            label="JobInfo"
-                            name="JobInfo"
+                            label="What will you do"
+                            name="What will you do"
                             fullWidth
                             multiline
                             rows={4}
-                            value={formData.description}
+                            value={formData.jobInfo}
                             onChange={handleChange}
                             required
                         />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Requirements"
+                            name="Requirements"
+                            fullWidth
+                            multiline
+                            rows={4}
+                            value={formData.requirements}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            select
+                            label="Seniority"
+                            name="Seniority"
+                            fullWidth
+                            value={formData.seniority}
+                            onChange={handleChange}
+                            required
+                        >
+                            <MenuItem value="INTERN">Internship</MenuItem>
+                            <MenuItem value="JUNIOR">Junior</MenuItem>
+                            <MenuItem value="INTERMEDIATE">Intermediate</MenuItem>
+                            <MenuItem value="SENIOR">Senior</MenuItem>
+                        </TextField>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
@@ -99,20 +129,10 @@ export default function CreateJobPost() {
                             onChange={handleChange}
                             required
                         >
-                            <MenuItem value="FULL_TIME">Full Time</MenuItem>
-                            <MenuItem value="PART_TIME">Part Time</MenuItem>
-                            <MenuItem value="INTERN">Internship</MenuItem>
+                            <MenuItem value="FULL_TIME"> Full Time </MenuItem>
+                            <MenuItem value="PART_TIME"> Part Time </MenuItem>
+                            <MenuItem value="CONTRACT" > Contract  </MenuItem>
                         </TextField>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            label="Location"
-                            name="location"
-                            fullWidth
-                            value={formData.location}
-                            onChange={handleChange}
-                            required
-                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" variant="contained" color="primary" fullWidth>

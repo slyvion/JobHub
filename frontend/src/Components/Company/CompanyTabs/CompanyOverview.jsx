@@ -42,7 +42,7 @@ export default function CompanyOverview({ company }) {
                     <Divider sx={{ my: 2 }} />
                 </Grid>
 
-                <Grid item xs={4}> {/* Changed to xs={6} for more space */}
+                <Grid item xs={4}>
                     <Typography variant="body1" fontWeight="500" sx={{ opacity: 0.7, fontSize: '1rem' }}>
                         Location:
                     </Typography>
@@ -52,7 +52,7 @@ export default function CompanyOverview({ company }) {
                     <Divider sx={{ my: 2 }} />
                 </Grid>
 
-                <Grid item xs={4}> {/* Changed to xs={6} for more space */}
+                <Grid item xs={4}>
                     <Typography variant="body1" fontWeight="500" sx={{ opacity: 0.7, fontSize: '1rem' }}>
                         Offices:
                     </Typography>
@@ -62,7 +62,7 @@ export default function CompanyOverview({ company }) {
                     <Divider sx={{ my: 2 }} />
                 </Grid>
 
-                <Grid item xs={4}> {/* Changed to xs={6} for more space */}
+                <Grid item xs={4}>
                     <Typography variant="body1" fontWeight="500" sx={{ opacity: 0.7, fontSize: '1rem' }}>
                         Number of Employees:
                     </Typography>
@@ -72,7 +72,7 @@ export default function CompanyOverview({ company }) {
                     <Divider sx={{ my: 2 }} />
                 </Grid>
 
-                <Grid item xs={4}> {/* Changed to xs={6} for more space */}
+                <Grid item xs={4}>
                     <Typography variant="body1" fontWeight="500" sx={{ opacity: 0.7, fontSize: '1rem' }}>
                         Founded:
                     </Typography>

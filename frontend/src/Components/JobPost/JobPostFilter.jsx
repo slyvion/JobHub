@@ -54,7 +54,7 @@ export default function JobPostFilter({ onFilter }) {
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff', padding: '16px' }}>
             <Grid container spacing={2} alignItems="center" justifyContent="center">
-                <Grid item xs={12} sm={2}>
+                <Grid item xs={12} sm={1.5}>
                     <TextField
                         label="Company Name"
                         variant="outlined"
@@ -63,7 +63,7 @@ export default function JobPostFilter({ onFilter }) {
                         onChange={(e) => setCompanyName(e.target.value)}
                     />
                 </Grid>
-                <Grid item xs={12} sm={2}>
+                <Grid item xs={12} sm={1.5}>
                     <TextField
                         label="Title"
                         variant="outlined"
@@ -72,7 +72,7 @@ export default function JobPostFilter({ onFilter }) {
                         onChange={(e) => setTitle(e.target.value)}
                     />
                 </Grid>
-                <Grid item xs={12} sm={2}>
+                <Grid item xs={12} sm={1}>
                     <FormControl fullWidth variant="outlined">
                         <InputLabel>Job Type</InputLabel>
                         <Select
@@ -89,7 +89,7 @@ export default function JobPostFilter({ onFilter }) {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={2}>
+                <Grid item xs={12} sm={1.5}>
                     <FormControl fullWidth variant="outlined">
                         <InputLabel>Employment Type</InputLabel>
                         <Select
@@ -106,7 +106,7 @@ export default function JobPostFilter({ onFilter }) {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} sm={2}>
+                <Grid item xs={12} sm={1}>
                     <FormControl fullWidth variant="outlined">
                         <InputLabel>Seniority</InputLabel>
                         <Select

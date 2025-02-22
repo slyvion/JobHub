@@ -14,6 +14,7 @@ import UserProfile from "./Components/User/UserProfile.jsx";
 import CreateReview from "./Components/Review/CreateReview.jsx";
 import ErrorPage from "./Components/ErrorPage.jsx";
 import CreateJobPost from "./Components/JobPost/CreateJobPost.jsx";
+import FullJobPost from "./Components/JobPost/FullJobPost.jsx";
 
 function App() {
 
@@ -39,7 +40,9 @@ function App() {
                 <Route path="sign-up" element={<SignUpUser />} />
 
                 <Route path="companies" element={<CompaniesPage />} />
-                <Route path="jobposts" element={<JobPostPage />} />
+                <Route path="/jobposts/:id" element={<FullJobPost />} />
+                <Route path="/jobposts" element={<JobPostPage />} />
+
                 <Route path="createJobPost" element={<CreateJobPost />} />
 
                 <Route path="/*" element={<ErrorPage />} />
@@ -47,7 +50,7 @@ function App() {
             </Routes>
         </Router>
 
-    ); //todo: error page
+    );
 
 }
 

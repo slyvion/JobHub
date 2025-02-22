@@ -1,5 +1,7 @@
 package JobHub.backend.Web;
 
+import JobHub.backend.Model.SavedJobPosts;
+import JobHub.backend.Service.SavedJobPostsService;
 import JobHub.backend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +10,7 @@ import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
 import JobHub.backend.Model.User;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -15,6 +18,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SavedJobPostsService savedJobPostsService;
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
@@ -29,6 +35,20 @@ public class UserController {
     public User updateEmail(@PathVariable long id, @Valid @RequestBody UserEmailUpdateDto userDto){
         return userService.EmailUpdate(id, userDto);
     }
+    @GetMapping("/{id}/saved-job-posts")
+    public List<SavedJobPosts> getSavedJobPosts(@PathVariable Long id) {
+        return savedJobPostsService.getSavedJobPostsByUser(id);
+    }
+    @PostMapping("/{id}/save-job/{jobPostId}")
+    public String saveJobPost(@PathVariable Long id, @PathVariable Long jobPostId) {
+        boolean success = savedJobPostsService.saveJobPost(id, jobPostId);
+        return success ? "Job post saved" : "Job post already saved or does not exist";
+    }
 
+    @DeleteMapping("/{id}/remove-job/{jobPostId}")
+    public String removeSavedJobPost(@PathVariable Long id, @PathVariable Long jobPostId) {
+        savedJobPostsService.removeSavedJobPost(id, jobPostId);
+        return "Job post removed";
+    }
 
 }

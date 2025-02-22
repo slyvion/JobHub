@@ -22,11 +22,11 @@ public class JobPost {
 
     private String title;
 
-    private String description; //JobInfo
+    private String description; // About the role
 
     private String requirements; // requirements
 
-    private String jobInfo;
+    private String jobInfo; // What you will do
 
     private String applicationLink;
 

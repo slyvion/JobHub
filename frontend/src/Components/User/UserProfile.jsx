@@ -66,7 +66,7 @@ function UserProfile() {
                 }}
             />
 
-            <Box sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", width: "100%", maxWidth: "1200px"}}> {/* Set maxWidth */}
+            <Box sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", width: "100%", maxWidth: "1200px"}}>
                 <Box sx={{ display: "flex", alignItems: "center", paddingLeft: '90px'}}>
                     {loading ? (
                         <CircularProgress />

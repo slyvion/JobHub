@@ -64,6 +64,7 @@ export default function Footer() {
                 gap: { xs: 4, sm: 8 },
                 py: { xs: 8, sm: 10 },
                 textAlign: { sm: 'center', md: 'left' },
+                boxShadow: "0 4px 6px rgba(0, 1, 0, 0)",
             }}
         >
             <Box
@@ -139,7 +140,7 @@ export default function Footer() {
                     </Typography>
                     <Link
                         color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer' }}
                         onClick={() => scrollToSection('features')}
                     >
                         Features
@@ -147,7 +148,7 @@ export default function Footer() {
 
                     <Link
                         color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer' }}
                         onClick={() => scrollToSection('highlights')}
                     >
                         Highlights

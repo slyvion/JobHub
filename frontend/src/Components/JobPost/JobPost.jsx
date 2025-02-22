@@ -18,17 +18,19 @@ export default function JobPost({ job }) {
         }}>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2 }}>
-                <CardMedia
-                    component="img"
-                    sx={{
-                        width: 100,
-                        height: 100,
-                        objectFit: 'contain',
-                        boxShadow: '0px 0px 5px 2px rgba(169, 169, 169, 0.6)',
-                    }}
-                    image="/joblogo.jpg"
-                    alt={job.company.companyName}
-                />
+                <Link to={`/jobposts/${job.id}`} style={{ textDecoration: 'none' }}>
+                    <CardMedia
+                        component="img"
+                        sx={{
+                            width: 100,
+                            height: 100,
+                            objectFit: 'contain',
+                            boxShadow: '0px 0px 5px 2px rgba(169, 169, 169, 0.6)',
+                        }}
+                        image="/joblogo.jpg"
+                        alt={job.company.companyName}
+                    />
+                </Link>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
                     <StarIcon sx={{ color: 'gold', fontSize: 18, mr: 0.5 }} />
@@ -47,14 +49,15 @@ export default function JobPost({ job }) {
                 </Typography>
             </Box>
 
-
-            <Divider orientation="vertical" flexItem sx={{ mx: 3 }} />
-
+            <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
 
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <Typography variant="h6" noWrap sx={{ mb: 1 }}>
-                    {job.title}
-                </Typography>
+                <Link to={`/jobposts/${job.id}`} style={{ textDecoration: 'none' }}>
+                    <Typography variant="h6" noWrap sx={{ mb: 1 }}>
+                        {job.title}
+                    </Typography>
+                </Link>
+
                 <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
                     {job.jobType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                     <Box sx={{ mx: 1, height: '1.2em' }}>
@@ -62,13 +65,14 @@ export default function JobPost({ job }) {
                     </Box>
                     {job.employmentType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                 </Typography>
+
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     {job.seniority ? job.seniority : 'Seniority Not Found'}
                 </Typography>
+
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     {job.description && job.description.slice(0, 100)}{job.description && job.description.length > 100 ? '...' : ''}
                 </Typography>
-
 
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
                     {job.tags && job.tags.map((tag, index) => (
