@@ -55,7 +55,7 @@ export default function CreateJobPost() {
                     <Grid item xs={12}>
                         <TextField
                             label="About the role"
-                            name="About the role"
+                            name="description"
                             fullWidth
                             multiline
                             rows={4}
@@ -67,7 +67,7 @@ export default function CreateJobPost() {
                     <Grid item xs={12}>
                         <TextField
                             label="What will you do"
-                            name="What will you do"
+                            name="jobInfo"
                             fullWidth
                             multiline
                             rows={4}
@@ -79,7 +79,7 @@ export default function CreateJobPost() {
                     <Grid item xs={12}>
                         <TextField
                             label="Requirements"
-                            name="Requirements"
+                            name="requirements"
                             fullWidth
                             multiline
                             rows={4}
@@ -92,7 +92,7 @@ export default function CreateJobPost() {
                         <TextField
                             select
                             label="Seniority"
-                            name="Seniority"
+                            name="seniority"
                             fullWidth
                             value={formData.seniority}
                             onChange={handleChange}

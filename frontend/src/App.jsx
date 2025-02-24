@@ -5,7 +5,7 @@ import Features from './Components/HomePage/Features';
 import Highlights from './Components/HomePage/Highlights';
 import Hero from './Components/HomePage/Hero';
 import Footer from './Components/HomePage/Footer';
-import SignUpUser from './Components/Login/SignUpUser.jsx';
+import SignUp from './Components/Login/SignUp.jsx';
 import SignIn from "./Components/Login/SignIn.jsx";
 import CompaniesPage from "./Components/Company/CompaniesPage.jsx";
 import JobPostPage from "./Components/JobPost/JobPostPage.jsx";
@@ -37,7 +37,7 @@ function App() {
                 <Route path="/company/:id/add-review" element={<CreateReview />}/>
 
                 <Route path="sign-in" element={<SignIn />} />
-                <Route path="sign-up" element={<SignUpUser />} />
+                <Route path="sign-up" element={<SignUp />} />
 
                 <Route path="companies" element={<CompaniesPage />} />
                 <Route path="/jobposts/:id" element={<FullJobPost />} />

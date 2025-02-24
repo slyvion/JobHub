@@ -33,7 +33,11 @@ public class Company {
 
     private String location;
 
+    private String phoneNumber;
 
+    private String facebookLink;
+    private String instagramLink;
+    private String linkedinLink;
 
     @Enumerated(EnumType.STRING)
     private EmployeeNumber employeeNumber;
@@ -50,7 +54,17 @@ public class Company {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
-    public Company(String companyName, String email, String password, String website, String description, String location, EmployeeNumber employeeNumber) {
+    public Company(String companyName,
+                   String email,
+                   String password,
+                   String website,
+                   String description,
+                   String location,
+                   EmployeeNumber employeeNumber,
+                   String phoneNumber,
+                   String facebookLink,
+                   String instagramLink,
+                   String linkedinLink) {
         this.companyName = companyName;
         this.email = email;
         this.password = password;
@@ -60,6 +74,10 @@ public class Company {
         this.employeeNumber = employeeNumber;
         this.reviews = new ArrayList<>();
         this.rating = 0;
+        this.phoneNumber = phoneNumber;
+        this.facebookLink = facebookLink;
+        this.instagramLink = instagramLink;
+        this.linkedinLink = linkedinLink;
 
         try {
             this.companyLogo = Files.readAllBytes(Paths.get("src/main/resources/static/defaultLogo.png"));

@@ -43,6 +43,14 @@ public class CompanyDto {
 
     private String companyCover;
 
+    private String phoneNumber;
+
+    private String facebookLink;
+
+    private String instagramLink;
+
+    private String linkedinLink;
+
     public CompanyDto(Company company) {
         this.companyName = company.getCompanyName();
         this.email = company.getEmail();
@@ -52,6 +60,10 @@ public class CompanyDto {
         this.location = company.getLocation();
         this.rating = company.getRating();
         this.employeeNumber = company.getEmployeeNumber();
+        this.phoneNumber = company.getPhoneNumber();
+        this.facebookLink = company.getFacebookLink();
+        this.instagramLink = company.getInstagramLink();
+        this.linkedinLink = company.getLinkedinLink();
 
         this.companyLogo = company.getCompanyLogo() != null
                 ? "data:image/png;base64," + Base64.getEncoder().encodeToString(company.getCompanyLogo())

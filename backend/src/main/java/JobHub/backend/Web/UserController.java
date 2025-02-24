@@ -35,17 +35,17 @@ public class UserController {
     public User updateEmail(@PathVariable long id, @Valid @RequestBody UserEmailUpdateDto userDto){
         return userService.EmailUpdate(id, userDto);
     }
-    @GetMapping("/{id}/saved-job-posts")
+    @GetMapping("/{id}/savedJobPosts")
     public List<SavedJobPosts> getSavedJobPosts(@PathVariable Long id) {
         return savedJobPostsService.getSavedJobPostsByUser(id);
     }
-    @PostMapping("/{id}/save-job/{jobPostId}")
+    @PostMapping("/{id}/saveJob/{jobPostId}")
     public String saveJobPost(@PathVariable Long id, @PathVariable Long jobPostId) {
         boolean success = savedJobPostsService.saveJobPost(id, jobPostId);
         return success ? "Job post saved" : "Job post already saved or does not exist";
     }
 
-    @DeleteMapping("/{id}/remove-job/{jobPostId}")
+    @DeleteMapping("/{id}/removeJob/{jobPostId}")
     public String removeSavedJobPost(@PathVariable Long id, @PathVariable Long jobPostId) {
         savedJobPostsService.removeSavedJobPost(id, jobPostId);
         return "Job post removed";

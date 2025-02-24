@@ -12,6 +12,7 @@ import Footer from "../HomePage/Footer.jsx";
 import AppAppBar from "../AppAppBar.jsx";
 import CompanyOverview from "./CompanyTabs/CompanyOverview.jsx"
 import AboutUs from "./CompanyTabs/AboutUs.jsx";
+import CompanyContact from "./CompanyTabs/CompanyContact.jsx";
 
 
 
@@ -174,6 +175,7 @@ function CompanyProfile() {
                             <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2 , alignItems: 'center'}}>
                                 <CompanyOverview company={company} />
                                 <AboutUs company={company} />
+                                <CompanyContact company={company}/>
                             </Box>
                         )}
 

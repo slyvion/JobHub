@@ -55,7 +55,11 @@ public class CompanyServiceImpl implements CompanyService {
                 companyDto.getWebsite(),
                 companyDto.getDescription(),
                 companyDto.getLocation(),
-                companyDto.getEmployeeNumber()
+                companyDto.getEmployeeNumber(),
+                companyDto.getPhoneNumber(),
+                companyDto.getFacebookLink(),
+                companyDto.getInstagramLink(),
+                companyDto.getLinkedinLink()
         );
 
         try {
@@ -87,6 +91,10 @@ public class CompanyServiceImpl implements CompanyService {
         company.setDescription(companyDto.getDescription());
         company.setLocation(companyDto.getLocation());
         company.setEmployeeNumber(companyDto.getEmployeeNumber());
+        company.setPhoneNumber(companyDto.getPhoneNumber());
+        company.setFacebookLink(companyDto.getFacebookLink());
+        company.setInstagramLink(companyDto.getInstagramLink());
+        company.setLinkedinLink(companyDto.getLinkedinLink());
 
         try {
             if (companyDto.getCompanyLogo() != null && !companyDto.getCompanyLogo().isEmpty()) {
@@ -108,6 +116,7 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.save(company);
     }
 
+
     @Override
     public Company employeeNumberUpdate(Long id, CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto) {
         Company company = this.findById(id);
@@ -119,6 +128,22 @@ public class CompanyServiceImpl implements CompanyService {
     public Company emailUpdate(Long id, CompanyEmailUpdateDto companyEmailUpdateDto) {
         Company company = this.findById(id);
         company.setEmail(companyEmailUpdateDto.getEmail());
+        return companyRepository.save(company);
+    }
+
+    @Override
+    public Company socialMediaUpdate(Long id, CompanySocialMediaUpdateDto companySocialMediaUpdateDto) {
+        Company company = this.findById(id);
+        company.setFacebookLink(companySocialMediaUpdateDto.getFacebookLink());
+        company.setInstagramLink(companySocialMediaUpdateDto.getInstagramLink());
+        company.setLinkedinLink(companySocialMediaUpdateDto.getLinkedinLink());
+        return companyRepository.save(company);
+    }
+
+    @Override
+    public Company phoneNumberUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto) {
+        Company company = this.findById(id);
+        company.setPhoneNumber(companyPhoneUpdateDto.getPhoneNumber());
         return companyRepository.save(company);
     }
 

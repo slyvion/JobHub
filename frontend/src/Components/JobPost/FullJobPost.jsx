@@ -51,7 +51,8 @@ export default function FullJobPost() {
                 padding: 3,
             }}>
                 <Box sx={{ maxWidth: '1200px', width: '100%' }}>
-                    <JobPost job={job} />
+                    <JobPost job={job} sx={{ width: '100%' }} />
+
 
                     <Paper sx={{ padding: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
 

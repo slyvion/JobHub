@@ -22,6 +22,10 @@ public interface CompanyService {
 
     Company emailUpdate(Long id, CompanyEmailUpdateDto companyEmailUpdateDto);
 
+    Company socialMediaUpdate(Long id, CompanySocialMediaUpdateDto companySocialMediaUpdateDto);
+
+    Company phoneNumberUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto);
+
     Company bioUpdate(Long id, CompanyBioUpdateDto companyBioUpdateDto);
 
     Company locationUpdate(Long id, CompanyLocationUpdateDto companyLocationUpdateDto);

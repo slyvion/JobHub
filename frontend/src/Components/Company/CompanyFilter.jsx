@@ -99,7 +99,7 @@ export default function CompanyFilter({ onFilter }) {
                             <MenuItem value={2}> {'>2'} </MenuItem>
                             <MenuItem value={3}> {'>3'} </MenuItem>
                             <MenuItem value={4}> {'>4'} </MenuItem>
-                            <MenuItem value={5}> {'>5'}</MenuItem>
+                            <MenuItem value={5}> {' 5'} </MenuItem>
                         </Select>
                     </FormControl>
                     <Button variant="contained" color="primary" fullWidth onClick={handleFilter} sx={{width: '90px'}}>

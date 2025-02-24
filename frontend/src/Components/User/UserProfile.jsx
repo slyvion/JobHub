@@ -9,6 +9,8 @@ import RateReviewIcon from "@mui/icons-material/RateReview";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import UserData from "./UserTabs/UserData.jsx";
 import UserReviews from "./UserTabs/UserReviews.jsx";
+import SavedJobs from "./UserTabs/SavedJobs.jsx";
+import Help from "./UserTabs/Help.jsx";
 
 function UserProfile() {
     const { id } = useParams();
@@ -98,9 +100,9 @@ function UserProfile() {
 
                     <Box sx={{ flex: 1 }}>
                         {value === 0 && user && <UserData user={user} />}
-                        {value === 1 && <Typography>Saved job posts </Typography>}
+                        {value === 1 && <Typography> <SavedJobs /> </Typography>}
                         {value === 2 && <UserReviews reviews={reviews} />}
-                        {value === 3 && <Typography>Help content </Typography>}
+                        {value === 3 && <Typography> <Help /></Typography>}
                     </Box>
                 </Box>
             </Box>
