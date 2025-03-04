@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,6 +10,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Modal from '@mui/material/Modal';
+import Paper from '@mui/material/Paper';
 
 function Copyright(props) {
     return (
@@ -23,10 +26,34 @@ function Copyright(props) {
     );
 }
 
-
 const defaultTheme = createTheme();
 
 export default function SignIn() {
+    const [open, setOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        setEmail('');
+        setEmailError('');
+    };
+
+    const validateEmail = (email) => {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    };
+
+    const handleSend = () => {
+        if (!validateEmail(email)) {
+            setEmailError('Please enter a valid email address');
+            return;
+        }
+        setEmailError('');
+        console.log('Password reset email sent to:', email);
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -46,17 +73,10 @@ export default function SignIn() {
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-
-
                     }}
                 >
-                    <Link href={"/"}>
-                        <img
-                            src={
-                                'src/Logo.png'
-                            }
-                            alt="logo of JobHub"
-                        />
+                    <Link href={'/'}>
+                        <img src={'src/Logo.png'} alt="logo of JobHub" />
                     </Link>
                     <Typography component="h1" variant="h5">
                         Sign in
@@ -86,22 +106,17 @@ export default function SignIn() {
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                             Sign In
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                <Link href="#" variant="body2" onClick={handleOpen}>
                                     Forgot password?
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href={"/sign-up"} variant="body2">
+                                <Link href={'/sign-up'} variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
@@ -110,6 +125,31 @@ export default function SignIn() {
                 </Box>
                 <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
+
+            <Modal open={open} onClose={handleClose}>
+                <Paper sx={{ width: 400, p: 4, mx: 'auto', mt: '20%', textAlign: 'center' }}>
+                    <Typography variant="h4" gutterBottom>
+                        Change your password
+                    </Typography>
+                    <Typography sx={{ opacity: '0.7' }} variant="body2" gutterBottom>
+                        Enter the e-mail address that you registered your account with and we will send you a link to change your password.
+                    </Typography>
+                    <TextField
+                        fullWidth
+                        margin="normal"
+                        placeholder="Email Address"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        error={!!emailError}
+                        helperText={emailError}
+                    />
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+                        <Button onClick={handleClose} variant="outlined">Close</Button>
+                        <Button variant="contained" onClick={handleSend}>Send</Button>
+                    </Box>
+                </Paper>
+            </Modal>
         </ThemeProvider>
     );
 }
