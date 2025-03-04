@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { TextField, Button, MenuItem, Grid, Paper } from "@mui/material";
+import React, { useState } from "react";
+import { TextField, Button, MenuItem, Grid, Paper, Box } from "@mui/material";
 import { styled } from "@mui/system";
 
 const FormContainer = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(4),
     maxWidth: 500,
     margin: "auto",
-    marginTop: theme.spacing(5),
+    paddingTop: theme.spacing(1),
 }));
 
 export default function CreateJobPost() {
@@ -34,6 +34,7 @@ export default function CreateJobPost() {
     };
 
     return (
+        <Box sx={{minHeight: "100vh", backgroundColor: "#f0f0f0", paddingTop: '50px', paddingBottom: '50px'}}>
         <FormContainer>
             <Grid container justifyContent="center" alignItems="center">
                 <Grid item>
@@ -136,11 +137,12 @@ export default function CreateJobPost() {
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" variant="contained" color="primary" fullWidth>
-                            Submit
+                            Post
                         </Button>
                     </Grid>
                 </Grid>
             </form>
         </FormContainer>
+        </Box>
     );
 }
