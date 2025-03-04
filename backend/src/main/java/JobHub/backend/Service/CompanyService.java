@@ -24,7 +24,6 @@ public interface CompanyService {
 
     Company socialMediaUpdate(Long id, CompanySocialMediaUpdateDto companySocialMediaUpdateDto);
 
-    Company phoneNumberUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto);
 
     Company bioUpdate(Long id, CompanyBioUpdateDto companyBioUpdateDto);
 

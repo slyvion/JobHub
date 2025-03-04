@@ -142,12 +142,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.save(company);
     }
 
-    @Override
-    public Company phoneNumberUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto) {
-        Company company = this.findById(id);
-        company.setPhoneNumber(companyPhoneUpdateDto.getPhoneNumber());
-        return companyRepository.save(company);
-    }
 
     @Override
     public Company bioUpdate(Long id, CompanyBioUpdateDto companyBioUpdateDto) {

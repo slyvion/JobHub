@@ -98,5 +98,9 @@ public class CompanyController {
     public Company updateCompanyPhone(@PathVariable Long id, @Valid @RequestBody CompanyPhoneUpdateDto companyPhoneUpdateDto){
         return companyService.phoneUpdate(id, companyPhoneUpdateDto);
     }
+    @PutMapping("/{id}/updateSocialMedia")
+    public Company updateSocialMedia(@PathVariable Long id, @Valid @RequestBody CompanySocialMediaUpdateDto companySocialMediaUpdateDto){
+        return  companyService.socialMediaUpdate(id, companySocialMediaUpdateDto);
+    }
 
 }
