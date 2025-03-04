@@ -78,6 +78,10 @@ public class CompanyController {
     public Company updatePassword(@PathVariable Long id, @Valid @RequestBody CompanyPasswordUpdateDto companyPasswordUpdateDto){
         return companyService.passwordUpdate(id, companyPasswordUpdateDto);
     }
+    @PutMapping("/{id}/updateFounded")
+    public Company updateFounded(@PathVariable Long id, @Valid @RequestBody CompanyFoundedUpdateDto companyFoundedUpdateDto){
+        return companyService.foundedUpdate(id, companyFoundedUpdateDto);
+    }
     @PutMapping("/{id}/updateCover")
     public Company updateCompanyCover(@PathVariable Long id, @Valid @RequestBody CompanyCoverUpdateDto companyCoverUpdateDto){
         return companyService.companyCoverUpdate(id, companyCoverUpdateDto);
@@ -89,6 +93,10 @@ public class CompanyController {
     @PutMapping("/{id}/updateLogo")
     public Company updateCompanyLogo(@PathVariable Long id, @Valid @RequestBody CompanyLogoUpdateDto companyLogoUpdateDto){
         return companyService.companyLogoUpdate(id, companyLogoUpdateDto);
+    }
+    @PutMapping("/{id}/updatePhone")
+    public Company updateCompanyPhone(@PathVariable Long id, @Valid @RequestBody CompanyPhoneUpdateDto companyPhoneUpdateDto){
+        return companyService.phoneUpdate(id, companyPhoneUpdateDto);
     }
 
 }

@@ -64,10 +64,10 @@ export default function CompanyOverview({ company }) {
 
                 <Grid item xs={4}>
                     <Typography variant="body1" fontWeight="500" sx={{ opacity: 0.7, fontSize: '1rem' }}>
-                        Number of Employees:
+                        Employees:
                     </Typography>
                     <Typography variant="body1" sx={{ fontWeight: 500, fontSize: '1rem' }}>
-                        {company.numEmployees || "N/A"}
+                        {company.employeeNumber || "N/A"}
                     </Typography>
                     <Divider sx={{ my: 2 }} />
                 </Grid>

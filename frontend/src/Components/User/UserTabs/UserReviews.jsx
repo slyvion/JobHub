@@ -14,6 +14,9 @@ export default function UserReviews({ reviews, loading, error }) {
                 maxWidth: "700px",
                 marginLeft: 'auto',
                 marginRight: 'auto',
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
             }}
         >
             <Typography

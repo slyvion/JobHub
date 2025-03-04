@@ -28,6 +28,10 @@ public interface CompanyService {
 
     Company bioUpdate(Long id, CompanyBioUpdateDto companyBioUpdateDto);
 
+    Company foundedUpdate(Long id, CompanyFoundedUpdateDto companyFoundedUpdateDto);
+
+    Company phoneUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto);
+
     Company locationUpdate(Long id, CompanyLocationUpdateDto companyLocationUpdateDto);
 
     Company websiteUpdate(Long id, CompanyWebsiteUpdateDto companyWebsiteUpdateDto);

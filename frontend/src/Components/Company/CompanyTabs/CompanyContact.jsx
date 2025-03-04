@@ -23,7 +23,7 @@ export default function CompanyContact({ company }) {
                         Phone:
                     </Typography>
                     <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px',  opacity: 0.7 }}>
-                        {company.phone || "N/A"}
+                        {company.phoneNumber || "N/A"}
                     </Typography>
                     <Divider sx={{ mt: 2 }} />
                 </Grid>

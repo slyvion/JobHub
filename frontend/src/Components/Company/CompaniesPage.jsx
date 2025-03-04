@@ -5,33 +5,22 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
-import {Typography} from "@mui/material";
-import NoCompFound from './NoCompFound.jsx'
+import { Typography } from "@mui/material";
+import NoCompFound from './NoCompFound.jsx';
+import CircularProgress from "@mui/material/CircularProgress";
+import { fetchCompanies } from "../Services/companyServices.js";
 
 export default function CompaniesPage() {
     const [companyData, setCompanyData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchCompanies = async (filterParams = {}) => {
+    const getCompanies = async (filterParams = {}) => {
         setLoading(true);
         setError(null);
 
         try {
-            const validParams = Object.entries(filterParams)
-                .filter(([key, value]) => value !== undefined && value !== '')
-                .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
-
-            const queryString = new URLSearchParams(validParams).toString();
-            const url = `http://localhost:8080/companies${queryString ? `?${queryString}` : ''}`;
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
+            const data = await fetchCompanies(filterParams);
             setCompanyData(data);
         } catch (err) {
             setError(err.message);
@@ -53,30 +42,30 @@ export default function CompaniesPage() {
                     zIndex: 10,
                 }}
             >
-                <CompanyFilter onFilter={fetchCompanies} />
+                <CompanyFilter onFilter={getCompanies} />
             </div>
 
-            <div style={{ flex: 1 }}>
-                {loading ? (
-                    <p>Loading...</p>
-                ) : error ? (
-                    <p>Error: {error}</p>
-                ) : companyData.length === 0 ? (
-                    <Typography variant="body1" color="textSecondary">
-                        <NoCompFound />
-                    </Typography>
-                ) : (
-                    <Box mt={4} ml={6}>
-                        <Grid container spacing={3}>
-                            {companyData.map((company, index) => (
-                                <Grid item xs={12} sm={6} md={3} key={index}>
-                                    <CompanyCard company={company} />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </Box>
-                )}
-            </div>
+            {loading ? (
+                <Box display="flex" justifyContent="center" mt={4}>
+                    <CircularProgress />
+                </Box>
+            ) : error ? (
+                <p>Error: {error}</p>
+            ) : companyData.length === 0 ? (
+                <Typography variant="body1" color="textSecondary">
+                    <NoCompFound />
+                </Typography>
+            ) : (
+                <Box mt={4} ml={6}>
+                    <Grid container spacing={3}>
+                        {companyData.map((company, index) => (
+                            <Grid item xs={12} sm={6} md={3} key={index}>
+                                <CompanyCard company={company} />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            )}
 
             <Footer />
         </div>

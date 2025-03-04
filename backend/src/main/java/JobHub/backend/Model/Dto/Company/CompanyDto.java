@@ -35,6 +35,8 @@ public class CompanyDto {
     @NotBlank(message = "Location is required")
     private String location;
 
+    private Integer founded;
+
     private Double rating;
 
     private EmployeeNumber employeeNumber;

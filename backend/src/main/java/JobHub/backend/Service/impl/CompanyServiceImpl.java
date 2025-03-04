@@ -55,6 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
                 companyDto.getWebsite(),
                 companyDto.getDescription(),
                 companyDto.getLocation(),
+                companyDto.getFounded(),
                 companyDto.getEmployeeNumber(),
                 companyDto.getPhoneNumber(),
                 companyDto.getFacebookLink(),
@@ -117,6 +118,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
+
     @Override
     public Company employeeNumberUpdate(Long id, CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto) {
         Company company = this.findById(id);
@@ -152,6 +154,20 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = this.findById(id);
         company.setDescription(companyBioUpdateDto.getDescription());
         return companyRepository.save(company);
+    }
+
+    @Override
+    public Company foundedUpdate(Long id, CompanyFoundedUpdateDto companyFoundedUpdateDto) {
+        Company company = this.findById(id);
+        company.setFounded(companyFoundedUpdateDto.getFounded());
+        return companyRepository.save(company);
+    }
+
+    @Override
+    public Company phoneUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto) {
+        Company company = this.findById(id);
+        company.setPhoneNumber(companyPhoneUpdateDto.getPhoneNumber());
+        return  companyRepository.save(company);
     }
 
     @Override

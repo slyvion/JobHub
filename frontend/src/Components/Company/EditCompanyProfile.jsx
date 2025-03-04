@@ -1,24 +1,26 @@
 import React, { useState } from "react";
 import {
-    Modal,
-    Box,
-    Button,
-    TextField,
-    Divider,
-    Grid,
-    MenuItem,
-    Select,
-    InputLabel,
-    FormControl,
+    Modal, Box, Button, Divider, Grid, Snackbar, Alert,
 } from "@mui/material";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { visuallyHidden } from "@mui/utils";
-import SaveIcon from "@mui/icons-material/Save";
-import EditIcon from "@mui/icons-material/Edit";
+import EditableTextField from '../EditableFields/EditableTextField.jsx';
+import EditableSelectField from "../EditableFields/EditableSelectField.jsx";
+import SocialMediaFields from '../EditableFields/SocialMediaFields.jsx';
+import PasswordChange from '../EditableFields/PasswordChange.jsx';
+import {
+    updateCompanyBio,
+    updateCompanyName,
+    updateCompanyWebsite,
+    updateCompanyLocation,
+    updateCompanyEmail,
+    updateCompanyPassword,
+    updateCompanyCover,
+    updateCompanyEmployeeNumber,
+    updateCompanyLogo,
+    updateCompanyFounded,
+    updateCompanyPhone,
+} from "../Services/companyServices.js";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
     position: "absolute",
@@ -28,7 +30,6 @@ const ModalContainer = styled(Box)(({ theme }) => ({
     width: "80vw",
     maxWidth: "1200px",
     height: "80vh",
-    maxHeight: "80vh",
     backgroundColor: "white",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(4),
@@ -36,356 +37,295 @@ const ModalContainer = styled(Box)(({ theme }) => ({
     borderRadius: theme.shape.borderRadius,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "flex-start",
     alignItems: "center",
 }));
 
-const VisuallyHiddenInput = styled("input")({
-    ...visuallyHidden,
-});
-
-export default function EditCompanyProfile({ open, handleClose, companyData }) {
+export default function CompanyEdit({ open, handleClose, companyData }) {
+    const [isEditing, setIsEditing] = useState({});
     const [companyName, setCompanyName] = useState(companyData?.companyName || "");
-    const [aboutUs, setAboutUs] = useState(companyData?.description || "");
+    const [description, setDescription] = useState(companyData?.description || "");
     const [location, setLocation] = useState(companyData?.location || "");
+    const [phoneNumber, setPhoneNumber] = useState( companyData?.phoneNumber || "");
     const [email, setEmail] = useState(companyData?.email || "");
     const [website, setWebsite] = useState(companyData?.website || "");
-    const [phone, setPhone] = useState(companyData?.phone || ""); // Added phone state
+    const [employeeNumber, setEmployeeNumber] = useState(companyData?.employeeNumber || "");
+    const [founded, setFounded] = useState(companyData?.founded || "");
+
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [employeeNumber, setEmployeeNumber] = useState(companyData?.employeeNumber || "");
-    const [founded, setFounded] = useState(companyData?.founded || "");
-    const [isCompanyNameEditable, setIsCompanyNameEditable] = useState(false);
-    const [isWebsiteEditable, setIsWebsiteEditable] = useState(false);
-    const [isAboutUsEditable, setIsAboutUsEditable] = useState(false);
-    const [isEmailEditable, setIsEmailEditable] = useState(false);
-    const [isLocationEditable, setIsLocationEditable] = useState(false);
-    const [isPhoneEditable, setIsPhoneEditable] = useState(false); // Added phone editable state
-    const [isEmployeeNumberEditable, setIsEmployeeNumberEditable] = useState(false);
-    const [isFoundedEditable, setIsFoundedEditable] = useState(false);
 
-    const handleSave = () => {
-        // Disable editing after save
-        setIsCompanyNameEditable(false);
-        setIsAboutUsEditable(false);
-        setIsEmailEditable(false);
-        setIsLocationEditable(false);
-        setIsPhoneEditable(false);
-        setIsWebsiteEditable(false);
-        setIsEmployeeNumberEditable(false);
-        setIsFoundedEditable(false);
+    const [logoFile, setLogoFile] = useState(null);
+    const [coverFile, setCoverFile] = useState(null);
+
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: "",
+        severity: "success", // "success", "error", "warning", "info"
+    });
+
+    const toggleEdit = (field) => {
+        setIsEditing((prev) => ({
+            ...prev,
+            [field]: !prev[field],
+        }));
     };
 
-    const handleEdit = (field) => {
-        if (field === "companyName") setIsCompanyNameEditable(true);
-        if (field === "aboutUs") setIsAboutUsEditable(true);
-        if (field === "email") setIsEmailEditable(true);
-        if (field === "location") setIsLocationEditable(true);
-        if (field === "phone") setIsPhoneEditable(true);
-        if (field === "website") setIsWebsiteEditable(true);
-        if (field === "employeeNumber") setIsEmployeeNumberEditable(true);
-        if (field === "founded") setIsFoundedEditable(true);
+    const showSnackbar = (message, severity = "success") => {
+        setSnackbar({ open: true, message, severity });
     };
 
-    const employeeNumberOptions = [
-        { value: "LESS_THAN_20", label: "<20" },
-        { value: "BETWEEN_21_AND_50", label: "21-50" },
-        { value: "BETWEEN_51_AND_100", label: "51-100" },
-        { value: "BETWEEN_101_AND_300", label: "101-300" },
-        { value: "BETWEEN_301_AND_500", label: "301-500" },
-        { value: "MORE_THAN_500", label: "500+" },
-    ];
+    const handleCloseSnackbar = () => {
+        setSnackbar((prev) => ({ ...prev, open: false }));
+    };
 
+    const handleUpdate = async (field, value, updateFunction) => {
+        try {
+            await updateFunction(companyData.id, value);
+            showSnackbar(`${field} updated successfully!`, "success");
+
+            setIsEditing((prev) => {
+                const newState = { ...prev, [field]: false };
+                return newState;
+            });
+        } catch (error) {
+            showSnackbar(`Failed to update ${field}. Please try again.`, "error");
+        }
+    };
+
+
+
+    const handlePasswordUpdate = async () => {
+        if (newPassword !== confirmPassword) {
+            showSnackbar("New password and confirm password do not match.", "error");
+            return;
+        }
+        try {
+            await updateCompanyPassword(companyData.id, oldPassword, newPassword);
+            showSnackbar("Password updated successfully!", "success");
+            setOldPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+        } catch (error) {
+            console.error("Error updating password:", error);
+            showSnackbar("Failed to update password. Please try again.", "error");
+        }
+    };
+
+    const handleLogoUpload = async () => {
+        if (!logoFile) {
+            showSnackbar("Please select a logo file.", "error");
+            return;
+        }
+        try {
+            const formData = new FormData();
+            formData.append("logoImage", logoFile);
+            await updateCompanyLogo(companyData.id, formData);
+            showSnackbar("Logo updated successfully!", "success");
+        } catch (error) {
+            console.error("Error uploading logo:", error);
+            showSnackbar("Failed to upload logo. Please try again.", "error");
+        }
+    };
+
+    const handleCoverUpload = async () => {
+        if (!coverFile) {
+            showSnackbar("Please select a cover file.", "error");
+            return;
+        }
+        try {
+            const formData = new FormData();
+            formData.append("coverImage", coverFile);
+            await updateCompanyCover(companyData.id, formData);
+            showSnackbar("Cover image updated successfully!", "success");
+        } catch (error) {
+            console.error("Error uploading cover:", error);
+            showSnackbar("Failed to upload cover. Please try again.", "error");
+        }
+    };
 
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => currentYear - i);
 
     return (
-        <Modal open={open} onClose={handleClose}>
-            <ModalContainer>
-                <Grid container spacing={2}>
-                    {/* First Column */}
-                    <Grid item xs={4}>
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <TextField
+        <>
+            <Modal open={open} onClose={handleClose}>
+                <ModalContainer>
+                    <Grid container spacing={2}>
+                        {/* First Column */}
+                        <Grid item xs={4}>
+
+                            <EditableTextField
                                 label="Company Name"
-                                fullWidth
                                 value={companyName}
                                 onChange={(e) => setCompanyName(e.target.value)}
-                                variant="outlined"
-                                disabled={!isCompanyNameEditable}
+                                isEditable={isEditing.companyName}
+                                onEdit={() => toggleEdit("companyName")}
+                                onSave={() => handleUpdate("companyName", companyName, updateCompanyName)}
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isCompanyNameEditable ? handleSave() : handleEdit("companyName"))}
-                                size="small"
-                            >
-                                {isCompanyNameEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <TextField
+
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableTextField
                                 label="About Us"
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                isEditable={isEditing.description}
+                                onEdit={() => toggleEdit("description")}
+                                onSave={() => handleUpdate("description", description, updateCompanyBio)}
                                 multiline
                                 fullWidth
-                                value={aboutUs}
-                                onChange={(e) => setAboutUs(e.target.value)}
-                                variant="outlined"
-                                disabled={!isAboutUsEditable}
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isAboutUsEditable ? handleSave() : handleEdit("aboutUs"))}
-                                size="small"
-                            >
-                                {isAboutUsEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
-                        <Box
-                            component="img"
-                            sx={{
-                                height: 233,
-                                width: 350,
-                                maxHeight: { xs: 233, md: 167 },
-                                maxWidth: { xs: 233, md: 167 },
-                                marginBottom: 1,
-                                marginLeft: 10
-                            }}
-                        />
-                        <Button component="label" variant="contained" sx={{ marginLeft: 5 }} startIcon={<CloudUploadIcon />}>
-                            Upload logo
-                            <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
-                        </Button>
-                        <Button variant="contained" color="success" sx={{ marginX: 1 }}>Confirm</Button>
-                        <Divider sx={{ marginY: 2 }} />
-                        <Box
-                            component="img"
-                            sx={{
-                                height: 233,
-                                width: 350,
-                                maxHeight: { xs: 233, md: 167 },
-                                maxWidth: { xs: 233, md: 400 },
-                                marginBottom: 1
-                            }}
-                        />
-                        <Button component="label" variant="contained" sx={{ marginLeft: 4 }} startIcon={<CloudUploadIcon />}>
-                            Upload cover
-                            <VisuallyHiddenInput type="file" onChange={(event) => console.log(event.target.files)} multiple />
-                        </Button>
-                        <Button variant="contained" color="success" sx={{ marginX: 1 }}>Confirm</Button>
-                    </Grid>
 
-                    {/* Second Column */}
-                    <Grid item xs={4}>
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <TextField
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+                                <img
+                                    src={companyData?.companyLogo || "/companyLogo.jpg"}
+                                    alt="Company Logo"
+                                    style={{ width: 150, height: 150, objectFit: 'cover' }}
+                                />
+                            </Box>
+                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                Upload logo
+                                <input
+                                    type="file"
+                                    hidden
+                                    onChange={(e) => setLogoFile(e.target.files[0])}
+                                />
+                            </Button>
+                            <Button variant="contained" color="success" onClick={handleLogoUpload} sx={{ marginLeft: 1 }}>
+                                Confirm
+                            </Button>
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
+                                <img
+                                    src={companyData?.companyCover || "/companyCover.jpg"}
+                                    alt="Company Cover"
+                                    style={{ width: 400, height: 150, objectFit: 'cover', borderRadius: 8 }}
+                                />
+                            </Box>
+                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                Upload cover
+                                <input
+                                    type="file"
+                                    hidden
+                                    onChange={(e) => setCoverFile(e.target.files[0])}
+                                />
+                            </Button>
+                            <Button variant="contained" color="success" onClick={handleCoverUpload} sx={{ marginLeft: 1 }}>
+                                Confirm
+                            </Button>
+                        </Grid>
+
+                        {/* Second Column */}
+                        <Grid item xs={4}>
+
+                            <EditableTextField
                                 label="Email"
-                                fullWidth
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                variant="outlined"
-                                disabled={!isEmailEditable}
+                                isEditable={isEditing.email}
+                                onEdit={() => toggleEdit("email")}
+                                onSave={() => handleUpdate("email", email, updateCompanyEmail)}
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isEmailEditable ? handleSave() : handleEdit("email"))}
-                                size="small"
-                            >
-                                {isEmailEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <TextField
+
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableTextField
                                 label="Website"
-                                fullWidth
                                 value={website}
                                 onChange={(e) => setWebsite(e.target.value)}
-                                variant="outlined"
-                                disabled={!isWebsiteEditable}
+                                isEditable={isEditing.website}
+                                onEdit={() => toggleEdit("website")}
+                                onSave={() => handleUpdate("website", website, updateCompanyWebsite)}
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isWebsiteEditable ? handleSave() : handleEdit("website"))}
-                                size="small"
-                            >
-                                {isWebsiteEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <TextField
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableTextField
+                                label="Phone Number"
+                                value={phoneNumber}
+                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                isEditable={isEditing.phoneNumber}
+                                onEdit={() => toggleEdit("phoneNumber")}
+                                onSave={() => handleUpdate("phoneNumber", phoneNumber, updateCompanyPhone)}
+                            />
+
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableTextField
                                 label="Location"
-                                fullWidth
                                 value={location}
                                 onChange={(e) => setLocation(e.target.value)}
-                                variant="outlined"
-                                disabled={!isLocationEditable}
+                                isEditable={isEditing.location}
+                                onEdit={() => toggleEdit("location")}
+                                onSave={() => handleUpdate("location", location, updateCompanyLocation)}
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isLocationEditable ? handleSave() : handleEdit("location"))}
-                                size="small"
-                            >
-                                {isLocationEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
 
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <TextField
-                                label="Phone"
-                                fullWidth
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                variant="outlined"
-                                disabled={!isPhoneEditable}
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableSelectField
+                                label="Number of Employees"
+                                value={employeeNumber}
+                                onChange={(e) => setEmployeeNumber(e.target.value)}
+                                options={[
+                                    { value: "<20", label: " <20 " },
+                                    { value: "21-50", label: "11-50" },
+                                    { value: "51-100", label: "51-100" },
+                                    { value: "101-300", label: "101-300" },
+                                    { value: "301-500", label: "301-500" },
+                                    { value: "500+", label: "500+" },
+                                ]}
+                                isEditable={isEditing.employeeNumber}
+                                onEdit={() => toggleEdit("employeeNumber")}
+                                onSave={() => handleUpdate("employeeNumber", employeeNumber, updateCompanyEmployeeNumber)}
                             />
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isPhoneEditable ? handleSave() : handleEdit("phone"))}
-                                size="small"
-                            >
-                                {isPhoneEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <FormControl fullWidth>
-                                <InputLabel>Employee Number</InputLabel>
-                                <Select
-                                    value={employeeNumber}
-                                    onChange={(e) => setEmployeeNumber(e.target.value)}
-                                    label="Employee Number"
-                                    disabled={!isEmployeeNumberEditable}
-                                >
-                                    {employeeNumberOptions.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isEmployeeNumberEditable ? handleSave() : handleEdit("employeeNumber"))}
-                                size="small"
-                            >
-                                {isEmployeeNumberEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
-                        <Divider sx={{ marginY: 2 }} />
 
-                        <Box display="flex" alignItems="center" justifyContent="center" gap={2}>
-                            <FormControl fullWidth>
-                                <InputLabel>Founded</InputLabel>
-                                <Select
-                                    value={founded}
-                                    onChange={(e) => setFounded(e.target.value)}
-                                    label="Founded"
-                                    disabled={!isFoundedEditable}
-                                >
-                                    {years.map((year) => (
-                                        <MenuItem key={year} value={year}>
-                                            {year}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={() => (isFoundedEditable ? handleSave() : handleEdit("founded"))}
-                                size="small"
-                            >
-                                {isFoundedEditable ? <SaveIcon /> : <EditIcon />}
-                            </Button>
-                        </Box>
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableSelectField
+                                label="Year Founded"
+                                value={founded}
+                                onChange={(e) => setFounded(e.target.value)}
+                                options={years.map(year => ({ value: year, label: year }))}
+                                isEditable={isEditing.founded}
+                                onEdit={() => toggleEdit("founded")}
+                                onSave={() => handleUpdate("founded", founded, updateCompanyFounded)}
+                            />
+                        </Grid>
+
+                        {/* Third Column */}
+                        <Grid item xs={4}>
+
+                            <SocialMediaFields />
+
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <PasswordChange
+                                oldPassword={oldPassword}
+                                newPassword={newPassword}
+                                confirmPassword={confirmPassword}
+                                onOldPasswordChange={(e) => setOldPassword(e.target.value)}
+                                onNewPasswordChange={(e) => setNewPassword(e.target.value)}
+                                onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
+                                onPasswordChange={handlePasswordUpdate}
+                            />
+                        </Grid>
                     </Grid>
+                </ModalContainer>
+            </Modal>
 
-                    {/* Third Column */}
-                    <Grid item xs={4}>
-                        <Box display="flex" flexDirection="column" gap={2} sx={{ marginBottom: 4 }}>
-                            <Box display="flex" alignItems="center" gap={2}>
-                                <InstagramIcon fontSize="small" sx={{ color: "grey" }} />
-                                <TextField
-                                    label="Instagram"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Box>
-
-                            <Box display="flex" alignItems="center" gap={2}>
-                                <FacebookIcon fontSize="small" sx={{ color: "grey" }} />
-                                <TextField
-                                    label="Facebook"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Box>
-
-                            <Box display="flex" alignItems="center" gap={2}>
-                                <LinkedInIcon fontSize="small" sx={{ color: "grey" }} />
-                                <TextField
-                                    label="LinkedIn"
-                                    fullWidth
-                                    variant="standard"
-                                />
-                            </Box>
-
-                            <Box display="flex" justifyContent="center">
-                                <Button variant="contained" color="primary">
-                                    Change
-                                </Button>
-                            </Box>
-                        </Box>
-
-                        <Divider sx={{ marginY: 2 }} />
-
-                        <TextField
-                            label="Old Password"
-                            type="password"
-                            fullWidth
-                            value={oldPassword}
-                            onChange={(e) => setOldPassword(e.target.value)}
-                            variant="outlined"
-                            sx={{ marginBottom: 2 }}
-                        />
-                        <TextField
-                            label="New Password"
-                            type="password"
-                            fullWidth
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            variant="outlined"
-                            sx={{ marginBottom: 2 }}
-                        />
-                        <TextField
-                            label="Confirm Password"
-                            type="password"
-                            fullWidth
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            variant="outlined"
-                        />
-                        <Box display="flex" justifyContent="center" marginTop={2}>
-                            <Button variant="contained" color="primary">
-                                Update Password
-                            </Button>
-                        </Box>
-                    </Grid>
-                </Grid>
-            </ModalContainer>
-        </Modal>
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </>
     );
 }

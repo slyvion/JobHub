@@ -39,6 +39,8 @@ public class Company {
     private String instagramLink;
     private String linkedinLink;
 
+    private Integer founded;
+
     @Enumerated(EnumType.STRING)
     private EmployeeNumber employeeNumber;
 
@@ -60,6 +62,7 @@ public class Company {
                    String website,
                    String description,
                    String location,
+                   Integer founded,
                    EmployeeNumber employeeNumber,
                    String phoneNumber,
                    String facebookLink,
@@ -71,6 +74,7 @@ public class Company {
         this.website = website;
         this.description = description;
         this.location = location;
+        this.founded = founded;
         this.employeeNumber = employeeNumber;
         this.reviews = new ArrayList<>();
         this.rating = 0;

@@ -27,7 +27,7 @@ export default function JobPost({ job }) {
                             objectFit: 'contain',
                             boxShadow: '0px 0px 5px 2px rgba(169, 169, 169, 0.6)',
                         }}
-                        image="/joblogo.jpg"
+                        image="/companyLogo.jpg"
                         alt={job.company.companyName}
                     />
                 </Link>

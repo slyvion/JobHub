@@ -1,34 +1,24 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import JobPostFilter from "./JobPostFilter.jsx";
 import JobPost from "./JobPost.jsx";
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
 import NoJobsFound from "./NoJobsFound.jsx";
+import CircularProgress from "@mui/material/CircularProgress";
+import { fetchJobPosts as getJobPosts } from "../Services/jobPostServices.js";
+
 export default function JobPostPage() {
     const [jobPosts, setJobPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchJobPosts = async (filterParams = {}) => {
+    const loadJobPosts = async (filterParams = {}) => {
         setLoading(true);
         setError(null);
 
         try {
-            const validParams = Object.entries(filterParams)
-                .filter(([key, value]) => value !== undefined && value !== '')
-                .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
-
-            const queryString = new URLSearchParams(validParams).toString();
-            const url = `http://localhost:8080/jobposts${queryString ? `?${queryString}` : ''}`;
-
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-
-            const data = await response.json();
+            const data = await getJobPosts(filterParams);
             setJobPosts(data);
         } catch (err) {
             setError(err.message);
@@ -38,7 +28,7 @@ export default function JobPostPage() {
     };
 
     useEffect(() => {
-        fetchJobPosts();
+        loadJobPosts();
     }, []);
 
     return (
@@ -63,12 +53,14 @@ export default function JobPostPage() {
                     zIndex: 10,
                 }}
             >
-                <JobPostFilter onFilter={fetchJobPosts} />
+                <JobPostFilter onFilter={loadJobPosts} />
             </Box>
 
             <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 4 }}>
                 {loading ? (
-                    <Typography variant="body1">Loading...</Typography>
+                    <Box display="flex" justifyContent="center" mt={4}>
+                        <CircularProgress />
+                    </Box>
                 ) : error ? (
                     <Typography variant="body1" color="error">
                         Error: {error}

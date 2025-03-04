@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 export default function Review({ review }) {
     return (
         <Card sx={{
+            width: '100%',
             maxWidth: 600,
             border: '1px solid #ddd',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',

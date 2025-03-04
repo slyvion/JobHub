@@ -9,7 +9,7 @@ export default function CompanyCard({ company }) {
             <CardMedia
                 component="img"
                 height="200"
-                image={company.companyImage || '/companyLogo.jpg'}
+                image={company.companyImage || '/companyCover.jpg'}
                 alt={`${company.companyName} cover`}
                 sx={{
                     objectFit: 'cover',
@@ -20,7 +20,7 @@ export default function CompanyCard({ company }) {
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <CardMedia
                         component="img"
-                        image={company.companyCover || '/joblogo.jpg'}
+                        image={company.companyLogo || '/companyLogo.jpg'}
                         alt="Company Logo"
                         sx={{
                             width: 50,

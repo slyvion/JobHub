@@ -15,7 +15,7 @@ const SavedJobPosts = () => {
     const [savedJobs, setSavedJobs] = useState([]);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId") || 1; // Default to 1 if not set
+        const userId = localStorage.getItem("userId") || 1;
         fetch(`http://localhost:8080/user/${userId}/saved-jobposts`)
             .then((response) => response.json())
             .then((data) => {
@@ -29,7 +29,7 @@ const SavedJobPosts = () => {
 
     const handleUnsave = async (jobId) => {
         try {
-            const userId = localStorage.getItem("userId") || 1; // Default to 1 if not set
+            const userId = localStorage.getItem("userId") || 1;
             const response = await fetch(`http://localhost:8080/user/${userId}/saved-jobposts/${jobId}`, {
                 method: "DELETE",
             });

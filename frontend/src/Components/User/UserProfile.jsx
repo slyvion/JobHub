@@ -11,8 +11,9 @@ import UserData from "./UserTabs/UserData.jsx";
 import UserReviews from "./UserTabs/UserReviews.jsx";
 import SavedJobs from "./UserTabs/SavedJobs.jsx";
 import Help from "./UserTabs/Help.jsx";
+import { fetchUserData, fetchUserReviews } from "../Services/userServices";
 
-function UserProfile() {
+export default function UserProfile() {
     const { id } = useParams();
     const [user, setUser] = useState(null);
     const [reviews, setReviews] = useState(null);
@@ -21,52 +22,28 @@ function UserProfile() {
     const [value, setValue] = useState(0);
 
     useEffect(() => {
-        const fetchUserData = async () => {
+        async function loadData() {
             try {
-                const response = await fetch(`http://localhost:8080/user/${id}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch user data");
-                }
-                const data = await response.json();
-                setUser(data);
+                const [userData, userReviews] = await Promise.all([
+                    fetchUserData(id),
+                    fetchUserReviews(id),
+                ]);
+                setUser(userData);
+                setReviews(userReviews);
             } catch (err) {
                 setError(err.message);
             } finally {
                 setLoading(false);
             }
-        };
-        const fetchUserReviews = async () => {
-            try {
-                const response = await fetch(`http://localhost:8080/reviews/user/${id}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch user reviews");
-                }
-                const data = await response.json();
-                setReviews(data);
-            } catch (err) {
-                setError(err.message);
-            }
-        };
-        fetchUserReviews();
-        fetchUserData();
+        }
+        loadData();
     }, [id]);
 
     return (
         <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: "#f0f0f0", justifyContent: "center", alignItems: "center" }}>
             <AppAppBar />
 
-            <Box
-                sx={{
-                    backgroundColor: "white",
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                    padding: "20px",
-                    paddingTop: "100px",
-                    marginTop: 0,
-                    position: "relative",
-                    zIndex: 10,
-                    width: 1,
-                }}
-            />
+            <Box sx={{ backgroundColor: "white", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", padding: "20px", paddingTop: "100px", marginTop: 0, position: "relative", zIndex: 10, width: 1 }} />
 
             <Box sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", width: "100%", maxWidth: "1200px"}}>
                 <Box sx={{ display: "flex", alignItems: "center", paddingLeft: '90px'}}>
@@ -117,5 +94,3 @@ const tabStyle = {
     color: "black",
     ":hover": { color: "primary.main" },
 };
-
-export default UserProfile;
