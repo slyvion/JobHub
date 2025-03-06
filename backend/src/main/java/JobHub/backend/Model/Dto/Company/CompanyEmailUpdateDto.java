@@ -12,4 +12,8 @@ public class CompanyEmailUpdateDto {
     @NotBlank(message = "Email is required")
     @Email
     private String email;
+
+    public CompanyEmailUpdateDto(String email) {
+        this.email = email;
+    }
 }

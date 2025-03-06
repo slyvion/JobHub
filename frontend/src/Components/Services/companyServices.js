@@ -207,4 +207,22 @@ export const updateCompanyLogo = async (id, logoImage) => {
         throw new Error(err.message);
     }
 };
+export const updateCompanyOffices = async (id, cities) => {
+    try {
+        const response = await fetch(`http://localhost:8080/company/${id}/updateOffices`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ cities: Array.isArray(cities) ? cities : [] }),
+        });
+
+        if (!response.ok) throw new Error("Failed to update offices");
+        return await response.json();
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
+
+
+
 

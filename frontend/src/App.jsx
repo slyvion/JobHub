@@ -15,6 +15,7 @@ import CreateReview from "./Components/Review/CreateReview.jsx";
 import ErrorPage from "./Components/ErrorPage.jsx";
 import CreateJobPost from "./Components/JobPost/CreateJobPost.jsx";
 import FullJobPost from "./Components/JobPost/FullJobPost.jsx";
+import EditJobPost from "./Components/JobPost/EditJobPost.jsx";
 
 function App() {
 
@@ -42,7 +43,7 @@ function App() {
                 <Route path="companies" element={<CompaniesPage />} />
                 <Route path="/jobposts/:id" element={<FullJobPost />} />
                 <Route path="/jobposts" element={<JobPostPage />} />
-
+                <Route path="/jobposts/:id/edit" element={<EditJobPost />} />
                 <Route path="createJobPost" element={<CreateJobPost />} />
 
                 <Route path="/*" element={<ErrorPage />} />

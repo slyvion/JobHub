@@ -67,8 +67,9 @@ export default function JobPost({ job }) {
                 </Typography>
 
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                    {job.seniority ? job.seniority : 'Seniority Not Found'}
+                    {job.seniority ? job.seniority.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase() : 'Seniority Not Found'}
                 </Typography>
+
 
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                     {job.description && job.description.slice(0, 100)}{job.description && job.description.length > 100 ? '...' : ''}

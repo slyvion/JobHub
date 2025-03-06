@@ -1,25 +1,25 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Import Link for navigation
 import { Box, Typography, Paper, Button } from '@mui/material';
 import JobPost from './JobPost';
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
+import { fetchJobPost } from '../Services/jobPostServices';
 
 export default function FullJobPost() {
     const { id } = useParams();
     const [job, setJob] = useState(null);
 
     useEffect(() => {
-        const fetchJob = async () => {
+        const getJob = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/jobposts/${id}`);
-                const data = await response.json();
+                const data = await fetchJobPost(id);
                 setJob(data);
             } catch (error) {
                 console.error('Error fetching job details:', error);
             }
         };
-        fetchJob();
+        getJob();
     }, [id]);
 
     if (!job) {
@@ -53,7 +53,6 @@ export default function FullJobPost() {
                 <Box sx={{ maxWidth: '1200px', width: '100%' }}>
                     <JobPost job={job} sx={{ width: '100%' }} />
 
-
                     <Paper sx={{ padding: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
                         <Box>
@@ -70,7 +69,6 @@ export default function FullJobPost() {
                             <Typography variant="h4" sx={{ paddingBottom: '10px' }}>Requirements</Typography>
                             <Typography variant="body1" color="text.secondary">{job.requirements || 'No requirements listed'}</Typography>
                         </Box>
-
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
                             <Button
@@ -99,11 +97,30 @@ export default function FullJobPost() {
                                         '&:hover': {
                                             backgroundColor: '#1565c0',
                                         },
-                                        marginLeft: 2
+                                        marginLeft: 1
                                     }}>
                                     Apply
                                 </Button>
                             </a>
+
+                            <Link to={`/jobposts/${id}/edit`}>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        width: '60px',
+                                        height: '40px',
+                                        backgroundColor: 'white',
+                                        color: 'black',
+                                        border: '1px solid #ccc',
+                                        '&:hover': {
+                                            backgroundColor: '#f0f0f0',
+                                        },
+                                        marginLeft: 1
+
+                                    }}>
+                                    Edit
+                                </Button>
+                            </Link>
                         </Box>
 
                     </Paper>

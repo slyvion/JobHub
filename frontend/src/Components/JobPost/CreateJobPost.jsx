@@ -18,6 +18,7 @@ export default function CreateJobPost() {
         jobInfo: "",
         requirements: "",
         seniority: "",
+        applicationLink: "",
     });
 
     const handleChange = (event) => {
@@ -85,6 +86,17 @@ export default function CreateJobPost() {
                             multiline
                             rows={4}
                             value={formData.requirements}
+                            onChange={handleChange}
+                            required
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Application Link"
+                            name="applicationLink"
+                            fullWidth
+                            rows={4}
+                            value={formData.applicationLink}
                             onChange={handleChange}
                             required
                         />

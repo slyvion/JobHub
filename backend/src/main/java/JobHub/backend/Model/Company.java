@@ -41,6 +41,12 @@ public class Company {
 
     private Integer founded;
 
+    @ElementCollection
+    @CollectionTable(name = "company_cities", joinColumns = @JoinColumn(name = "company_id"))
+    @Column(name = "city")
+    private List<String> cities = new ArrayList<>();
+
+
     @Enumerated(EnumType.STRING)
     private EmployeeNumber employeeNumber;
 
@@ -77,6 +83,7 @@ public class Company {
         this.founded = founded;
         this.employeeNumber = employeeNumber;
         this.reviews = new ArrayList<>();
+        this.cities= new ArrayList<>();
         this.rating = 0;
         this.phoneNumber = phoneNumber;
         this.facebookLink = facebookLink;

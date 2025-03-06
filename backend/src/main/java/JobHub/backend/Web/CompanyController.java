@@ -102,5 +102,9 @@ public class CompanyController {
     public Company updateSocialMedia(@PathVariable Long id, @Valid @RequestBody CompanySocialMediaUpdateDto companySocialMediaUpdateDto){
         return  companyService.socialMediaUpdate(id, companySocialMediaUpdateDto);
     }
+    @PutMapping("/{id}/updateOffices")
+    public Company updateCompanyCities(@PathVariable Long id, @RequestBody CompanyCitiesUpdateDto companyCitiesUpdateDto) {
+        return companyService.updateCompanyCities(id, companyCitiesUpdateDto);
+    }
 
 }

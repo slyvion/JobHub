@@ -57,8 +57,12 @@ export default function CompanyOverview({ company }) {
                         Offices:
                     </Typography>
                     <Typography variant="body1" sx={{ fontWeight: 500, fontSize: '1rem' }}>
-                        {company.offices || "N/A"}
+                        {company.cities && company.cities.length > 0
+                            ? company.cities.join(", ")
+                            : "N/A"}
                     </Typography>
+
+
                     <Divider sx={{ my: 2 }} />
                 </Grid>
 

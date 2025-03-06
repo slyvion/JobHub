@@ -69,7 +69,12 @@ public class JobPostServiceImpl implements JobPostService {
         JobPost jobPost = this.findById(id);
             jobPost.setTitle(jobPostDto.getTitle());
             jobPost.setJobType(jobPostDto.getJobType());
+            jobPost.setSeniority(jobPostDto.getSeniority());
             jobPost.setDescription(jobPostDto.getDescription());
+            jobPost.setJobInfo(jobPostDto.getJobInfo());
+            jobPost.setRequirements(jobPostDto.getRequirements());
+            jobPost.setApplicationLink(jobPostDto.getApplicationLink());
+            jobPost.setTags(jobPostDto.getTags());
             jobPost.setEmploymentType(jobPostDto.getEmploymentType());
             jobPost.setLocation(jobPostDto.getLocation());
             jobPost.setTags(jobPostDto.getTags());

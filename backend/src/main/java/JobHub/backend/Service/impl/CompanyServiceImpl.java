@@ -224,6 +224,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Company updateCompanyCities(Long companyId, CompanyCitiesUpdateDto companyCitiesUpdateDto) {
+        Company company = this.findById(companyId);
+        company.setCities(companyCitiesUpdateDto.getCities());
+        return companyRepository.save(company);
+    }
+    @Override
     public byte[] getCompanyLogo(Long companyId) {
         Company company = companyRepository.findById(companyId).orElseThrow(InvalidCompanyIdException::new);
 

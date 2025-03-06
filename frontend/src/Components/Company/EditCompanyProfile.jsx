@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
-    Modal, Box, Button, Divider, Grid, Snackbar, Alert,
+    Modal, Box, Button, Divider, Grid, Snackbar, Alert, Typography, IconButton,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -8,6 +8,7 @@ import EditableTextField from '../EditableFields/EditableTextField.jsx';
 import EditableSelectField from "../EditableFields/EditableSelectField.jsx";
 import SocialMediaFields from '../EditableFields/SocialMediaFields.jsx';
 import PasswordChange from '../EditableFields/PasswordChange.jsx';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
     updateCompanyBio,
     updateCompanyName,
@@ -20,7 +21,9 @@ import {
     updateCompanyLogo,
     updateCompanyFounded,
     updateCompanyPhone,
+    updateCompanyOffices,
 } from "../Services/companyServices.js";
+import TextField from "@mui/material/TextField";
 
 const ModalContainer = styled(Box)(({ theme }) => ({
     position: "absolute",
@@ -45,11 +48,12 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
     const [companyName, setCompanyName] = useState(companyData?.companyName || "");
     const [description, setDescription] = useState(companyData?.description || "");
     const [location, setLocation] = useState(companyData?.location || "");
-    const [phoneNumber, setPhoneNumber] = useState( companyData?.phoneNumber || "");
+    const [phoneNumber, setPhoneNumber] = useState(companyData?.phoneNumber || "");
     const [email, setEmail] = useState(companyData?.email || "");
     const [website, setWebsite] = useState(companyData?.website || "");
     const [employeeNumber, setEmployeeNumber] = useState(companyData?.employeeNumber || "");
     const [founded, setFounded] = useState(companyData?.founded || "");
+    const [cities, setCities] = useState(companyData?.cities || []);
 
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -70,6 +74,9 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
             [field]: !prev[field],
         }));
     };
+    useEffect(() => {
+        setCities((companyData?.cities || []).map((city) => ({ city })));
+    }, [companyData]);
 
     const showSnackbar = (message, severity = "success") => {
         setSnackbar({ open: true, message, severity });
@@ -92,8 +99,6 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
             showSnackbar(`Failed to update ${field}. Please try again.`, "error");
         }
     };
-
-
 
     const handlePasswordUpdate = async () => {
         if (newPassword !== confirmPassword) {
@@ -144,6 +149,33 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
         }
     };
 
+
+    const handleAddOffice = () => {
+        setCities([...cities, { city: "" }]);
+    };
+
+    const handleOfficeChange = (index, value) => {
+        const updatedCities = [...cities];
+        updatedCities[index].city = value;
+        setCities(updatedCities);
+    };
+
+    const handleRemoveOffice = (index) => {
+        setCities(cities.filter((_, i) => i !== index));
+    };
+
+    const handleSaveOffices = async () => {
+        try {
+            const cityNames = cities.map(city => city.city.trim()).filter(name => name !== "");
+            await updateCompanyOffices(companyData.id, cityNames);
+            showSnackbar("Offices updated successfully!", "success");
+            console.log(companyData);
+        } catch (error) {
+            showSnackbar("Failed to update offices. Please try again.", "error");
+        }
+    };
+
+
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => currentYear - i);
 
@@ -154,7 +186,6 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                     <Grid container spacing={2}>
                         {/* First Column */}
                         <Grid item xs={4}>
-
                             <EditableTextField
                                 label="Company Name"
                                 value={companyName}
@@ -221,7 +252,6 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
 
                         {/* Second Column */}
                         <Grid item xs={4}>
-
                             <EditableTextField
                                 label="Email"
                                 value={email}
@@ -271,7 +301,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                                 onChange={(e) => setEmployeeNumber(e.target.value)}
                                 options={[
                                     { value: "<20", label: " <20 " },
-                                    { value: "21-50", label: "11-50" },
+                                    { value: "21-50", label: "21-50" },
                                     { value: "51-100", label: "51-100" },
                                     { value: "101-300", label: "101-300" },
                                     { value: "301-500", label: "301-500" },
@@ -293,11 +323,36 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                                 onEdit={() => toggleEdit("founded")}
                                 onSave={() => handleUpdate("founded", founded, updateCompanyFounded)}
                             />
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <Typography variant="h6" sx={{ color: 'black', paddingLeft: '140px', opacity: '0.8' }}>Offices</Typography>
+
+                            {cities.map((city, index) => (
+                                <Box key={index} sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
+                                    <TextField
+                                        fullWidth
+                                        label={`Office ${index + 1}`}
+                                        value={city?.city || ""}
+                                        onChange={(e) => handleOfficeChange(index, e.target.value)}
+                                    />
+                                    <IconButton onClick={() => handleRemoveOffice(index)} color="error">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Box>
+                            ))}
+
+
+
+                            <Button variant="contained" color="primary" onClick={handleAddOffice} sx={{ marginTop: 1 }}>
+                                Add Office
+                            </Button>
+                            <Button variant="contained" color="success" onClick={handleSaveOffices} sx={{ marginTop: 1, marginLeft: 1 }}>
+                                Save Offices
+                            </Button>
                         </Grid>
 
                         {/* Third Column */}
                         <Grid item xs={4}>
-
                             <SocialMediaFields />
 
                             <Divider sx={{ marginY: 2 }} />

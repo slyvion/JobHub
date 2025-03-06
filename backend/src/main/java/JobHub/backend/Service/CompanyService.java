@@ -41,6 +41,8 @@ public interface CompanyService {
 
     Company companyCoverUpdate(Long companyId, CompanyCoverUpdateDto companyCoverUpdateDto);
 
+    Company updateCompanyCities(Long companyId, CompanyCitiesUpdateDto companyCitiesUpdateDto);
+
     Company delete(Long id);
 
 
