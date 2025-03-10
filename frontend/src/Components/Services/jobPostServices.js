@@ -53,20 +53,22 @@ export const updateJobPost = async (id, jobPostData) => {
 };
 
 export const Tags = [
-    "Angular",
-    "Android",
+    ".NET",
     "AWS",
+    "Android",
+    "Angular",
     "Azure",
     "C",
-    "C++",
     "C#",
+    "C++",
     "Cloud",
     "DevOps",
     "Docker",
     "Flutter",
     "Git",
     "GraphQL",
-    "iOS",
+    "Java",
+    "JavaScript",
     "Jenkins",
     "Jira",
     "Kafka",
@@ -74,11 +76,10 @@ export const Tags = [
     "Kubernetes",
     "Laravel",
     "Linux",
-    "MySQL",
     "M365",
-    ".NET",
-    "Node.js",
+    "MySQL",
     "Next.js",
+    "Node.js",
     "Oracle",
     "PHP",
     "PostgreSQL",
@@ -93,7 +94,7 @@ export const Tags = [
     "Swift",
     "TensorFlow",
     "TypeScript",
-    "Vue.js",
-    "Java"
+    "Vue.js"
 ];
+
 

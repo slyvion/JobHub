@@ -4,20 +4,22 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum Tags {
-    ANGULAR("Angular"),
-    ANDROID("Android"),
+    NET(".NET"),
     AWS("AWS"),
+    ANDROID("Android"),
+    ANGULAR("Angular"),
     AZURE("Azure"),
     C("C"),
-    CPP("C++"),
     CSHARP("C#"),
+    CPP("C++"),
     CLOUD("Cloud"),
     DEVOPS("DevOps"),
     DOCKER("Docker"),
     FLUTTER("Flutter"),
     GIT("Git"),
     GRAPHQL("GraphQL"),
-    IOS("iOS"),
+    JAVA("Java"),
+    JAVASCRIPT("JavaScript"),
     JENKINS("Jenkins"),
     JIRA("Jira"),
     KAFKA("Kafka"),
@@ -25,11 +27,10 @@ public enum Tags {
     KUBERNETES("Kubernetes"),
     LARAVEL("Laravel"),
     LINUX("Linux"),
-    MYSQL("MySQL"),
     M365("M365"),
-    NET(".NET"),
-    NODEJS("Node.js"),
+    MYSQL("MySQL"),
     NEXTJS("Next.js"),
+    NODEJS("Node.js"),
     ORACLE("Oracle"),
     PHP("PHP"),
     POSTGRESQL("PostgreSQL"),
@@ -44,8 +45,7 @@ public enum Tags {
     SWIFT("Swift"),
     TENSORFLOW("TensorFlow"),
     TYPESCRIPT("TypeScript"),
-    VUEJS("Vue.js"),
-    JAVA("Java");
+    VUEJS("Vue.js");
 
     private final String label;
 
