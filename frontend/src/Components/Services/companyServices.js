@@ -108,6 +108,27 @@ export const updateCompanyLocation = async (id, location) => {
         throw new Error(err.message);
     }
 };
+
+export const updateSocialMedia = async (id, instagram, facebook, linkedin) => {
+    const response = await fetch(`http://localhost:8080/company/${id}/updateSocialMedia`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            instagramLink: instagram,
+            facebookLink: facebook,
+            linkedinLink: linkedin,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to update social media links");
+    }
+
+    return response.json();
+};
+
 export const updateCompanyFounded = async (id, founded) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateFounded`, {
@@ -149,19 +170,20 @@ export const updateCompanyEmail = async (id, email) => {
     }
 };
 
-export const updateCompanyPassword = async (id, oldPassword, newPassword) => {
-    try {
-        const response = await fetch(`http://localhost:8080/company/${id}/updatePassword`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ oldPassword, newPassword }),
-        });
-        if (!response.ok) throw new Error("Failed to update password");
-        return await response.json();
-    } catch (err) {
-        throw new Error(err.message);
+export const updateCompanyPassword = async (id, oldPassword, newPassword, confirmPassword) => {
+    const response = await fetch(`http://localhost:8080/company/${id}/updatePassword`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ oldPassword, newPassword, confirmPassword }),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to update password");
     }
 };
+
 
 export const updateCompanyCover = async (id, coverImage) => {
     try {
@@ -221,6 +243,7 @@ export const updateCompanyOffices = async (id, cities) => {
         throw new Error(err.message);
     }
 };
+
 
 
 

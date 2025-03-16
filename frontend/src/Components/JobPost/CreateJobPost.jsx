@@ -127,7 +127,7 @@ export default function CreateJobPost() {
                         <Grid item xs={12}>
                             <TextField
                                 select
-                                label="Tags"
+                                label="Technologies"
                                 name="tags"
                                 fullWidth
                                 SelectProps={{

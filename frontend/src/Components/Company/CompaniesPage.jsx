@@ -30,21 +30,22 @@ export default function CompaniesPage() {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', backgroundColor: '#f0f0f0' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: '100vh', backgroundColor: '#f0f0f0' }}>
             <AppAppBar />
-            <div
+            <Box
                 style={{
                     backgroundColor: 'white',
                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                     padding: '20px',
-                    paddingTop: 100,
+                    paddingTop: '100px',
                     position: 'relative',
                     zIndex: 10,
                 }}
             >
                 <CompanyFilter onFilter={getCompanies} />
-            </div>
+            </Box>
 
+            <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 4 }}>
             {loading ? (
                 <Box display="flex" justifyContent="center" mt={4}>
                     <CircularProgress />
@@ -59,15 +60,16 @@ export default function CompaniesPage() {
                 <Box mt={4} ml={6}>
                     <Grid container spacing={3}>
                         {companyData.map((company, index) => (
-                            <Grid item xs={12} sm={6} md={3} key={index}>
+                            <Grid item xs={12} sm={4} md={3} key={index}>
                                 <CompanyCard company={company} />
                             </Grid>
                         ))}
                     </Grid>
                 </Box>
             )}
+            </Box>
 
             <Footer />
-        </div>
+        </Box>
     );
 }

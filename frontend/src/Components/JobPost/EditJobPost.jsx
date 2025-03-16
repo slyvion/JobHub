@@ -114,28 +114,30 @@ export default function EditJobPost() {
                         </Grid>
 
                         <Grid item xs={12}>
-                            <InputLabel id="tags-label">Tags</InputLabel>
-                            <Select
-                                labelId="tags-label"
-                                multiple
+                            <TextField
+                                select
+                                label="Technologies"
+                                name="tags"
                                 fullWidth
-                                value={formData.tags}
-                                onChange={handleTagChange}
-                                input={<OutlinedInput />}
-                                renderValue={(selected) => (
-                                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                                        {selected.map((value) => (
-                                            <Chip key={value} label={value} />
-                                        ))}
-                                    </Box>
-                                )}
+                                SelectProps={{
+                                    multiple: true,
+                                    value: formData.tags,
+                                    onChange: handleTagChange,
+                                    renderValue: (selected) => (
+                                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                                            {selected.map((value) => (
+                                                <Chip key={value} label={value} />
+                                            ))}
+                                        </Box>
+                                    ),
+                                }}
                             >
                                 {Tags.map((tag) => (
                                     <MenuItem key={tag} value={tag}>
                                         {tag}
                                     </MenuItem>
                                 ))}
-                            </Select>
+                            </TextField>
                         </Grid>
 
                         <Grid item xs={12}>

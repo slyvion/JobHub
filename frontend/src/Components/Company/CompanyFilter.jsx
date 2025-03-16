@@ -57,7 +57,7 @@ export default function CompanyFilter({ onFilter }) {
                     <TextField
                         label="Company Name"
                         variant="outlined"
-                        sx={{width: '350px'}}
+                        sx={{width: '300px'}}
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
                     />

@@ -8,7 +8,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import FacebookIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import TwitterIcon from '@mui/icons-material/X';
 import Terms from "./FooterComps/Terms.jsx";
 import Privacy from "./FooterComps/Privacy.jsx";
 import Contact from "./FooterComps/Contact.jsx";

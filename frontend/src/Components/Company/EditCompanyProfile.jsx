@@ -74,6 +74,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
             [field]: !prev[field],
         }));
     };
+
     useEffect(() => {
         setCities((companyData?.cities || []).map((city) => ({ city })));
     }, [companyData]);

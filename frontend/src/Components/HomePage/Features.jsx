@@ -16,26 +16,26 @@ import PersonIcon from '@mui/icons-material/Person';
 const items = [
     {
         icon: <PersonIcon />,
-        title: 'User/Company profile',
+        title: 'Title 1',
         description:
-            'This provides Users and Companies their own profile where companies can see their ratings and reviews, while' +
-            'users can check their posted reviews',
+            'description 1.1' +
+            'description 1.2',
         imageLight: 'url("/static/images/templates/templates-images/dash-light.png")',
         imageDark: 'url("/static/images/templates/templates-images/dash-dark.png")',
     },
     {
         icon: <InsertCommentIcon />,
-        title: 'Company Reviews',
+        title: 'Title 2',
         description:
-            'This item could provide information about the company reviews on the application.',
+            'Description 2',
         imageLight: 'url("/static/images/templates/templates-images/mobile-light.png")',
         imageDark: 'url("/static/images/templates/templates-images/mobile-dark.png")',
     },
     {
         icon: <DevicesRoundedIcon />,
-        title: 'Available on all platforms',
+        title: 'Title 3',
         description:
-            'This item could let users know the product is available on all platforms, such as web, mobile, and desktop.',
+            'Description 3',
         imageLight: 'url("/static/images/templates/templates-images/devices-light.png")',
         imageDark: 'url("/static/images/templates/templates-images/devices-dark.png")',
     },

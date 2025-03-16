@@ -13,7 +13,7 @@ export default function NoCompFound(){
             borderRadius={2}
             width="20%"
             margin= 'auto'
-            marginTop= '110px'
+            marginTop= '50px'
         >
             <InfoIcon />
             <Typography variant="body1" ml={1}>
