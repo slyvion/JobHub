@@ -13,6 +13,19 @@ export async function fetchUserReviews(id) {
     }
     return response.json();
 }
+export const updateUserPassword = async (id, oldPassword, newPassword, confirmPassword) => {
+    const response = await fetch(`http://localhost:8080/user/${id}/passwordUpdate`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ oldPassword, newPassword, confirmPassword }),
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to update password");
+    }
+};
 
 export const updateUserEmail = async (userId, email) => {
     try {

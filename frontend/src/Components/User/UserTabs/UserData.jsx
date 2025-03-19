@@ -4,13 +4,19 @@ import {
 } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save.js";
 import EditIcon from "@mui/icons-material/Edit.js";
-import { updateUserEmail } from "../../Services/userServices.js";
+import { updateUserEmail,
+    updateUserPassword,
+} from "../../Services/userServices.js";
+import PasswordChange from "../../EditableFields/PasswordChange.jsx";
 
 export default function UserData({ user }) {
     const [email, setEmail] = useState(user.email);
     const [isEmailEditable, setIsEmailEditable] = useState(false);
     const [open, setOpen] = useState(false);
-    const [password, setPassword] = useState("");
+    const [password, setPassword] = useState("")
+    const [oldPassword, setOldPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [isPasswordValid, setIsPasswordValid] = useState(false);
     const [snackbar, setSnackbar] = useState({ open: false, message: "", severity: "success" });
 
@@ -21,6 +27,22 @@ export default function UserData({ user }) {
             setSnackbar({ open: true, message: "Email updated successfully!", severity: "success" });
         } catch (error) {
             setSnackbar({ open: true, message: "Failed to update email.", severity: "error" });
+        }
+    };
+    const handlePasswordUpdate = async () => {
+        if (newPassword !== confirmPassword) {
+            setSnackbar({ open: true, message: "New password and confirm password do not match.", severity: "error" });
+            return;
+        }
+        try {
+            await updateUserPassword(user.id, oldPassword, newPassword, confirmPassword);
+            setSnackbar({ open: true, message: "Password updated successfully!", severity: "success" });
+            setOldPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+        } catch (error) {
+            console.error("Error updating password:", error);
+            setSnackbar({ open: true, message: "Failed to update password. Please try again.", severity: "error" });
         }
     };
 
@@ -36,7 +58,7 @@ export default function UserData({ user }) {
         setIsPasswordValid(false);
     };
 
-    const handlePasswordChange = (event) => {
+    const handleCorrectPasswordEntry = (event) => {
         const enteredPassword = event.target.value;
         setPassword(enteredPassword);
         setIsPasswordValid(enteredPassword === user.password);
@@ -70,13 +92,17 @@ export default function UserData({ user }) {
             </Box>
 
             <Box sx={{ backgroundColor: "white", borderRadius: "8px", padding: "30px", paddingLeft: "10px", boxShadow: 2, marginBottom: "20px" }}>
-                <Typography variant="h6" sx={{ color: "black" }}>Change Password</Typography>
-                <Box sx={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "10px" }}>
-                    <TextField label="Old Password" type="password" fullWidth size="medium" />
-                    <TextField label="New Password" type="password" fullWidth size="medium" />
-                    <TextField label="Confirm Password" type="password" fullWidth size="medium" />
-                    <Button variant="contained" size="medium">Change Password</Button>
-                </Box>
+                <Typography variant="h6" sx={{ color: "black" ,paddingBottom: "20px", paddingLeft: "10px"}}>Change Password</Typography>
+
+            <PasswordChange
+                oldPassword={oldPassword}
+                newPassword={newPassword}
+                confirmPassword={confirmPassword}
+                onOldPasswordChange={(e) => setOldPassword(e.target.value)}
+                onNewPasswordChange={(e) => setNewPassword(e.target.value)}
+                onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
+                onPasswordChange={handlePasswordUpdate}
+            />
             </Box>
 
             <Box sx={{ backgroundColor: "white", borderRadius: "8px", padding: "30px", paddingLeft: "10px", boxShadow: 2 }}>
@@ -102,7 +128,7 @@ export default function UserData({ user }) {
                         label="Enter your password"
                         sx={{ marginTop: "15px" }}
                         value={password}
-                        onChange={handlePasswordChange}
+                        onChange={handleCorrectPasswordEntry}
                     />
                     <Box sx={{ display: "flex", justifyContent: "space-between", marginTop: "20px" }}>
                         <Button variant="outlined" onClick={handleClose}>Close</Button>

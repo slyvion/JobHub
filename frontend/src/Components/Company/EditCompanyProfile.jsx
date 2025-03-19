@@ -123,7 +123,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
             return;
         }
         try {
-            await updateCompanyPassword(companyData.id, oldPassword, newPassword);
+            await updateCompanyPassword(companyData.id, oldPassword, newPassword, confirmPassword);
             showSnackbar("Password updated successfully!", "success");
             setOldPassword("");
             setNewPassword("");
