@@ -45,7 +45,6 @@ export default function CompaniesPage() {
                 <CompanyFilter onFilter={getCompanies} />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 4 }}>
             {loading ? (
                 <Box display="flex" justifyContent="center" mt={4}>
                     <CircularProgress />
@@ -60,14 +59,13 @@ export default function CompaniesPage() {
                 <Box mt={4} ml={6}>
                     <Grid container spacing={3}>
                         {companyData.map((company, index) => (
-                            <Grid item xs={12} sm={4} md={3} key={index}>
+                            <Grid item xs={12} sm={6} md={3} key={index}>
                                 <CompanyCard company={company} />
                             </Grid>
                         ))}
                     </Grid>
                 </Box>
             )}
-            </Box>
 
             <Footer />
         </Box>
