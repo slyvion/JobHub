@@ -43,16 +43,27 @@ export default function CompanyContact({ company }) {
                         Social Media:
                     </Typography>
                     <Box sx={{ display: "flex", gap: 1 }}>
-                        <IconButton component="a" href={company.linkedin || "#"} target="_blank">
+                        <IconButton component="a"
+                                    href={company.linkedinLink && company.linkedinLink.startsWith("http") ? company.linkedinLink : `https://${company.linkedinLink}`}
+                                    target="_blank"
+                        >
                             <LinkedIn />
                         </IconButton>
-                        <IconButton component="a" href={company.facebook || "#"} target="_blank">
+                        <IconButton component="a"
+                                    href={company.facebookLink && company.facebookLink.startsWith("http") ? company.facebookLink : `https://${company.facebookLink}`}
+                                    target="_blank"
+                        >
                             <Facebook />
                         </IconButton>
-                        <IconButton component="a" href={company.instagram || "#"} target="_blank">
+                        <IconButton component="a"
+                                    href={company.instagramLink && company.instagramLink.startsWith("http") ? company.instagramLink : `https://${company.instagramLink}`}
+                                    target="_blank"
+                        >
                             <Instagram />
                         </IconButton>
                     </Box>
+
+
                     <Divider sx={{ mt: 2 }} />
                 </Grid>
             </Grid>

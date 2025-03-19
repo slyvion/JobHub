@@ -22,6 +22,7 @@ import {
     updateCompanyFounded,
     updateCompanyPhone,
     updateCompanyOffices,
+    updateSocialMedia,
 } from "../Services/companyServices.js";
 import TextField from "@mui/material/TextField";
 
@@ -54,6 +55,10 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
     const [employeeNumber, setEmployeeNumber] = useState(companyData?.employeeNumber || "");
     const [founded, setFounded] = useState(companyData?.founded || "");
     const [cities, setCities] = useState(companyData?.cities || []);
+    const [facebookLink, setFacebookLink] = useState(companyData?.facebookLink || "");
+    const [instagramLink, setInstagramLink] = useState(companyData?.instagramLink || "");
+    const [linkedinLink, setLinkedinLink] = useState(companyData?.linkedinLink || "");
+
 
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
@@ -86,6 +91,17 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
     const handleCloseSnackbar = () => {
         setSnackbar((prev) => ({ ...prev, open: false }));
     };
+
+    const handleSocialMediaUpdate = async () => {
+        try {
+            await updateSocialMedia(companyData.id, instagramLink, facebookLink, linkedinLink);
+            showSnackbar("Social media links updated successfully!", "success");
+        } catch (error) {
+            showSnackbar("Failed to update social media links. Please try again.", "error");
+        }
+    };
+
+
 
     const handleUpdate = async (field, value, updateFunction) => {
         try {
@@ -354,7 +370,16 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
 
                         {/* Third Column */}
                         <Grid item xs={4}>
-                            <SocialMediaFields />
+                            <SocialMediaFields
+                                instagramLink={instagramLink}
+                                facebookLink={facebookLink}
+                                linkedinLink={linkedinLink}
+                                onInstagramChange={(e) => setInstagramLink(e.target.value)}
+                                onFacebookChange={(e) => setFacebookLink(e.target.value)}
+                                onLinkedInChange={(e) => setLinkedinLink(e.target.value)}
+                                onSocialMediaUpdate={handleSocialMediaUpdate}
+                            />
+
 
                             <Divider sx={{ marginY: 2 }} />
 
