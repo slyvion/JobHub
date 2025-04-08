@@ -21,7 +21,7 @@ public class CompaniesController {
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) Double rating,
-            @RequestParam(required = false)EmployeeNumber employeeNumber
+            @RequestParam(required = false) EmployeeNumber employeeNumber
             ) {
 
         if ( companyName == null &&

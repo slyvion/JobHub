@@ -28,11 +28,13 @@ public class UserController {
     }
 
     @PutMapping("/{id}/passwordUpdate")
-    public User updatePassword(@PathVariable Long id, @Valid @RequestBody UserPasswordUpdateDto userDto) {
+    public User updatePassword(@PathVariable Long id,
+                               @Valid @RequestBody UserPasswordUpdateDto userDto) {
         return userService.PasswordUpdate(id, userDto);
     }
     @PutMapping("/{id}/emailUpdate")
-    public User updateEmail(@PathVariable long id, @Valid @RequestBody UserEmailUpdateDto userDto){
+    public User updateEmail(@PathVariable long id,
+                            @Valid @RequestBody UserEmailUpdateDto userDto){
         return userService.EmailUpdate(id, userDto);
     }
     @GetMapping("/{id}/savedJobPosts")
@@ -40,13 +42,15 @@ public class UserController {
         return savedJobPostsService.getSavedJobPostsByUser(id);
     }
     @PostMapping("/{id}/saveJob/{jobPostId}")
-    public String saveJobPost(@PathVariable Long id, @PathVariable Long jobPostId) {
+    public String saveJobPost(@PathVariable Long id,
+                              @PathVariable Long jobPostId) {
         boolean success = savedJobPostsService.saveJobPost(id, jobPostId);
         return success ? "Job post saved" : "Job post already saved or does not exist";
     }
 
     @DeleteMapping("/{id}/removeJob/{jobPostId}")
-    public String removeSavedJobPost(@PathVariable Long id, @PathVariable Long jobPostId) {
+    public String removeSavedJobPost(@PathVariable Long id,
+                                     @PathVariable Long jobPostId) {
         savedJobPostsService.removeSavedJobPost(id, jobPostId);
         return "Job post removed";
     }
