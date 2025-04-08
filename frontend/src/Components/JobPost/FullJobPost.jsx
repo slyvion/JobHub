@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { Box, Typography, Paper, Button } from '@mui/material';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import {
+    Box, Typography, Paper, Button, Dialog, DialogTitle,
+    DialogContent, DialogActions, TextField
+} from '@mui/material';
 import JobPostHeader from './JobPostHeader';
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
-import { fetchJobPost } from '../Services/jobPostServices';
+import { fetchJobPost, deleteJobPost } from '../Services/jobPostServices';
 
 export default function FullJobPost() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [job, setJob] = useState(null);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const [confirmText, setConfirmText] = useState('');
 
     useEffect(() => {
         const getJob = async () => {
@@ -21,6 +27,15 @@ export default function FullJobPost() {
         };
         getJob();
     }, [id]);
+
+    const handleDelete = async () => {
+        try {
+            await deleteJobPost(job.id);
+            navigate('/jobposts'); // Redirect after delete
+        } catch (err) {
+            console.error('Error deleting job post:', err);
+        }
+    };
 
     if (!job) {
         return <Typography variant="h6" color="text.secondary">Loading job details...</Typography>;
@@ -82,7 +97,8 @@ export default function FullJobPost() {
                                     '&:hover': {
                                         backgroundColor: '#f0f0f0',
                                     }
-                                }}>
+                                }}
+                            >
                                 Save
                             </Button>
 
@@ -98,7 +114,8 @@ export default function FullJobPost() {
                                             backgroundColor: '#1565c0',
                                         },
                                         marginLeft: 1
-                                    }}>
+                                    }}
+                                >
                                     Apply
                                 </Button>
                             </a>
@@ -116,18 +133,58 @@ export default function FullJobPost() {
                                             backgroundColor: '#f0f0f0',
                                         },
                                         marginLeft: 1
-
-                                    }}>
+                                    }}
+                                >
                                     Edit
                                 </Button>
                             </Link>
-                        </Box>
 
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{
+                                    width: '70px',
+                                    height: '40px',
+                                    marginLeft: 1,
+                                }}
+                                onClick={() => setOpenDeleteModal(true)}
+                            >
+                                Delete
+                            </Button>
+                        </Box>
                     </Paper>
                 </Box>
             </Box>
 
             <Footer />
+
+            <Dialog open={openDeleteModal} onClose={() => setOpenDeleteModal(false)}>
+                <DialogTitle>Confirmation</DialogTitle>
+                <DialogContent>
+                    <Typography sx={{ mb: 2 }}>
+                        Are you sure you want to delete this jobpost? If you are, please write <strong>"Delete"</strong> in the field below.
+                    </Typography>
+                    <TextField
+                        autoFocus
+                        fullWidth
+                        variant="outlined"
+                        placeholder="Delete"
+                        value={confirmText}
+                        onChange={(e) => setConfirmText(e.target.value)}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDeleteModal(false)}>Cancel</Button>
+                    <Button
+                        onClick={handleDelete}
+                        color="error"
+                        variant="contained"
+                        disabled={confirmText !== "Delete"}
+                    >
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

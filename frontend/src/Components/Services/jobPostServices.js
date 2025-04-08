@@ -32,6 +32,18 @@ export const fetchJobPost = async (id) => {
     }
 };
 
+export const deleteJobPost = async (id) => {
+    const response = await fetch(`http://localhost:8080/jobposts/${id}`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete job post');
+    }
+
+    return true;
+};
+
 
 export const updateJobPost = async (id, jobPostData) => {
     try {
