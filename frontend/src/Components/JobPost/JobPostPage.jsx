@@ -7,12 +7,15 @@ import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
 import NoJobsFound from "./NoJobsFound.jsx";
 import { fetchJobPosts as getJobPosts } from "../Services/jobPostServices.js";
-
+import { useNavigate } from "react-router-dom";
 export default function JobPostPage() {
     const [jobPosts, setJobPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const navigate = useNavigate();
+    const handleAddJobpost = () => {
+        navigate('/createJobpost');
+    };
     const loadJobPosts = async (filterParams = {}) => {
         setLoading(true);
         setError(null);
@@ -91,7 +94,7 @@ export default function JobPostPage() {
                     zIndex: 999,
                 }}
             >
-                <Fab color="primary" aria-label="add">
+                <Fab color="primary" aria-label="add" onClick={handleAddJobpost}>
                     <AddIcon />
                 </Fab>
                 <Typography variant="caption" sx={{color: 'black'}}mt={1}>
