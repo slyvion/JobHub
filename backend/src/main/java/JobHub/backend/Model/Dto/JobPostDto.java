@@ -15,6 +15,8 @@ public class JobPostDto {
 
     private Long companyId;
 
+    private Long jobpostId;
+
     @NotBlank(message = "Title is required")
     private String title;
 

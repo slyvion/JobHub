@@ -25,7 +25,7 @@ public interface ReviewService {
 
     List<Review> findByDate(Date postDate);
 
-    List<Review> findByCompany(Company company);
+    List<Review> findByCompanyName(String companyName);
 
     List<Review> findAllByUserId(long id);
     List<Review> findByRatingGreaterThan(long rating);

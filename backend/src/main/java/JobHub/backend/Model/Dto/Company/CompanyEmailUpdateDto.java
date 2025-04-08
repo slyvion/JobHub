@@ -10,7 +10,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class CompanyEmailUpdateDto {
     @NotBlank(message = "Email is required")
-    @Email
+    @Email(message = "Email should be valid")
     private String email;
 
     public CompanyEmailUpdateDto(String email) {

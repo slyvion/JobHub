@@ -51,11 +51,11 @@ public class CompanyController {
         return "redirect:/companies";
     }
     @PutMapping("/{id}/add-review")
-    public Review addReview(@Valid @RequestBody ReviewDto reviewDto, @PathVariable Long id) {
+    public Review addReview(@PathVariable Long id, @Valid @RequestBody ReviewDto reviewDto) {
         return reviewService.create(reviewDto);
     }
     @PutMapping("/{id}/updateBio")
-    public Company updateBio(@Valid @RequestBody CompanyBioUpdateDto companyBioUpdateDto, @PathVariable Long id){
+    public Company updateBio(@PathVariable Long id, @Valid @RequestBody CompanyBioUpdateDto companyBioUpdateDto){
         return companyService.bioUpdate(id, companyBioUpdateDto);
     }
     @PutMapping("/{id}/updateName")

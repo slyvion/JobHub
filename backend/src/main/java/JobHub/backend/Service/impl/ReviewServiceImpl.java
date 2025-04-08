@@ -99,8 +99,8 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findByCompany(Company company) {
-        return reviewRepository.findReviewsByCompany(company);
+    public List<Review> findByCompanyName(String companyName) {
+        return reviewRepository.findReviewsByCompanyCompanyName(companyName);
     }
 
     @Override

@@ -1,8 +1,12 @@
 package JobHub.backend.Service.impl;
 
 
+import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
+import JobHub.backend.Model.Dto.User.ApplyDto;
+import JobHub.backend.Repository.ApplicantsRepository;
+import JobHub.backend.exceptions.InvalidUserIdException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,6 +22,7 @@ import JobHub.backend.Service.JobPostService;
 import JobHub.backend.exceptions.InvalidCompanyIdException;
 import JobHub.backend.exceptions.InvalidJobPostIdException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +32,12 @@ public class JobPostServiceImpl implements JobPostService {
     private final JobPostRepository jobPostRepository;
     private final CompanyRepository companyRepository;
 
-    public JobPostServiceImpl(JobPostRepository jobPostRepository, CompanyRepository companyRepository) {
+    private final ApplicantsRepository applicantsRepository;
+
+    public JobPostServiceImpl(JobPostRepository jobPostRepository, CompanyRepository companyRepository, ApplicantsRepository applicantsRepository) {
         this.jobPostRepository = jobPostRepository;
         this.companyRepository = companyRepository;
+        this.applicantsRepository = applicantsRepository;
     }
 
 
@@ -89,7 +97,42 @@ public class JobPostServiceImpl implements JobPostService {
         return jobPost;
     }
 
+    @Override
+    public List<Apply> findApplicantsByJobpostId(Long id){
+        JobPost jobPost = this.findById(id);
+        return applicantsRepository.findByJobPostId(jobPost.getId());
+    }
 
+    @Override
+    public Apply apply(ApplyDto applyDto) {
+        JobPost jobpost = jobPostRepository.findById(applyDto.getJobPost().getId()).orElseThrow(InvalidJobPostIdException::new);
+
+        byte[] attachmentBytes = null;
+        if (applyDto.getAttachment() != null) {
+            try {
+                attachmentBytes = applyDto.getAttachment().getBytes();
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to process the file upload.", e);
+            }
+        }
+
+        Apply apply = new Apply(
+                applyDto.getFirstName(),
+                applyDto.getLastName(),
+                applyDto.getEmail(),
+                applyDto.getPhoneNumber(),
+                applyDto.getLinkedinLink(),
+                attachmentBytes,
+                applyDto.getAdditionalMessage(),
+                applyDto.getJobPost(),
+                applyDto.getUser()
+        );
+
+        Apply savedApplication = applicantsRepository.save(apply);
+        jobpost.getApplicants().add(savedApplication);
+
+        return savedApplication;
+    }
     @Override
     public List<JobPost> findAllByTitle(String title) {
         return jobPostRepository.findJobPostsByTitle(title);

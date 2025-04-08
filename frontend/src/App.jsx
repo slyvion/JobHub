@@ -16,6 +16,7 @@ import ErrorPage from "./Components/ErrorPage.jsx";
 import CreateJobPost from "./Components/JobPost/CreateJobPost.jsx";
 import FullJobPost from "./Components/JobPost/FullJobPost.jsx";
 import EditJobPost from "./Components/JobPost/EditJobPost.jsx";
+import Apply from "./Components/JobPost/Apply/Apply.jsx";
 
 function App() {
 
@@ -45,6 +46,7 @@ function App() {
                 <Route path="/jobposts" element={<JobPostPage />} />
                 <Route path="/jobposts/:id/edit" element={<EditJobPost />} />
                 <Route path="createJobPost" element={<CreateJobPost />} />
+                <Route path="jobposts/:id/apply" element={<Apply />} />
 
                 <Route path="/*" element={<ErrorPage />} />
 

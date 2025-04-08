@@ -234,6 +234,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                                     style={{ width: 150, height: 150, objectFit: 'cover' }}
                                 />
                             </Box>
+                            <Box sx={{paddingLeft: "40px"}}>
                             <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
                                 Upload logo
                                 <input
@@ -245,6 +246,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                             <Button variant="contained" color="success" onClick={handleLogoUpload} sx={{ marginLeft: 1 }}>
                                 Confirm
                             </Button>
+                            </Box>
                             <Divider sx={{ marginY: 2 }} />
 
                             <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
@@ -254,6 +256,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                                     style={{ width: 400, height: 150, objectFit: 'cover', borderRadius: 8 }}
                                 />
                             </Box>
+                            <Box sx={{paddingLeft: "40px"}}>
                             <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
                                 Upload cover
                                 <input
@@ -265,6 +268,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                             <Button variant="contained" color="success" onClick={handleCoverUpload} sx={{ marginLeft: 1 }}>
                                 Confirm
                             </Button>
+                            </Box>
                         </Grid>
 
                         {/* Second Column */}

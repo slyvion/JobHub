@@ -1,5 +1,6 @@
 package JobHub.backend.Web;
 
+import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.Seniority;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,10 @@ public class JobPostController {
     @GetMapping("/company/{id}")
     public List<JobPost> getJobPostByCompanyId(@PathVariable Long id) {
         return jobPostService.findJobPostsByCompanyId(id);
+    }
+    @GetMapping("/jobposts/id/applicants")
+    public List<Apply> getApplicantsByJobpostId(@PathVariable Long id){
+        return jobPostService.findApplicantsByJobpostId(id);
     }
 
 }

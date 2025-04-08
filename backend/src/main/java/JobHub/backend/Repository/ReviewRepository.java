@@ -16,7 +16,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findReviewsByPostDate(Date postDate);
     List<Review> findReviewsByUser(User user);
-    List<Review> findReviewsByCompany(Company company);
+
+    List<Review> findReviewsByCompanyCompanyName(String companyName);
 
     List<Review> findReviewsByCompanyId(long id);
 

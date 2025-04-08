@@ -44,6 +44,10 @@ public class JobPost {
 
     private String location;
 
+    @OneToMany(mappedBy = "jobPost", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Apply> applicants;
+
+
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<Tags> tags;

@@ -26,4 +26,5 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long>, JpaSpec
     List<JobPost> findJobPostsByLocation(String location);
     List<JobPost> findJobPostsByJobType(JobType jobType);
     List<JobType> findJobPostsByEmploymentType(EmploymentType employmentType);
+
 }

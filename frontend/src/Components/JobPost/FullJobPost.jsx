@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom'; // Import Link for navigation
+import { useParams, Link } from 'react-router-dom';
 import { Box, Typography, Paper, Button } from '@mui/material';
-import JobPost from './JobPost';
+import JobPostHeader from './JobPostHeader';
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
 import { fetchJobPost } from '../Services/jobPostServices';
@@ -51,23 +51,23 @@ export default function FullJobPost() {
                 padding: 3,
             }}>
                 <Box sx={{ maxWidth: '1200px', width: '100%' }}>
-                    <JobPost job={job} sx={{ width: '100%' }} />
+                    <JobPostHeader job={job} sx={{ width: '100%' }} />
 
                     <Paper sx={{ padding: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
 
                         <Box>
                             <Typography variant="h4" sx={{ paddingBottom: '10px' }}>About the Role</Typography>
-                            <Typography variant="body1" color="text.secondary">{job.description || 'No details added'}</Typography>
+                            <Typography variant="body1" color="text.secondary">{job.description}</Typography>
                         </Box>
 
                         <Box>
                             <Typography variant="h4" sx={{ paddingBottom: '10px' }}>What You’ll Do</Typography>
-                            <Typography variant="body1" color="text.secondary">{job.jobInfo || 'No info available'}</Typography>
+                            <Typography variant="body1" color="text.secondary">{job.jobInfo}</Typography>
                         </Box>
 
                         <Box>
                             <Typography variant="h4" sx={{ paddingBottom: '10px' }}>Requirements</Typography>
-                            <Typography variant="body1" color="text.secondary">{job.requirements || 'No requirements listed'}</Typography>
+                            <Typography variant="body1" color="text.secondary">{job.requirements}</Typography>
                         </Box>
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>

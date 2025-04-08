@@ -23,13 +23,14 @@ public class Review {
     private User user;
 
     @ManyToOne
-    @JsonIgnore
     private Company company;
 
     private Long rating; // req
 
+    @Lob
     private String pros;
 
+    @Lob
     private String cons;
 
     private Date postDate;

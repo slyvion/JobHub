@@ -33,7 +33,7 @@ export default function CompaniesPage() {
         <Box sx={{ display: 'flex', flexDirection: 'column', flexGrow: 1, minHeight: '100vh', backgroundColor: '#f0f0f0' }}>
             <AppAppBar />
             <Box
-                style={{
+                sx={{
                     backgroundColor: 'white',
                     boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                     padding: '20px',
@@ -45,6 +45,7 @@ export default function CompaniesPage() {
                 <CompanyFilter onFilter={getCompanies} />
             </Box>
 
+            <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 4 }}>
             {loading ? (
                 <Box display="flex" justifyContent="center" mt={4}>
                     <CircularProgress />
@@ -66,6 +67,7 @@ export default function CompaniesPage() {
                     </Grid>
                 </Box>
             )}
+            </Box>
 
             <Footer />
         </Box>

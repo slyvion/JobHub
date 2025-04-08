@@ -18,24 +18,24 @@ const items = [
         icon: <PersonIcon />,
         title: 'Title 1',
         description:
-            'description 1.1' +
-            'description 1.2',
+            'test test test test test test test test test test test test test test test test test test test test' +
+            'test test test test test test test test test',
         imageLight: 'url("/static/images/templates/templates-images/dash-light.png")',
         imageDark: 'url("/static/images/templates/templates-images/dash-dark.png")',
     },
     {
         icon: <InsertCommentIcon />,
-        title: 'Title 2',
+        title: 'Anonimity',
         description:
-            'Description 2',
+            'Anonymously review the companies to provide better insight on potential applicants',
         imageLight: 'url("/static/images/templates/templates-images/mobile-light.png")',
         imageDark: 'url("/static/images/templates/templates-images/mobile-dark.png")',
     },
     {
         icon: <DevicesRoundedIcon />,
-        title: 'Title 3',
+        title: 'Available on all platforms',
         description:
-            'Description 3',
+            'You can access this application on the web browser through your desktop or your mobile device',
         imageLight: 'url("/static/images/templates/templates-images/devices-light.png")',
         imageDark: 'url("/static/images/templates/templates-images/devices-dark.png")',
     },

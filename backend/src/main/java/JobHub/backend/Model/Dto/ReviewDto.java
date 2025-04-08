@@ -8,6 +8,7 @@ import java.util.Date;
 @Data
 public class ReviewDto {
 
+    @NotBlank
     private String title;
 
     private long userId;

@@ -1,6 +1,7 @@
 import { Card, CardMedia, Typography, Box, Divider, Chip } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { Link } from 'react-router-dom';
+import React from "react";
 
 export default function JobPost({ job }) {
     return (
@@ -9,16 +10,19 @@ export default function JobPost({ job }) {
             p: 3,
             border: '1px solid #ddd',
             boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-            maxWidth: 700,
+            width: 700,
+            height: "180px",
             mb: 2,
             mt: 2,
+            mr: 1,
             '&:hover': {
                 outline: '2px solid rgba(51, 153, 255, 0.6)',
             }
         }}>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 2 }}>
-                <Link to={`/jobposts/${job.id}`} style={{ textDecoration: 'none' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mr: 4, ml: 1 }}>
+
+            <Link to={`/jobposts/${job.id}`} style={{ textDecoration: 'none' }}>
                     <CardMedia
                         component="img"
                         sx={{
@@ -31,55 +35,49 @@ export default function JobPost({ job }) {
                         alt={job.company.companyName}
                     />
                 </Link>
-
-                <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
-                    <StarIcon sx={{ color: 'gold', fontSize: 18, mr: 0.5 }} />
-                    <Typography variant="body2" color="text.primary" sx={{ mr: 1 }}>
-                        {job.company.rating}
-                    </Typography>
-                    <Link to={`/company/${job.company.id}`} style={{ textDecoration: 'none' }}>
-                        <Typography variant="body2" sx={{ color: '#6495ED' }}>
-                            {job.company.companyName}
-                        </Typography>
-                    </Link>
-                </Box>
-
-                <Typography variant="body2" color="text.secondary">
-                    {job.location}
-                </Typography>
             </Box>
 
-            <Divider orientation="vertical" flexItem sx={{ mx: 2 }} />
-
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+
                 <Link to={`/jobposts/${job.id}`} style={{ textDecoration: 'none' }}>
                     <Typography variant="h6" noWrap sx={{ mb: 1 }}>
                         {job.title}
                     </Typography>
                 </Link>
 
-                <Typography variant="body2" color="text.secondary" noWrap sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <Link to={`/company/${job.company.id}`} style={{ textDecoration: 'none' }}>
+                        <Typography variant="body2" sx={{ color: '#6495ED', fontWeight: 500, mr: 1 }}>
+                            {job.company.companyName}
+                        </Typography>
+                    </Link>
+                    <StarIcon sx={{ color: 'gold', fontSize: 18, mr: 0.5 }} />
+                    <Typography variant="body2" color="text.primary">
+                        {job.company.rating}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{marginLeft: '10px'}}>
+                        {job.location}
+                    </Typography>
+                </Box>
+
+                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    {job.seniority && (
+                        <>
+                            {job.seniority.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase()}
+                            <Divider orientation="vertical" flexItem sx={{ mx: 1, height: '1.2em' }} />
+                        </>
+                    )}
                     {job.jobType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
-                    <Box sx={{ mx: 1, height: '1.2em' }}>
-                        <Divider orientation="vertical" flexItem sx={{ height: '100%' }} />
-                    </Box>
+                    <Divider orientation="vertical" flexItem sx={{ mx: 1, height: '1.2em' }} />
                     {job.employmentType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}
                 </Typography>
-
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                    {job.seniority ? job.seniority.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase() : 'Seniority Not Found'}
-                </Typography>
-
-
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                    {job.description && job.description.slice(0, 100)}{job.description && job.description.length > 100 ? '...' : ''}
-                </Typography>
-
+                <Divider variant="left" sx={{mt: 1, width: "10%"}}/>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
                     {job.tags && job.tags.map((tag, index) => (
-                        <Chip key={index} label={tag}  size="small" sx={{ margin: 0.5, borderRadius: 0 }} />
+                        <Chip key={index} label={tag} size="small" sx={{ margin: 0.5, borderRadius: 2 }} />
                     ))}
                 </Box>
+
             </Box>
         </Card>
     );

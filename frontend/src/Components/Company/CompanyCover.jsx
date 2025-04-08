@@ -9,7 +9,7 @@ export default function CompanyCover({ image }) {
         backgroundRepeat: "no-repeat",
         backgroundImage: `url(${image})`,
         borderRadius: "5px",
-        boxShadow: `0 0 3px 1px rgba(0, 123, 255, 0.6)`,
+        //boxShadow: `0 0 3px 1px rgba(0, 123, 255, 0.6)`,
     });
 
     return (

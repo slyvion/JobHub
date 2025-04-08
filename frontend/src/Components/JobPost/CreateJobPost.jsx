@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, MenuItem, Grid, Paper, Box, Chip } from "@mui/material";
+import {TextField, Button, MenuItem, Grid, Paper, Box, Chip, Typography, Switch} from "@mui/material";
 import { styled } from "@mui/system";
 import { Tags } from "../Services/jobPostServices";
 
@@ -23,6 +23,8 @@ export default function CreateJobPost() {
         tags: [],
     });
 
+    const [isLink, setIsLink] = useState(true); // true for "Link", false for "Form"
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({
@@ -36,6 +38,13 @@ export default function CreateJobPost() {
             ...formData,
             tags: event.target.value,
         });
+    };
+
+    const handleSwitchChange = (event) => {
+        setIsLink(event.target.checked);
+        if (!event.target.checked) {
+            setFormData({ ...formData, applicationLink: "" }); // Clear link field if switching to "Form"
+        }
     };
 
     const handleSubmit = (event) => {
@@ -92,16 +101,33 @@ export default function CreateJobPost() {
                                 required
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="Application Link"
-                                name="applicationLink"
-                                fullWidth
-                                value={formData.applicationLink}
-                                onChange={handleChange}
-                                required
-                            />
+
+                        {/* Switch to toggle between Link and Form */}
+                        <Grid item xs={12} sx={{ml: "150px"}}>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <Typography variant="body1">Form</Typography>
+                                <Switch
+                                    checked={isLink}
+                                    onChange={handleSwitchChange}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                                <Typography variant="body1">Link</Typography>
+                            </Box>
                         </Grid>
+
+                        {isLink && (
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Application Link"
+                                    name="applicationLink"
+                                    fullWidth
+                                    value={formData.applicationLink}
+                                    onChange={handleChange}
+                                    required
+                                />
+                            </Grid>
+                        )}
+
                         <Grid item xs={12}>
                             <TextField select label="Seniority" name="seniority" fullWidth value={formData.seniority} onChange={handleChange} required>
                                 <MenuItem value="INTERN">Internship</MenuItem>
