@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -12,6 +12,10 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 import Paper from '@mui/material/Paper';
+import Divider from '@mui/material/Divider';
+import GoogleIcon from '@mui/icons-material/Google';
+
+
 
 function Copyright(props) {
     return (
@@ -106,9 +110,19 @@ export default function SignIn() {
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
                             Sign In
                         </Button>
+                        <Divider sx={{mb: 1}}> or </Divider>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 , mb: 1}}>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                startIcon={<GoogleIcon />}
+                            >
+                                Sign in with Google
+                            </Button>
+                        </Box>
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2" onClick={handleOpen}>
