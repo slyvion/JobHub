@@ -67,6 +67,9 @@ export default function CompanyProfile() {
     const handleAddReviewClick = () => {
         navigate(`/company/${id}/add-review`);
     };
+    const handleAddJobpost = () => {
+        navigate('/createJobpost');
+    };
 
     const handleEditClick = () => {
         setIsModalOpen(true);
@@ -163,6 +166,11 @@ export default function CompanyProfile() {
                             ) : (
                                 <Typography>No job posts available</Typography>
                             )}
+                            <Box display="flex" justifyContent="center" mt={2}>
+                                <Button variant="contained" color="primary" onClick={handleAddJobpost}>
+                                    Add Jobpost
+                                </Button>
+                            </Box>
                         </Box>
                     )}
 

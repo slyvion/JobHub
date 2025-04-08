@@ -34,7 +34,7 @@ public class JobPostController {
             @RequestParam(required = false) String location,
             @RequestParam(required = false) JobType jobType,
             @RequestParam(required = false) EmploymentType employmentType,
-            @RequestParam(required = false)Seniority seniority) {
+            @RequestParam(required = false) Seniority seniority) {
 
         if( title == null &&
             companyName == null &&

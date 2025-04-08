@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Fab, CircularProgress } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 import JobPostFilter from "./JobPostFilter.jsx";
 import JobPost from "./JobPost.jsx";
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
 import NoJobsFound from "./NoJobsFound.jsx";
-import CircularProgress from "@mui/material/CircularProgress";
 import { fetchJobPosts as getJobPosts } from "../Services/jobPostServices.js";
 
 export default function JobPostPage() {
@@ -38,6 +38,7 @@ export default function JobPostPage() {
                 flexDirection: "column",
                 minHeight: "100vh",
                 backgroundColor: "#f0f0f0",
+                position: "relative",
             }}
         >
             <AppAppBar />
@@ -48,7 +49,6 @@ export default function JobPostPage() {
                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                     padding: "20px",
                     paddingTop: "100px",
-                    marginTop: 0,
                     position: "relative",
                     zIndex: 10,
                 }}
@@ -78,6 +78,25 @@ export default function JobPostPage() {
                         ))}
                     </Box>
                 )}
+            </Box>
+
+            <Box
+                sx={{
+                    position: "fixed",
+                    bottom: 24,
+                    right: 24,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    zIndex: 999,
+                }}
+            >
+                <Fab color="primary" aria-label="add">
+                    <AddIcon />
+                </Fab>
+                <Typography variant="caption" sx={{color: 'black'}}mt={1}>
+                    Add JobPost
+                </Typography>
             </Box>
 
             <Footer />

@@ -51,47 +51,58 @@ public class CompanyController {
         return "redirect:/companies";
     }
     @PutMapping("/{id}/add-review")
-    public Review addReview(@PathVariable Long id, @Valid @RequestBody ReviewDto reviewDto) {
+    public Review addReview(@PathVariable Long id,
+                            @Valid @RequestBody ReviewDto reviewDto) {
         return reviewService.create(reviewDto);
     }
     @PutMapping("/{id}/updateBio")
-    public Company updateBio(@PathVariable Long id, @Valid @RequestBody CompanyBioUpdateDto companyBioUpdateDto){
+    public Company updateBio(@PathVariable Long id,
+                             @Valid @RequestBody CompanyBioUpdateDto companyBioUpdateDto){
         return companyService.bioUpdate(id, companyBioUpdateDto);
     }
     @PutMapping("/{id}/updateName")
-    public Company updateName(@PathVariable Long id, @Valid @RequestBody CompanyNameUpdateDto companyNameUpdateDto){
+    public Company updateName(@PathVariable Long id,
+                              @Valid @RequestBody CompanyNameUpdateDto companyNameUpdateDto){
         return companyService.nameUpdate(id, companyNameUpdateDto);
     }
     @PutMapping("/{id}/updateWebsite")
-    public Company updateWebsite(@PathVariable Long id, @Valid @RequestBody CompanyWebsiteUpdateDto companyWebsiteUpdateDto){
+    public Company updateWebsite(@PathVariable Long id,
+                                 @Valid @RequestBody CompanyWebsiteUpdateDto companyWebsiteUpdateDto){
         return companyService.websiteUpdate(id, companyWebsiteUpdateDto);
     }
     @PutMapping("/{id}/updateLocation")
-    public Company updateLocation(@PathVariable Long id, @Valid @RequestBody CompanyLocationUpdateDto companyLocationUpdateDto){
+    public Company updateLocation(@PathVariable Long id,
+                                  @Valid @RequestBody CompanyLocationUpdateDto companyLocationUpdateDto){
         return companyService.locationUpdate(id, companyLocationUpdateDto);
     }
     @PutMapping("/{id}/updateEmail")
-    public Company updateEmail(@PathVariable Long id, @Valid @RequestBody CompanyEmailUpdateDto companyEmailUpdateDto){
+    public Company updateEmail(@PathVariable Long id,
+                               @Valid @RequestBody CompanyEmailUpdateDto companyEmailUpdateDto){
         return companyService.emailUpdate(id, companyEmailUpdateDto);
     }
     @PutMapping("/{id}/updatePassword")
-    public Company updatePassword(@PathVariable Long id, @Valid @RequestBody CompanyPasswordUpdateDto companyPasswordUpdateDto){
+    public Company updatePassword(@PathVariable Long id,
+                                  @Valid @RequestBody CompanyPasswordUpdateDto companyPasswordUpdateDto){
         return companyService.passwordUpdate(id, companyPasswordUpdateDto);
     }
     @PutMapping("/{id}/updateFounded")
-    public Company updateFounded(@PathVariable Long id, @Valid @RequestBody CompanyFoundedUpdateDto companyFoundedUpdateDto){
+    public Company updateFounded(@PathVariable Long id,
+                                 @Valid @RequestBody CompanyFoundedUpdateDto companyFoundedUpdateDto){
         return companyService.foundedUpdate(id, companyFoundedUpdateDto);
     }
     @PutMapping("/{id}/updateCover")
-    public Company updateCompanyCover(@PathVariable Long id, @Valid @RequestBody CompanyCoverUpdateDto companyCoverUpdateDto){
+    public Company updateCompanyCover(@PathVariable Long id,
+                                      @Valid @RequestBody CompanyCoverUpdateDto companyCoverUpdateDto){
         return companyService.companyCoverUpdate(id, companyCoverUpdateDto);
     }
     @PutMapping("/{id}/updateEmployeeNumber")
-    public Company updateEmployeeNumber(@PathVariable Long id, @Valid @RequestBody CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto){
+    public Company updateEmployeeNumber(@PathVariable Long id,
+                                        @Valid @RequestBody CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto){
         return companyService.employeeNumberUpdate(id, companyEmployeeNumberUpdateDto);
     }
     @PutMapping("/{id}/updateLogo")
-    public Company updateCompanyLogo(@PathVariable Long id, @Valid @RequestBody CompanyLogoUpdateDto companyLogoUpdateDto){
+    public Company updateCompanyLogo(@PathVariable Long id,
+                                     @Valid @RequestBody CompanyLogoUpdateDto companyLogoUpdateDto){
         return companyService.companyLogoUpdate(id, companyLogoUpdateDto);
     }
     @PutMapping("/{id}/updatePhone")
