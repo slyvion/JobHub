@@ -9,6 +9,7 @@ import JobHub.backend.Model.Company;
 import JobHub.backend.Repository.CompanyRepository;
 import JobHub.backend.Service.CompanyService;
 import JobHub.backend.exceptions.InvalidCompanyIdException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,10 +32,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.findAll();
     }
 
-    @Override
-    public List<Company> findAllByLocation(String location) {
-        return companyRepository.findCompaniesByLocation(location);
-    }
 
     @Override
     public Company findById(Long id) {
@@ -47,68 +44,17 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company create(CompanyDto companyDto) {
+    public Company create(CompanyCreateDto companyDto) {
         Company company = new Company(
                 companyDto.getCompanyName(),
                 companyDto.getEmail(),
                 companyDto.getPassword(),
-                companyDto.getWebsite(),
-                companyDto.getDescription(),
-                companyDto.getLocation(),
-                companyDto.getFounded(),
-                companyDto.getEmployeeNumber(),
-                companyDto.getPhoneNumber(),
-                companyDto.getFacebookLink(),
-                companyDto.getInstagramLink(),
-                companyDto.getLinkedinLink()
+                companyDto.getLocation()
         );
 
-        try {
-            if (companyDto.getCompanyLogo() == null || companyDto.getCompanyLogo().isEmpty()) {
-                company.setCompanyLogo(Files.readAllBytes(Paths.get("src/main/resources/static/default-logo.png")));
-            } else {
-                company.setCompanyLogo(Base64.getDecoder().decode(companyDto.getCompanyLogo()));
-            }
-
-            if (companyDto.getCompanyCover() == null || companyDto.getCompanyCover().isEmpty()) {
-                company.setCompanyCover(Files.readAllBytes(Paths.get("src/main/resources/static/default-cover.png")));
-            } else {
-                company.setCompanyCover(Base64.getDecoder().decode(companyDto.getCompanyCover()));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return companyRepository.save(company);
     }
 
-    @Override
-    public Company update(Long id, CompanyDto companyDto) {
-        Company company = this.findById(id);
-        company.setCompanyName(companyDto.getCompanyName());
-        company.setEmail(companyDto.getEmail());
-        company.setWebsite(companyDto.getWebsite());
-        company.setPassword(companyDto.getPassword());
-        company.setDescription(companyDto.getDescription());
-        company.setLocation(companyDto.getLocation());
-        company.setEmployeeNumber(companyDto.getEmployeeNumber());
-        company.setPhoneNumber(companyDto.getPhoneNumber());
-        company.setFacebookLink(companyDto.getFacebookLink());
-        company.setInstagramLink(companyDto.getInstagramLink());
-        company.setLinkedinLink(companyDto.getLinkedinLink());
-
-        try {
-            if (companyDto.getCompanyLogo() != null && !companyDto.getCompanyLogo().isEmpty()) {
-                company.setCompanyLogo(Base64.getDecoder().decode(companyDto.getCompanyLogo()));
-            }
-            if (companyDto.getCompanyCover() != null && !companyDto.getCompanyCover().isEmpty()) {
-                company.setCompanyCover(Base64.getDecoder().decode(companyDto.getCompanyCover()));
-            }
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException("Invalid Base64 format for image");
-        }
-        return companyRepository.save(company);
-    }
 
     @Override
     public Company nameUpdate(Long id, CompanyNameUpdateDto companyNameUpdateDto) {
@@ -202,23 +148,42 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company companyLogoUpdate(Long companyId, CompanyLogoUpdateDto companyLogoUpdateDto) {
+    public Company companyLogoUpdate(Long companyId, MultipartFile file) throws IOException {
 
-        Company company = companyRepository.findById(companyId).orElseThrow(InvalidCompanyIdException::new);
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(InvalidCompanyIdException::new);
 
-        byte[] logoBytes = Base64.getDecoder().decode(companyLogoUpdateDto.getCompanyLogo());
-        company.setCompanyLogo(logoBytes);
+        String originalFileName = file.getOriginalFilename();
+        String extension = "";
+
+        if (originalFileName != null && originalFileName.contains(".")) {
+            extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1);
+        }
+
+        company.setCompanyLogo(file.getBytes());
+        company.setLogoType(file.getContentType());
+        company.setLogoExtension(extension);
 
         return companyRepository.save(company);
     }
 
+
     @Override
-    public Company companyCoverUpdate(Long companyId, CompanyCoverUpdateDto companyCoverUpdateDto) {
+    public Company companyCoverUpdate(Long companyId, MultipartFile file) throws IOException {
 
-        Company company = companyRepository.findById(companyId).orElseThrow(InvalidCompanyIdException::new);
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(InvalidCompanyIdException::new);
 
-        byte[] coverBytes = Base64.getDecoder().decode(companyCoverUpdateDto.getCompanyCover());
-        company.setCompanyCover(coverBytes);
+        String originalFileName = file.getOriginalFilename();
+        String extension = "";
+
+        if (originalFileName != null && originalFileName.contains(".")) {
+            extension = originalFileName.substring(originalFileName.lastIndexOf('.') + 1);
+        }
+
+        company.setCompanyCover(file.getBytes());
+        company.setCoverType(file.getContentType());
+        company.setCoverExtension(extension);
 
         return companyRepository.save(company);
     }
@@ -228,19 +193,6 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = this.findById(companyId);
         company.setCities(companyCitiesUpdateDto.getCities());
         return companyRepository.save(company);
-    }
-    @Override
-    public byte[] getCompanyLogo(Long companyId) {
-        Company company = companyRepository.findById(companyId).orElseThrow(InvalidCompanyIdException::new);
-
-        return company.getCompanyLogo();
-    }
-
-    @Override
-    public byte[] getCompanyCover(Long companyId) {
-        Company company = companyRepository.findById(companyId).orElseThrow(InvalidCompanyIdException::new);
-
-        return company.getCompanyCover();
     }
 
     @Override

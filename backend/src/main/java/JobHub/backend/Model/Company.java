@@ -1,6 +1,8 @@
 package JobHub.backend.Model;
 
 import JobHub.backend.Model.Constants.EmployeeNumber;
+import JobHub.backend.Model.Dto.Company.CompanyDetailsDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -53,43 +55,26 @@ public class Company {
     @Column(nullable = true)
     private double rating;
 
+    @JsonIgnore
     @Lob
     private byte[] companyLogo;
+    private String logoType;    // e.g., "image/jpeg"
+    private String logoExtension; // e.g., "png"
 
+    @JsonIgnore
     @Lob
     private byte[] companyCover;
+    private String coverType;    // e.g., "image/jpeg"
+    private String coverExtension; // e.g., "png"
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
-    public Company(String companyName,
-                   String email,
-                   String password,
-                   String website,
-                   String description,
-                   String location,
-                   Integer founded,
-                   EmployeeNumber employeeNumber,
-                   String phoneNumber,
-                   String facebookLink,
-                   String instagramLink,
-                   String linkedinLink) {
+    public Company(String companyName, String email, String password, String location) {
         this.companyName = companyName;
         this.email = email;
         this.password = password;
-        this.website = website;
-        this.description = description;
         this.location = location;
-        this.founded = founded;
-        this.employeeNumber = employeeNumber;
-        this.reviews = new ArrayList<>();
-        this.cities= new ArrayList<>();
-        this.rating = 0;
-        this.phoneNumber = phoneNumber;
-        this.facebookLink = facebookLink;
-        this.instagramLink = instagramLink;
-        this.linkedinLink = linkedinLink;
-
         try {
             this.companyLogo = Files.readAllBytes(Paths.get("src/main/resources/static/defaultLogo.png"));
             this.companyCover = Files.readAllBytes(Paths.get("src/main/resources/static/defaultCover.png"));
@@ -98,6 +83,18 @@ public class Company {
             this.companyLogo = null;
             this.companyCover = null;
         }
+        this.website = "";
+        this.description = "";
+        this.location = "";
+        this.founded = null;
+        this.rating = 0;
+        this.employeeNumber = null;
+        this.phoneNumber = "";
+        this.facebookLink = "";
+        this.instagramLink = "";
+        this.linkedinLink = "";
+        this.reviews = new ArrayList<>();
+        this.cities = new ArrayList<>();
     }
 
     public void updateRating() {
@@ -111,5 +108,25 @@ public class Company {
             this.rating = averageRating;
         }
     }
+
+
+    public CompanyDetailsDto mapToDetails() {
+        return CompanyDetailsDto.builder()
+                .companyName(this.getCompanyName())
+                .email(this.getEmail())
+                .website(this.getWebsite())
+                .description(this.getDescription())
+                .location(this.getLocation())
+                .phoneNumber(this.getPhoneNumber())
+                .facebookLink(this.getFacebookLink())
+                .instagramLink(this.getInstagramLink())
+                .linkedinLink(this.getLinkedinLink())
+                .founded(this.getFounded())
+                .cities(new ArrayList<>(this.getCities()))
+                .employeeNumber(this.getEmployeeNumber())
+                .rating(this.getRating())
+                .build();
+    }
+
 
 }

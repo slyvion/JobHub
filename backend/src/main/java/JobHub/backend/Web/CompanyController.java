@@ -3,13 +3,23 @@ package JobHub.backend.Web;
 import JobHub.backend.Model.Dto.Company.*;
 import JobHub.backend.Service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Dto.ReviewDto;
 import JobHub.backend.Model.Review;
 import JobHub.backend.Service.ReviewService;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ContentDisposition;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/company")
@@ -23,23 +33,13 @@ public class CompanyController {
 
 
     @GetMapping("/{id}")
-    public Company getCompanyById(@PathVariable Long id) {
-        return companyService.findById(id);
+    public CompanyDetailsDto getCompanyById(@PathVariable Long id) {
+        return companyService.findById(id).mapToDetails();
     }
 
     @PostMapping
-    public Company create(@Valid @RequestBody CompanyDto companyDto) {
+    public Company create(@Valid @RequestBody CompanyCreateDto companyDto) {
         return companyService.create(
-                companyDto
-        );
-    }
-
-
-    @PutMapping("/{id}/edit")
-    public Company update(@PathVariable Long id,
-                          @Valid @RequestBody CompanyDto companyDto) {
-        return companyService.update(
-                id,
                 companyDto
         );
     }
@@ -90,21 +90,97 @@ public class CompanyController {
                                  @Valid @RequestBody CompanyFoundedUpdateDto companyFoundedUpdateDto){
         return companyService.foundedUpdate(id, companyFoundedUpdateDto);
     }
-    @PutMapping("/{id}/updateCover")
-    public Company updateCompanyCover(@PathVariable Long id,
-                                      @Valid @RequestBody CompanyCoverUpdateDto companyCoverUpdateDto){
-        return companyService.companyCoverUpdate(id, companyCoverUpdateDto);
-    }
+
     @PutMapping("/{id}/updateEmployeeNumber")
     public Company updateEmployeeNumber(@PathVariable Long id,
                                         @Valid @RequestBody CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto){
         return companyService.employeeNumberUpdate(id, companyEmployeeNumberUpdateDto);
     }
-    @PutMapping("/{id}/updateLogo")
-    public Company updateCompanyLogo(@PathVariable Long id,
-                                     @Valid @RequestBody CompanyLogoUpdateDto companyLogoUpdateDto){
-        return companyService.companyLogoUpdate(id, companyLogoUpdateDto);
+
+    @GetMapping("{id}/getLogo")
+    public ResponseEntity<Resource> getCompanyLogo(@PathVariable Long id) {
+
+        Company company = companyService.findById(id);
+
+        byte[] logoBytes = company.getCompanyLogo();
+        String logoType = company.getLogoType();
+        String logoExtension = company.getLogoExtension();
+
+        if (logoBytes == null || logoBytes.length == 0) {
+            try {
+                ClassPathResource defaultLogo = new ClassPathResource("static/defaultLogo.jpg");
+                logoBytes = defaultLogo.getInputStream().readAllBytes();
+                logoType = "image/jpg";
+                logoExtension = "defaultLogo.jpg";
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().build();
+            }
+        }
+
+        Resource imageResource = new ByteArrayResource(logoBytes);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(logoType))
+                .contentLength(logoBytes.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename(logoExtension)
+                                .build()
+                                .toString())
+                .body(imageResource);
     }
+
+
+    @PutMapping("/{id}/updateLogo")
+    public ResponseEntity<Boolean> updateCompanyLogo(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        companyService.companyLogoUpdate(id, file);
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/{id}/getCover")
+    public ResponseEntity<Resource> getCompanyCover(@PathVariable Long id){
+
+        Company company = companyService.findById(id);
+
+        byte[] coverBytes = company.getCompanyCover();
+        String coverType = company.getCoverType();
+        String coverExtension = company.getCoverExtension();
+
+        if (coverBytes == null || coverBytes.length == 0) {
+            try {
+                ClassPathResource defaultLogo = new ClassPathResource("static/defaultCover.jpg");
+                coverBytes = defaultLogo.getInputStream().readAllBytes();
+                coverType = "image/jpg";
+                coverExtension = "defaultCover.jpg";
+            } catch (IOException e) {
+                return ResponseEntity.internalServerError().build();
+            }
+        }
+
+        Resource imageResource = new ByteArrayResource(coverBytes);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(coverType))
+                .contentLength(coverBytes.length)
+                .header(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.inline()
+                                .filename(coverExtension)
+                                .build()
+                                .toString())
+                .body(imageResource);
+    }
+    @PutMapping("/{id}/updateCover")
+    public ResponseEntity<Boolean> updateCompanyCover(
+            @PathVariable Long id,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        companyService.companyCoverUpdate(id, file);
+        return ResponseEntity.ok(true);
+    }
+
     @PutMapping("/{id}/updatePhone")
     public Company updateCompanyPhone(@PathVariable Long id, @Valid @RequestBody CompanyPhoneUpdateDto companyPhoneUpdateDto){
         return companyService.phoneUpdate(id, companyPhoneUpdateDto);

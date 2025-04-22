@@ -21,6 +21,7 @@ import JobHub.backend.Repository.JobPostRepository;
 import JobHub.backend.Service.JobPostService;
 import JobHub.backend.exceptions.InvalidCompanyIdException;
 import JobHub.backend.exceptions.InvalidJobPostIdException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -158,6 +159,8 @@ public class JobPostServiceImpl implements JobPostService {
         return jobPostRepository.findJobPostsByLocation(location);
     }
 
+
+    @Transactional(readOnly = true)
     @Override
     public List<JobPost> findJobPostsByCompanyId(long id) {
         return jobPostRepository.findJobPostsByCompanyId(id);
@@ -185,7 +188,7 @@ public class JobPostServiceImpl implements JobPostService {
 
 
     @Override
-    public List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority) {
+    public List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority, List<Tags> tags) {
         return jobPostRepository.findAll((Specification<JobPost>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -207,6 +210,11 @@ public class JobPostServiceImpl implements JobPostService {
             }
             if (seniority != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("seniority").as(String.class)), "%" + seniority.toString().toLowerCase() + "%"));
+            }
+            if (tags != null && !tags.isEmpty()) {
+                for (Tags tag : tags) {
+                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("tags").as(String.class)), "%" + tag.toString().toLowerCase() + "%"));
+                }
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });

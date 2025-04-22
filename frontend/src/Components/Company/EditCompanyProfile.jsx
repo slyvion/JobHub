@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal, Box, Button, Divider, Grid, Snackbar, Alert, Typography, IconButton,
 } from "@mui/material";
@@ -8,6 +8,7 @@ import EditableTextField from '../EditableFields/EditableTextField.jsx';
 import EditableSelectField from "../EditableFields/EditableSelectField.jsx";
 import SocialMediaFields from '../EditableFields/SocialMediaFields.jsx';
 import PasswordChange from '../EditableFields/PasswordChange.jsx';
+import { useParams } from "react-router-dom";
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
     updateCompanyBio,
@@ -59,30 +60,48 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
     const [instagramLink, setInstagramLink] = useState(companyData?.instagramLink || "");
     const [linkedinLink, setLinkedinLink] = useState(companyData?.linkedinLink || "");
 
-
     const [oldPassword, setOldPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [logoFile, setLogoFile] = useState(null);
     const [coverFile, setCoverFile] = useState(null);
+    const [logoPreview, setLogoPreview] = useState(null);
+    const [coverPreview, setCoverPreview] = useState(null);
+
+    const { id } = useParams();
 
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: "",
-        severity: "success", // "success", "error", "warning", "info"
+        severity: "success",
     });
 
-    const toggleEdit = (field) => {
-        setIsEditing((prev) => ({
-            ...prev,
-            [field]: !prev[field],
-        }));
-    };
+    // Set initial logo preview from backend
+    useEffect(() => {
+        if (!logoPreview && id) {
+            setLogoPreview(`http://localhost:8080/company/${id}/getLogo`);
+        }
+        if (!coverPreview && id) {
+            setCoverPreview(`http://localhost:8080/company/${id}/getCover`);
+        }
+    }, [id, logoPreview, coverPreview]);
+
 
     useEffect(() => {
         setCities((companyData?.cities || []).map((city) => ({ city })));
     }, [companyData]);
+
+    useEffect(() => {
+        return () => {
+            if (logoPreview) URL.revokeObjectURL(logoPreview);
+            if (coverPreview) URL.revokeObjectURL(coverPreview);
+        };
+    }, [logoPreview, coverPreview]);
+
+    const toggleEdit = (field) => {
+        setIsEditing((prev) => ({ ...prev, [field]: !prev[field] }));
+    };
 
     const showSnackbar = (message, severity = "success") => {
         setSnackbar({ open: true, message, severity });
@@ -92,61 +111,42 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
         setSnackbar((prev) => ({ ...prev, open: false }));
     };
 
-    const handleSocialMediaUpdate = async () => {
-        try {
-            await updateSocialMedia(companyData.id, instagramLink, facebookLink, linkedinLink);
-            showSnackbar("Social media links updated successfully!", "success");
-        } catch (error) {
-            showSnackbar("Failed to update social media links. Please try again.", "error");
-        }
-    };
-
-
-
     const handleUpdate = async (field, value, updateFunction) => {
         try {
             await updateFunction(companyData.id, value);
-            showSnackbar(`${field} updated successfully!`, "success");
-
-            setIsEditing((prev) => {
-                const newState = { ...prev, [field]: false };
-                return newState;
-            });
+            showSnackbar(`${field} updated successfully!`);
+            setIsEditing((prev) => ({ ...prev, [field]: false }));
         } catch (error) {
-            showSnackbar(`Failed to update ${field}. Please try again.`, "error");
+            showSnackbar(`Failed to update ${field}.`, "error");
         }
     };
 
     const handlePasswordUpdate = async () => {
         if (newPassword !== confirmPassword) {
-            showSnackbar("New password and confirm password do not match.", "error");
+            showSnackbar("Passwords do not match", "error");
             return;
         }
         try {
             await updateCompanyPassword(companyData.id, oldPassword, newPassword, confirmPassword);
-            showSnackbar("Password updated successfully!", "success");
-            setOldPassword("");
-            setNewPassword("");
-            setConfirmPassword("");
-        } catch (error) {
-            console.error("Error updating password:", error);
-            showSnackbar("Failed to update password. Please try again.", "error");
+            showSnackbar("Password updated!");
+            setOldPassword(""); setNewPassword(""); setConfirmPassword("");
+        } catch {
+            showSnackbar("Failed to update password", "error");
         }
     };
 
     const handleLogoUpload = async () => {
         if (!logoFile) {
-            showSnackbar("Please select a logo file.", "error");
+            showSnackbar("Please upload a file first.", "error");
             return;
         }
+
         try {
-            const formData = new FormData();
-            formData.append("logoImage", logoFile);
-            await updateCompanyLogo(companyData.id, formData);
-            showSnackbar("Logo updated successfully!", "success");
+            await updateCompanyLogo(id, logoFile);
+            showSnackbar("Logo updated!");
         } catch (error) {
-            console.error("Error uploading logo:", error);
-            showSnackbar("Failed to upload logo. Please try again.", "error");
+            console.error(error);
+            showSnackbar("Failed to upload logo", "error");
         }
     };
 
@@ -156,16 +156,13 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
             return;
         }
         try {
-            const formData = new FormData();
-            formData.append("coverImage", coverFile);
-            await updateCompanyCover(companyData.id, formData);
-            showSnackbar("Cover image updated successfully!", "success");
+            await updateCompanyCover(id, coverFile);
+            showSnackbar("Cover updated!");
         } catch (error) {
-            console.error("Error uploading cover:", error);
-            showSnackbar("Failed to upload cover. Please try again.", "error");
+            console.error(error);
+            showSnackbar("Failed to upload cover", "error");
         }
     };
-
 
     const handleAddOffice = () => {
         setCities([...cities, { city: "" }]);
@@ -183,15 +180,22 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
 
     const handleSaveOffices = async () => {
         try {
-            const cityNames = cities.map(city => city.city.trim()).filter(name => name !== "");
+            const cityNames = cities.map(city => city.city.trim()).filter(name => name);
             await updateCompanyOffices(companyData.id, cityNames);
-            showSnackbar("Offices updated successfully!", "success");
-            console.log(companyData);
-        } catch (error) {
-            showSnackbar("Failed to update offices. Please try again.", "error");
+            showSnackbar("Offices updated!");
+        } catch {
+            showSnackbar("Failed to update offices", "error");
         }
     };
 
+    const handleSocialMediaUpdate = async () => {
+        try {
+            await updateSocialMedia(companyData.id, instagramLink, facebookLink, linkedinLink);
+            showSnackbar("Social media links updated!");
+        } catch {
+            showSnackbar("Failed to update social links", "error");
+        }
+    };
 
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: currentYear - 1990 + 1 }, (_, i) => currentYear - i);
@@ -203,157 +207,156 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                     <Grid container spacing={2}>
                         {/* First Column */}
                         <Grid item xs={4}>
-                            <EditableTextField
-                                label="Company Name"
-                                value={companyName}
-                                onChange={(e) => setCompanyName(e.target.value)}
-                                isEditable={isEditing.companyName}
-                                onEdit={() => toggleEdit("companyName")}
-                                onSave={() => handleUpdate("companyName", companyName, updateCompanyName)}
+                            <EditableTextField label="Company Name" value={companyName}
+                                               onChange={(e) => setCompanyName(e.target.value)}
+                                               isEditable={isEditing.companyName}
+                                               onEdit={() => toggleEdit("companyName")}
+                                               onSave={() => handleUpdate("companyName", companyName, updateCompanyName)}
                             />
 
                             <Divider sx={{ marginY: 2 }} />
 
-                            <EditableTextField
-                                label="About Us"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                                isEditable={isEditing.description}
-                                onEdit={() => toggleEdit("description")}
-                                onSave={() => handleUpdate("description", description, updateCompanyBio)}
-                                multiline
-                                fullWidth
+                            <EditableTextField label="About Us" value={description}
+                                               onChange={(e) => setDescription(e.target.value)}
+                                               isEditable={isEditing.description}
+                                               onEdit={() => toggleEdit("description")}
+                                               onSave={() => handleUpdate("description", description, updateCompanyBio)}
+                                               multiline fullWidth
                             />
 
                             <Divider sx={{ marginY: 2 }} />
 
                             <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
                                 <img
-                                    src={companyData?.companyLogo || "/companyLogo.jpg"}
+                                    src={logoPreview}
                                     alt="Company Logo"
                                     style={{ width: 150, height: 150, objectFit: 'cover' }}
                                 />
                             </Box>
-                            <Box sx={{paddingLeft: "40px"}}>
-                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                                Upload logo
-                                <input
-                                    type="file"
-                                    hidden
-                                    onChange={(e) => setLogoFile(e.target.files[0])}
-                                />
-                            </Button>
-                            <Button variant="contained" color="success" onClick={handleLogoUpload} sx={{ marginLeft: 1 }}>
-                                Confirm
-                            </Button>
+                            <Box sx={{ paddingLeft: "40px" }}>
+                                <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                    Upload logo
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={(e) => {
+                                            const file = e.target.files[0];
+                                            if (file) {
+                                                setLogoFile(file);
+                                                const previewUrl = URL.createObjectURL(file);
+                                                setLogoPreview(previewUrl);
+                                            }
+                                        }}
+                                    />
+                                </Button>
+                                <Button variant="contained" color="success" onClick={handleLogoUpload} sx={{ ml: 1 }}>
+                                    Confirm
+                                </Button>
                             </Box>
+
                             <Divider sx={{ marginY: 2 }} />
 
                             <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: 2 }}>
                                 <img
-                                    src={companyData?.companyCover || "/companyCover.jpg"}
+                                    src={coverPreview}
                                     alt="Company Cover"
                                     style={{ width: 400, height: 150, objectFit: 'cover', borderRadius: 8 }}
                                 />
+
                             </Box>
-                            <Box sx={{paddingLeft: "40px"}}>
-                            <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
-                                Upload cover
-                                <input
-                                    type="file"
-                                    hidden
-                                    onChange={(e) => setCoverFile(e.target.files[0])}
-                                />
-                            </Button>
-                            <Button variant="contained" color="success" onClick={handleCoverUpload} sx={{ marginLeft: 1 }}>
-                                Confirm
-                            </Button>
+                            <Box sx={{ paddingLeft: "40px" }}>
+                                <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
+                                    Upload cover
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={(e) => {
+                                            const file = e.target.files[0];
+                                            if (file) {
+                                                setCoverFile(file);
+                                                setCoverPreview(URL.createObjectURL(file));
+                                            }
+                                        }}
+                                    />
+                                </Button>
+                                <Button variant="contained" color="success" onClick={handleCoverUpload} sx={{ ml: 1 }}>
+                                    Confirm
+                                </Button>
                             </Box>
                         </Grid>
 
                         {/* Second Column */}
                         <Grid item xs={4}>
-                            <EditableTextField
-                                label="Email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                isEditable={isEditing.email}
-                                onEdit={() => toggleEdit("email")}
-                                onSave={() => handleUpdate("email", email, updateCompanyEmail)}
+                            <EditableTextField label="Email" value={email}
+                                               onChange={(e) => setEmail(e.target.value)}
+                                               isEditable={isEditing.email}
+                                               onEdit={() => toggleEdit("email")}
+                                               onSave={() => handleUpdate("email", email, updateCompanyEmail)}
                             />
 
                             <Divider sx={{ marginY: 2 }} />
 
-                            <EditableTextField
-                                label="Website"
-                                value={website}
-                                onChange={(e) => setWebsite(e.target.value)}
-                                isEditable={isEditing.website}
-                                onEdit={() => toggleEdit("website")}
-                                onSave={() => handleUpdate("website", website, updateCompanyWebsite)}
-                            />
-                            <Divider sx={{ marginY: 2 }} />
-
-                            <EditableTextField
-                                label="Phone Number"
-                                value={phoneNumber}
-                                onChange={(e) => setPhoneNumber(e.target.value)}
-                                isEditable={isEditing.phoneNumber}
-                                onEdit={() => toggleEdit("phoneNumber")}
-                                onSave={() => handleUpdate("phoneNumber", phoneNumber, updateCompanyPhone)}
+                            <EditableTextField label="Website" value={website}
+                                               onChange={(e) => setWebsite(e.target.value)}
+                                               isEditable={isEditing.website}
+                                               onEdit={() => toggleEdit("website")}
+                                               onSave={() => handleUpdate("website", website, updateCompanyWebsite)}
                             />
 
                             <Divider sx={{ marginY: 2 }} />
 
-                            <EditableTextField
-                                label="Location"
-                                value={location}
-                                onChange={(e) => setLocation(e.target.value)}
-                                isEditable={isEditing.location}
-                                onEdit={() => toggleEdit("location")}
-                                onSave={() => handleUpdate("location", location, updateCompanyLocation)}
+                            <EditableTextField label="Phone Number" value={phoneNumber}
+                                               onChange={(e) => setPhoneNumber(e.target.value)}
+                                               isEditable={isEditing.phoneNumber}
+                                               onEdit={() => toggleEdit("phoneNumber")}
+                                               onSave={() => handleUpdate("phoneNumber", phoneNumber, updateCompanyPhone)}
                             />
 
                             <Divider sx={{ marginY: 2 }} />
 
-                            <EditableSelectField
-                                label="Number of Employees"
-                                value={employeeNumber}
-                                onChange={(e) => setEmployeeNumber(e.target.value)}
-                                options={[
-                                    { value: "<20", label: " <20 " },
-                                    { value: "21-50", label: "21-50" },
-                                    { value: "51-100", label: "51-100" },
-                                    { value: "101-300", label: "101-300" },
-                                    { value: "301-500", label: "301-500" },
-                                    { value: "500+", label: "500+" },
-                                ]}
-                                isEditable={isEditing.employeeNumber}
-                                onEdit={() => toggleEdit("employeeNumber")}
-                                onSave={() => handleUpdate("employeeNumber", employeeNumber, updateCompanyEmployeeNumber)}
+                            <EditableTextField label="Location" value={location}
+                                               onChange={(e) => setLocation(e.target.value)}
+                                               isEditable={isEditing.location}
+                                               onEdit={() => toggleEdit("location")}
+                                               onSave={() => handleUpdate("location", location, updateCompanyLocation)}
                             />
 
                             <Divider sx={{ marginY: 2 }} />
 
-                            <EditableSelectField
-                                label="Year Founded"
-                                value={founded}
-                                onChange={(e) => setFounded(e.target.value)}
-                                options={years.map(year => ({ value: year, label: year }))}
-                                isEditable={isEditing.founded}
-                                onEdit={() => toggleEdit("founded")}
-                                onSave={() => handleUpdate("founded", founded, updateCompanyFounded)}
+                            <EditableSelectField label="Number of Employees" value={employeeNumber}
+                                                 onChange={(e) => setEmployeeNumber(e.target.value)}
+                                                 options={[
+                                                     { value: "<20", label: " <20 " },
+                                                     { value: "21-50", label: "21-50" },
+                                                     { value: "51-100", label: "51-100" },
+                                                     { value: "101-300", label: "101-300" },
+                                                     { value: "301-500", label: "301-500" },
+                                                     { value: "500+", label: "500+" },
+                                                 ]}
+                                                 isEditable={isEditing.employeeNumber}
+                                                 onEdit={() => toggleEdit("employeeNumber")}
+                                                 onSave={() => handleUpdate("employeeNumber", employeeNumber, updateCompanyEmployeeNumber)}
                             />
+
+                            <Divider sx={{ marginY: 2 }} />
+
+                            <EditableSelectField label="Year Founded" value={founded}
+                                                 onChange={(e) => setFounded(e.target.value)}
+                                                 options={years.map(year => ({ value: year, label: year }))}
+                                                 isEditable={isEditing.founded}
+                                                 onEdit={() => toggleEdit("founded")}
+                                                 onSave={() => handleUpdate("founded", founded, updateCompanyFounded)}
+                            />
+
                             <Divider sx={{ marginY: 2 }} />
 
                             <Typography variant="h6" sx={{ color: 'black', paddingLeft: '140px', opacity: '0.8' }}>Offices</Typography>
-
                             {cities.map((city, index) => (
-                                <Box key={index} sx={{ display: "flex", alignItems: "center", marginBottom: 1 }}>
+                                <Box key={index} sx={{ display: "flex", alignItems: "center", mb: 1 }}>
                                     <TextField
                                         fullWidth
                                         label={`Office ${index + 1}`}
-                                        value={city?.city || ""}
+                                        value={city.city}
                                         onChange={(e) => handleOfficeChange(index, e.target.value)}
                                     />
                                     <IconButton onClick={() => handleRemoveOffice(index)} color="error">
@@ -361,13 +364,10 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                                     </IconButton>
                                 </Box>
                             ))}
-
-
-
-                            <Button variant="contained" color="primary" onClick={handleAddOffice} sx={{ marginTop: 1 }}>
+                            <Button variant="contained" color="primary" onClick={handleAddOffice} sx={{ mt: 1 }}>
                                 Add Office
                             </Button>
-                            <Button variant="contained" color="success" onClick={handleSaveOffices} sx={{ marginTop: 1, marginLeft: 1 }}>
+                            <Button variant="contained" color="success" onClick={handleSaveOffices} sx={{ mt: 1, ml: 1 }}>
                                 Save Offices
                             </Button>
                         </Grid>
@@ -383,7 +383,6 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
                                 onLinkedInChange={(e) => setLinkedinLink(e.target.value)}
                                 onSocialMediaUpdate={handleSocialMediaUpdate}
                             />
-
 
                             <Divider sx={{ marginY: 2 }} />
 

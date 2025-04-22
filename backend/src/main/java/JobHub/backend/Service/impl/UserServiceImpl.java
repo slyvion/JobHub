@@ -1,6 +1,7 @@
 package JobHub.backend.Service.impl;
 
 import JobHub.backend.Model.Dto.User.UserDto;
+import JobHub.backend.Model.Dto.User.UserRoleUpdateDto;
 import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User PasswordUpdate(long id, UserPasswordUpdateDto passwordUpdateDto) {
+    public User PasswordUpdate(Long id, UserPasswordUpdateDto passwordUpdateDto) {
         User user = this.findById(id);
 
         if (!user.getPassword().equals(passwordUpdateDto.getOldPassword())) {
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User EmailUpdate(long id, UserEmailUpdateDto userEmailUpdateDto) {
+    public User EmailUpdate(Long  id, UserEmailUpdateDto userEmailUpdateDto) {
         User user = this.findById(id);
 
         Optional<User> existingUserOptional = userRepository.findUserByEmail(userEmailUpdateDto.getEmail());
@@ -81,6 +82,13 @@ public class UserServiceImpl implements UserService {
                 userDto.getPassword()
                 );
 
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User roleUpdate(Long id, UserRoleUpdateDto userRoleUpdateDto) {
+        User user = this.findById(id);
+        user.setRole(userRoleUpdateDto.getUserRole());
         return userRepository.save(user);
     }
 

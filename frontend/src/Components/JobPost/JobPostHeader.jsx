@@ -27,7 +27,7 @@ export default function JobPostHeader({ job }) {
                         objectFit: 'contain',
                         boxShadow: '0px 0px 5px 2px rgba(169, 169, 169, 0.6)',
                     }}
-                    image="/companyLogo.jpg"
+                    image={`http://localhost:8080/company/${job.company.id}/getLogo`}
                     alt={job.company.companyName}
                 />
                 </Link>

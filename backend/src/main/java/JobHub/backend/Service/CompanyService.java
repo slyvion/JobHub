@@ -3,6 +3,9 @@ package JobHub.backend.Service;
 import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Dto.Company.*;
 import JobHub.backend.Model.Company;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 import java.util.List;
 
 public interface CompanyService {
@@ -12,9 +15,7 @@ public interface CompanyService {
 
     List<Company> findByName(String name);
 
-    Company create(CompanyDto companyDto);
-
-    Company update(Long id, CompanyDto companyDto);
+    Company create(CompanyCreateDto companyCreateDto);
 
     Company nameUpdate(Long id, CompanyNameUpdateDto companyNameUpdateDto);
 
@@ -37,21 +38,17 @@ public interface CompanyService {
 
     Company passwordUpdate(Long id, CompanyPasswordUpdateDto companyPasswordUpdateDto);
 
-    Company companyLogoUpdate(Long companyId, CompanyLogoUpdateDto companyLogoUpdateDto);
+    Company companyLogoUpdate(Long companyId, MultipartFile file) throws IOException;
 
-    Company companyCoverUpdate(Long companyId, CompanyCoverUpdateDto companyCoverUpdateDto);
+    Company companyCoverUpdate(Long companyId, MultipartFile file) throws IOException;
 
     Company updateCompanyCities(Long companyId, CompanyCitiesUpdateDto companyCitiesUpdateDto);
 
     Company delete(Long id);
 
 
-    byte[] getCompanyLogo(Long companyId);
-
-    byte[] getCompanyCover(Long companyId);
     List<Company> listAll();
 
-    List<Company> findAllByLocation(String Location);
 
     List<Company> companyFilter(String name, String location, Double rating, EmployeeNumber employeeNumber);
 

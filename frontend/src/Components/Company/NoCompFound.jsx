@@ -11,9 +11,6 @@ export default function NoCompFound(){
             bgcolor="#80bfff"
             p={2}
             borderRadius={2}
-            width="20%"
-            margin= 'auto'
-            marginTop= '50px'
         >
             <InfoIcon />
             <Typography variant="body1" ml={1}>

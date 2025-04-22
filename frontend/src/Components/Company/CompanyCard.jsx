@@ -5,13 +5,14 @@ import { Link } from 'react-router-dom';
 
 export default function CompanyCard({ company }) {
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 350}}>
             <CardMedia
                 component="img"
-                height="200"
-                image={company.companyImage || '/companyCover.jpg'}
+
+                image={`http://localhost:8080/company/${company.id}/getCover`}
                 alt={`${company.companyName} cover`}
                 sx={{
+                    maxHeight: 150,
                     objectFit: 'cover',
                 }}
             />
@@ -20,8 +21,8 @@ export default function CompanyCard({ company }) {
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <CardMedia
                         component="img"
-                        image={company.companyLogo || '/companyLogo.jpg'}
-                        alt="Company Logo"
+                        image={`http://localhost:8080/company/${company.id}/getLogo`}
+                        alt={`${company.companyName} Logo`}
                         sx={{
                             width: 50,
                             height: 50,

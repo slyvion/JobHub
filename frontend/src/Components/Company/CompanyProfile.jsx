@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Typography, Paper, Box, Tabs, Tab, Button, IconButton, CircularProgress } from "@mui/material";
+import {
+    Avatar,
+    Typography,
+    Paper,
+    Box,
+    Tabs,
+    Tab,
+    Button,
+    IconButton,
+    CircularProgress
+} from "@mui/material";
 import { styled } from "@mui/system";
 import StarIcon from "@mui/icons-material/Star";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,7 +25,13 @@ import CompanyOverview from "./CompanyTabs/CompanyOverview.jsx";
 import AboutUs from "./CompanyTabs/AboutUs.jsx";
 import CompanyContact from "./CompanyTabs/CompanyContact.jsx";
 
-import { fetchCompanyData, fetchJobPostsByCompany, fetchReviewsByCompany } from "../Services/companyServices.js";
+import {
+    fetchCompanyData,
+    fetchJobPostsByCompany,
+    fetchReviewsByCompany,
+    getCompanyCover,
+    getCompanyLogo
+} from "../Services/companyServices.js";
 
 const Root = styled(Paper)(({ theme }) => ({
     padding: theme.spacing(3),
@@ -59,6 +75,8 @@ export default function CompanyProfile() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [logoUrl, setLogoUrl] = useState(null);
+    const [coverUrl, setCoverUrl] = useState(null);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -67,6 +85,7 @@ export default function CompanyProfile() {
     const handleAddReviewClick = () => {
         navigate(`/company/${id}/add-review`);
     };
+
     const handleAddJobpost = () => {
         navigate('/createJobpost');
     };
@@ -82,14 +101,18 @@ export default function CompanyProfile() {
     useEffect(() => {
         const loadCompanyData = async () => {
             try {
-                const [companyData, jobPostsData, reviewsData] = await Promise.all([
+                const [companyData, jobPostsData, reviewsData, logo, cover] = await Promise.all([
                     fetchCompanyData(id),
                     fetchJobPostsByCompany(id),
                     fetchReviewsByCompany(id),
+                    getCompanyLogo(id),
+                    getCompanyCover(id)
                 ]);
                 setCompany(companyData);
                 setJobPosts(jobPostsData);
                 setReviews(reviewsData);
+                setLogoUrl(logo);
+                setCoverUrl(cover);
             } catch (err) {
                 setError(err.message);
             } finally {
@@ -118,20 +141,20 @@ export default function CompanyProfile() {
     return (
         <div style={{ backgroundColor: '#FFF', minHeight: '100vh' }}>
             <AppAppBar />
-            <CompanyCover image={company.companyCover || "/companyCover.jpg"} />
+            <CompanyCover image={coverUrl || "/companyCover.jpg"} />
             <Root>
                 <EditButton onClick={handleEditClick}>
                     <EditIcon />
                 </EditButton>
 
                 <LogoContainer>
-                    <StyledAvatar src={company.image || "/companyLogo.jpg"} variant="square" />
+                    <StyledAvatar src={logoUrl || "/companyLogo.jpg"} variant="square" />
                     <CompanyInfo>
                         <Typography variant="h4" fontWeight="bold">{company.companyName}</Typography>
-                        <Typography variant="h6" sx={{paddingTop: '7px'}}>{company.location}</Typography>
-                        <Box display="flex" alignItems="center"  sx={{ gap: 1}}>
+                        <Typography variant="h6" sx={{ paddingTop: '7px' }}>{company.location}</Typography>
+                        <Box display="flex" alignItems="center" sx={{ gap: 1 }}>
                             <StarIcon sx={{ color: "#FFD700" }} />
-                            <Typography variant="h6" >{company.rating || "N/A"}</Typography>
+                            <Typography variant="h6">{company.rating || "N/A"}</Typography>
                         </Box>
                     </CompanyInfo>
                 </LogoContainer>
@@ -149,10 +172,11 @@ export default function CompanyProfile() {
                     <Tab label="Reviews" sx={{ minWidth: 300 }} />
                 </Tabs>
             </Box>
+
             <Box sx={{ backgroundColor: "#F5F5F5", padding: 2, width: "100%", minHeight: "60vh" }}>
                 <Box>
                     {value === 0 && (
-                        <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2 , alignItems: 'center'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2, alignItems: 'center' }}>
                             <CompanyOverview company={company} />
                             <AboutUs company={company} />
                             <CompanyContact company={company} />
@@ -160,7 +184,7 @@ export default function CompanyProfile() {
                     )}
 
                     {value === 1 && (
-                        <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2 , alignItems: 'center'}}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2, alignItems: 'center' }}>
                             {jobPosts.length > 0 ? (
                                 jobPosts.map((job) => <JobPost key={job.id} job={job} />)
                             ) : (
@@ -175,7 +199,7 @@ export default function CompanyProfile() {
                     )}
 
                     {value === 2 && (
-                        <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2 , alignItems: 'center', width: '100%' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', margin: 2, gap: 2, alignItems: 'center', width: '100%' }}>
                             {reviews.length > 0 ? (
                                 reviews.map((review) => <Review key={review.id} review={review} />)
                             ) : (

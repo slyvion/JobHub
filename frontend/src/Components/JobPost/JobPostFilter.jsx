@@ -1,6 +1,7 @@
-import { TextField, FormControl, InputLabel, Select, MenuItem, Grid, Button, Box } from '@mui/material';
-import {useEffect, useState} from 'react';
-import {useSearchParams} from "react-router-dom";
+import {TextField, FormControl, InputLabel, Select, MenuItem, Grid, Button, Box } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Tags as Technologies } from '../Services/jobPostServices.js';
 
 export default function JobPostFilter({ onFilter }) {
     const [companyName, setCompanyName] = useState('');
@@ -8,7 +9,33 @@ export default function JobPostFilter({ onFilter }) {
     const [seniority, setSeniority] = useState('');
     const [jobType, setJobType] = useState('');
     const [employmentType, setEmploymentType] = useState('');
+    const [tags, setTags] = useState([]);
     const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(() => {
+        const companyNameParam = searchParams.get('companyName') || '';
+        const titleParam = searchParams.get('title') || '';
+        const jobTypeParam = searchParams.get('jobType') || '';
+        const employmentTypeParam = searchParams.get('employmentType') || '';
+        const seniorityParam = searchParams.get('seniority') || '';
+        const tagParam = searchParams.get('tags') || '';
+
+        setCompanyName(companyNameParam);
+        setTitle(titleParam);
+        setJobType(jobTypeParam);
+        setEmploymentType(employmentTypeParam);
+        setSeniority(seniorityParam);
+        setTags(tagParam ? tagParam.split(',') : []);
+
+        onFilter({
+            companyName: companyNameParam || undefined,
+            title: titleParam || undefined,
+            jobType: jobTypeParam || undefined,
+            employmentType: employmentTypeParam || undefined,
+            seniority: seniorityParam || undefined,
+            tags: tagParam ? tagParam.split(',') : undefined,
+        });
+    }, []);
 
     const handleFilter = () => {
         const filterParams = {
@@ -17,6 +44,7 @@ export default function JobPostFilter({ onFilter }) {
             jobType: jobType || undefined,
             employmentType: employmentType || undefined,
             seniority: seniority || undefined,
+            tags: tags.length > 0 ? tags : undefined,
         };
 
         const params = {};
@@ -25,31 +53,11 @@ export default function JobPostFilter({ onFilter }) {
         if (jobType) params.jobType = jobType;
         if (employmentType) params.employmentType = employmentType;
         if (seniority) params.seniority = seniority;
+        if (tags.length > 0) params.tags = tags.join(',');
 
         setSearchParams(params);
         onFilter(filterParams);
     };
-    useEffect(() => {
-        const companyNameParam = searchParams.get('companyName') || '';
-        const titleParam = searchParams.get('title') || '';
-        const jobTypeParam = searchParams.get('jobType') || '';
-        const employmentTypeParam = searchParams.get('employmentType') || '';
-        const seniorityParam = searchParams.get('seniority') || '';
-
-        setCompanyName(companyNameParam);
-        setTitle(titleParam);
-        setJobType(jobTypeParam);
-        setEmploymentType(employmentTypeParam);
-        setSeniority(seniorityParam);
-
-        onFilter({
-            companyName: companyNameParam || undefined,
-            title: titleParam || undefined,
-            jobType: jobTypeParam || undefined,
-            employmentType: employmentTypeParam || undefined,
-            seniority: seniorityParam || undefined
-        });
-    }, []);
 
     return (
         <Box sx={{ width: '100%', backgroundColor: '#fff', padding: '16px' }}>
@@ -80,9 +88,7 @@ export default function JobPostFilter({ onFilter }) {
                             onChange={(e) => setJobType(e.target.value)}
                             label="Job Type"
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
+                            <MenuItem value=""><em>None</em></MenuItem>
                             <MenuItem value="ON_SITE">On Site</MenuItem>
                             <MenuItem value="HYBRID">Hybrid</MenuItem>
                             <MenuItem value="REMOTE">Remote</MenuItem>
@@ -97,9 +103,7 @@ export default function JobPostFilter({ onFilter }) {
                             onChange={(e) => setEmploymentType(e.target.value)}
                             label="Employment Type"
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
+                            <MenuItem value=""><em>None</em></MenuItem>
                             <MenuItem value="FULL_TIME">Full Time</MenuItem>
                             <MenuItem value="PART_TIME">Part Time</MenuItem>
                             <MenuItem value="CONTRACT">Contract</MenuItem>
@@ -114,14 +118,29 @@ export default function JobPostFilter({ onFilter }) {
                             onChange={(e) => setSeniority(e.target.value)}
                             label="Seniority"
                         >
-                            <MenuItem value="">
-                                <em>None</em>
-                            </MenuItem>
+                            <MenuItem value=""><em>None</em></MenuItem>
                             <MenuItem value="INTERN">Intern</MenuItem>
                             <MenuItem value="JUNIOR">Junior</MenuItem>
                             <MenuItem value="INTERMEDIATE">Intermediate</MenuItem>
                             <MenuItem value="SENIOR">Senior</MenuItem>
-
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} sm={2}>
+                    <FormControl fullWidth variant="outlined">
+                        <InputLabel>Technologies</InputLabel>
+                        <Select
+                            multiple
+                            value={tags}
+                            onChange={(e) => setTags(e.target.value)}
+                            label="Technologies"
+                            renderValue={(selected) => selected.join(', ')}
+                        >
+                            {Technologies.map((tag) => (
+                                <MenuItem key={tag} value={tag}>
+                                    {tag}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>

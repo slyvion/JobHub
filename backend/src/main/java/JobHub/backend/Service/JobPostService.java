@@ -48,5 +48,5 @@ public interface JobPostService {
 
     List<JobPost> findAllBySeniority(Seniority seniority);
 
-    List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority);
+    List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority, List<Tags> tags);
 }

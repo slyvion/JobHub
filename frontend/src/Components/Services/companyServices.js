@@ -185,19 +185,7 @@ export const updateCompanyPassword = async (id, oldPassword, newPassword, confir
 };
 
 
-export const updateCompanyCover = async (id, coverImage) => {
-    try {
-        const response = await fetch(`http://localhost:8080/company/${id}/updateCover`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ coverImage }),
-        });
-        if (!response.ok) throw new Error("Failed to update cover image");
-        return await response.json();
-    } catch (err) {
-        throw new Error(err.message);
-    }
-};
+
 
 export const updateCompanyEmployeeNumber = async (id, employeeNumber) => {
 
@@ -216,19 +204,54 @@ export const updateCompanyEmployeeNumber = async (id, employeeNumber) => {
 };
 
 
-export const updateCompanyLogo = async (id, logoImage) => {
+export const updateCompanyLogo = async (id, file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return await fetch(`http://localhost:8080/company/${id}/updateLogo`, {
+        method: "PUT",
+        body: formData,
+    });
+};
+export const updateCompanyCover = async (id, file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return await fetch(`http://localhost:8080/company/${id}/updateCover`, {
+        method: "PUT",
+        body: formData,
+    });
+};
+
+export const getCompanyCover = async (companyId) => {
     try {
-        const response = await fetch(`http://localhost:8080/company/${id}/updateLogo`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ logoImage }),
-        });
-        if (!response.ok) throw new Error("Failed to update logo image");
-        return await response.json();
-    } catch (err) {
-        throw new Error(err.message);
+        const response = await fetch(`http://localhost:8080/company/${companyId}/getCover`);
+        if (!response.ok) throw new Error('Failed to fetch company cover');
+
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    } catch (error) {
+        console.error('Error fetching company cover:', error);
+        return null;
     }
 };
+
+export const getCompanyLogo = async (companyId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/company/${companyId}/getLogo`);
+        if (!response.ok) throw new Error('Failed to fetch company logo');
+
+        const blob = await response.blob();
+        return URL.createObjectURL(blob); // Returns a URL to use in an <img> tag
+    } catch (error) {
+        console.error('Error fetching company logo:', error);
+        return null;
+    }
+};
+
+
+
+
 export const updateCompanyOffices = async (id, cities) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateOffices`, {
