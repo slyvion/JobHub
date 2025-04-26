@@ -4,34 +4,14 @@ import { Box, TextField, Button, Typography, Paper } from "@mui/material";
 export default function Help() {
     return (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-            <Paper elevation={3} sx={{ padding: 3, width: "400px" }}>
-                <Typography variant="h6" gutterBottom>
-                    How can we help you?
+            <Paper elevation={3} sx={{ padding: 3, width: "500px" }}>
+                <Typography variant="h6" gutterBottom align="center">
+                    Need help?
+                    Contact us at <br />
                 </Typography>
-                <form>
-                    <TextField
-                        fullWidth
-                        label="Email"
-                        name="email"
-                        type="email"
-                        margin="normal"
-                        required
-                    />
-                    <TextField
-                        fullWidth
-                        label="Your Question"
-                        name="question"
-                        multiline
-                        rows={4}
-                        margin="normal"
-                        required
-                    />
-                    <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-                        <Button variant="contained" color="primary" type="submit">
-                            Submit
-                        </Button>
-                    </Box>
-                </form>
+                <Typography variant="h3" align="center" sx={{ color: "primary.main" }}> help@Jobhub.com </Typography>
+                <Typography variant="h6" align="center" sx={{paddingTop: '10px'}}> with subject "<strong>HELP</strong>" <br /></Typography>
+                <Typography variant="h6" align="center"> and we will reach with you as soon as possible</Typography>
             </Paper>
         </Box>
     );

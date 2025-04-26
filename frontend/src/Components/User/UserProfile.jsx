@@ -7,6 +7,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import DescriptionIcon from '@mui/icons-material/Description';
 import UserData from "./UserTabs/UserData.jsx";
 import UserReviews from "./UserTabs/UserReviews.jsx";
 import SavedJobs from "./UserTabs/SavedJobs.jsx";
@@ -71,6 +72,7 @@ export default function UserProfile() {
                     >
                         <Tab icon={<PersonIcon />} iconPosition="start" label="User Data" sx={tabStyle} />
                         <Tab icon={<WorkIcon />} iconPosition="start" label="JobPosts" sx={tabStyle} />
+                        <Tab icon={<DescriptionIcon />} iconPosition="start" label="Applications" sx={tabStyle} />
                         <Tab icon={<RateReviewIcon />} iconPosition="start" label="Reviews" sx={tabStyle} />
                         <Tab icon={<HelpOutlineIcon />} iconPosition="start" label="Help" sx={tabStyle} />
                     </Tabs>
@@ -78,8 +80,9 @@ export default function UserProfile() {
                     <Box sx={{ flex: 1 }}>
                         {value === 0 && user && <UserData user={user} />}
                         {value === 1 && <Typography> <SavedJobs /> </Typography>}
-                        {value === 2 && <UserReviews reviews={reviews} />}
-                        {value === 3 && <Typography> <Help /></Typography>}
+                        {value === 2 && <Typography> Applications tab </Typography>}
+                        {value === 3 && <UserReviews reviews={reviews} />}
+                        {value === 4 && <Typography> <Help /></Typography>}
                     </Box>
                 </Box>
             </Box>

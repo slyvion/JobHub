@@ -1,10 +1,9 @@
 package JobHub.backend.Web;
 
+import JobHub.backend.Model.Constants.UserRole;
+import JobHub.backend.Model.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Review;
 import JobHub.backend.Service.ReviewService;
 
@@ -35,5 +34,20 @@ public class ReviewsController {
     @GetMapping("/user/{id}")
     public List<Review> getReviewByUserId(@PathVariable long id){
         return reviewService.findAllByUserId(id);
+    }
+
+    @GetMapping("/admin")
+    public List<Review> userAdminFilter(
+            @RequestParam(required = false) String companyName,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) Double rating
+    ){
+        if ( companyName == null &&
+                title == null &&
+                rating == null){
+            return reviewService.listAll();
+        }
+        return reviewService.reviewFilter(companyName, title, rating);
+
     }
 }

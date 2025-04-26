@@ -34,5 +34,29 @@ public class CompaniesController {
         return companyService.companyFilter(companyName, location, rating, employeeNumber);
     }
 
+    @GetMapping("/admin")
+        public List<Company> companiesAdminFilter(
+                @RequestParam(required = false) String companyName,
+                @RequestParam(required = false) String location,
+                @RequestParam(required = false) Double rating,
+                @RequestParam(required = false) EmployeeNumber employeeNumber,
+                @RequestParam(required = false) Integer founded,
+                @RequestParam(required = false) String email,
+                @RequestParam(required = false) String website
+        ){
+        if ( companyName == null &&
+                location == null &&
+                rating == null &&
+                employeeNumber == null &&
+                founded == null &&
+                email == null &&
+                website == null){
+            return companyService.listAll();
+        }
+        return companyService.companyAdminFilter(companyName, location, rating, employeeNumber, founded, email, website);
+
+
+    }
+
 
 }

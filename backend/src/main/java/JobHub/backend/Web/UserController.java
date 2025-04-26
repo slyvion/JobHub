@@ -1,5 +1,8 @@
 package JobHub.backend.Web;
 
+import JobHub.backend.Model.Company;
+import JobHub.backend.Model.Constants.EmployeeNumber;
+import JobHub.backend.Model.Constants.UserRole;
 import JobHub.backend.Model.SavedJobPosts;
 import JobHub.backend.Service.SavedJobPostsService;
 import JobHub.backend.Service.UserService;
@@ -53,6 +56,21 @@ public class UserController {
                                      @PathVariable Long jobPostId) {
         savedJobPostsService.removeSavedJobPost(id, jobPostId);
         return "Job post removed";
+    }
+
+    @GetMapping("/admin")
+        public List<User> userAdminFilter(
+            @RequestParam(required = false) String username,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) UserRole role
+    ){
+        if ( username == null &&
+                email == null &&
+                role == null){
+            return userService.listAll();
+        }
+        return userService.userFilter(username, email, role);
+
     }
 
 }

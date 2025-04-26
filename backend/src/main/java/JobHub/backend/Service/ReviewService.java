@@ -29,4 +29,6 @@ public interface ReviewService {
 
     List<Review> findAllByUserId(long id);
     List<Review> findByRatingGreaterThan(long rating);
+
+    List<Review> reviewFilter(String companyName, String title, Double rating);
 }

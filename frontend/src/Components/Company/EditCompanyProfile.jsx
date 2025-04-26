@@ -77,7 +77,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
         severity: "success",
     });
 
-    // Set initial logo preview from backend
+
     useEffect(() => {
         if (!logoPreview && id) {
             setLogoPreview(`http://localhost:8080/company/${id}/getLogo`);
@@ -113,7 +113,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
 
     const handleUpdate = async (field, value, updateFunction) => {
         try {
-            await updateFunction(companyData.id, value);
+            await updateFunction(id, value);
             showSnackbar(`${field} updated successfully!`);
             setIsEditing((prev) => ({ ...prev, [field]: false }));
         } catch (error) {
@@ -127,7 +127,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
             return;
         }
         try {
-            await updateCompanyPassword(companyData.id, oldPassword, newPassword, confirmPassword);
+            await updateCompanyPassword(id, oldPassword, newPassword, confirmPassword);
             showSnackbar("Password updated!");
             setOldPassword(""); setNewPassword(""); setConfirmPassword("");
         } catch {
@@ -181,7 +181,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
     const handleSaveOffices = async () => {
         try {
             const cityNames = cities.map(city => city.city.trim()).filter(name => name);
-            await updateCompanyOffices(companyData.id, cityNames);
+            await updateCompanyOffices(id, cityNames);
             showSnackbar("Offices updated!");
         } catch {
             showSnackbar("Failed to update offices", "error");
@@ -190,7 +190,7 @@ export default function CompanyEdit({ open, handleClose, companyData }) {
 
     const handleSocialMediaUpdate = async () => {
         try {
-            await updateSocialMedia(companyData.id, instagramLink, facebookLink, linkedinLink);
+            await updateSocialMedia(id, instagramLink, facebookLink, linkedinLink);
             showSnackbar("Social media links updated!");
         } catch {
             showSnackbar("Failed to update social links", "error");

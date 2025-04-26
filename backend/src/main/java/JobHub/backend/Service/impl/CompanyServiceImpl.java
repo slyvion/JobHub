@@ -219,4 +219,37 @@ public class CompanyServiceImpl implements CompanyService {
         });
     }
 
+    @Override
+    public List<Company> companyAdminFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber, Integer founded, String website, String email) {
+        return companyRepository.findAll((Specification<Company>) (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (companyName != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("companyName")), "%" + companyName.toLowerCase() + "%"));
+            }
+
+            if (location != null) {
+                predicates.add(criteriaBuilder.equal(root.get("location"), location));
+            }
+
+            if (rating != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), rating));
+            }
+            if (employeeNumber != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("employeeNumber").as(String.class)), "%" + employeeNumber.toString().toLowerCase() + "%"));
+            }
+            if(founded != null) {
+                predicates.add(criteriaBuilder.equal(root.get("founded"), founded));
+            }
+            if (website != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("website")), "%" + website.toLowerCase() + "%"));
+            }
+            if (email != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), email.toLowerCase() + "%"));
+            }
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
+    }
+
 }

@@ -1,9 +1,13 @@
 package JobHub.backend.Service.impl;
 
+import JobHub.backend.Model.Company;
+import JobHub.backend.Model.Constants.UserRole;
 import JobHub.backend.Model.Dto.User.UserDto;
 import JobHub.backend.Model.Dto.User.UserRoleUpdateDto;
 import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
+import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
 import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
@@ -13,6 +17,7 @@ import JobHub.backend.Repository.UserRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -90,6 +95,27 @@ public class UserServiceImpl implements UserService {
         User user = this.findById(id);
         user.setRole(userRoleUpdateDto.getUserRole());
         return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> userFilter(String username, String email, UserRole userRole){
+        return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            if (username != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("username")), "%" + username.toLowerCase() + "%"));
+            }
+
+            if (email != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), "%" + email.toLowerCase() + "%"));
+            }
+            if (userRole != null) {
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("userRole").as(String.class)), "%" + userRole.toString().toLowerCase() + "%"));
+            }
+
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        });
     }
 
 //    @Override
