@@ -80,11 +80,10 @@ export default function ReviewsFilter({ onFilter }) {
                     <MenuItem value="">
                         <em>None</em>
                     </MenuItem>
-                    <MenuItem value={1}>0</MenuItem>
-                    <MenuItem value={2}>{'>1-2'}</MenuItem>
-                    <MenuItem value={3}>{'>2-3'}</MenuItem>
-                    <MenuItem value={4}>{'>3-4'}</MenuItem>
-                    <MenuItem value={5}>{'>4-5'}</MenuItem>
+                    <MenuItem value={1}>{'1-2'}</MenuItem>
+                    <MenuItem value={2}>{'2-3'}</MenuItem>
+                    <MenuItem value={3}>{'3-4'}</MenuItem>
+                    <MenuItem value={4}>{'4-5'}</MenuItem>
                 </Select>
             </FormControl>
 

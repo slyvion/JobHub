@@ -133,29 +133,26 @@ public class ReviewServiceImpl implements ReviewService {
             if (rating != null) {
                 switch (rating.intValue()) {
                     case 1:
-                        predicates.add(criteriaBuilder.equal(root.get("rating"), 0.0));
+                        predicates.add(criteriaBuilder.and(
+                                criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 1.0),
+                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 2.0)
+                        ));
                         break;
                     case 2:
                         predicates.add(criteriaBuilder.and(
-                                criteriaBuilder.greaterThan(root.get("rating"), 1.0),
-                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 2.0)
+                                criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 2.0),
+                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 3.0)
                         ));
                         break;
                     case 3:
                         predicates.add(criteriaBuilder.and(
-                                criteriaBuilder.greaterThan(root.get("rating"), 2.0),
-                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 3.0)
+                                criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 3.0),
+                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 4.0)
                         ));
                         break;
                     case 4:
                         predicates.add(criteriaBuilder.and(
-                                criteriaBuilder.greaterThan(root.get("rating"), 3.0),
-                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 4.0)
-                        ));
-                        break;
-                    case 5:
-                        predicates.add(criteriaBuilder.and(
-                                criteriaBuilder.greaterThan(root.get("rating"), 4.0),
+                                criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 4.0),
                                 criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 5.0)
                         ));
                         break;
