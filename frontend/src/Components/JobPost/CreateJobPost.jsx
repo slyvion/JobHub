@@ -23,7 +23,7 @@ export default function CreateJobPost() {
         tags: [],
     });
 
-    const [isLink, setIsLink] = useState(true); // true for "Link", false for "Form"
+    const [isLink, setIsLink] = useState(true); // true = Link, false = Form
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -43,7 +43,7 @@ export default function CreateJobPost() {
     const handleSwitchChange = (event) => {
         setIsLink(event.target.checked);
         if (!event.target.checked) {
-            setFormData({ ...formData, applicationLink: "" }); // Clear link field if switching to "Form"
+            setFormData({ ...formData, applicationLink: "" });
         }
     };
 

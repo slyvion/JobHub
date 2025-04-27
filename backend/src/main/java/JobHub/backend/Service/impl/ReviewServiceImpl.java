@@ -135,19 +135,19 @@ public class ReviewServiceImpl implements ReviewService {
                     case 1:
                         predicates.add(criteriaBuilder.and(
                                 criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 1.0),
-                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 2.0)
+                                criteriaBuilder.lessThan(root.get("rating"), 2.0)
                         ));
                         break;
                     case 2:
                         predicates.add(criteriaBuilder.and(
                                 criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 2.0),
-                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 3.0)
+                                criteriaBuilder.lessThan(root.get("rating"), 3.0)
                         ));
                         break;
                     case 3:
                         predicates.add(criteriaBuilder.and(
                                 criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), 3.0),
-                                criteriaBuilder.lessThanOrEqualTo(root.get("rating"), 4.0)
+                                criteriaBuilder.lessThan(root.get("rating"), 4.0)
                         ));
                         break;
                     case 4:

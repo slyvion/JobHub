@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
 import { Typography, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
-import { Link } from "react-router-dom"; // Import Link from React Router
+import { Link } from "react-router-dom";
 import JobPostFilter from "../../JobPost/JobPostFilter.jsx";
 import { fetchJobPosts as getJobPosts } from "../../Services/jobPostServices.js";
 import Button from "@mui/material/Button";

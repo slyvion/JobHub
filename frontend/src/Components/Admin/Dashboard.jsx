@@ -9,8 +9,8 @@ import JobpostsTab from "./Tabs/JobpostsTab.jsx";
 
 export default function Dashboard() {
     const [value, setValue] = useState(0);
-    const [loading, setLoading] = useState(false); // Optional: set to true to simulate loading
-    const [error, setError] = useState(null); // Optional: set to a string to simulate an error
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const tabStyle = {
         alignItems: "flex-start",
@@ -43,7 +43,7 @@ export default function Dashboard() {
                     orientation="vertical"
                     value={value}
                     onChange={(event, newValue) => setValue(newValue)}
-                    TabIndicatorProps={{ style: { display: "none" } }} // 👈 hides the blue line
+                    TabIndicatorProps={{ style: { display: "none" } }}
 
                     aria-label="Profile Tabs"
                     sx={{ width: "100%", paddingTop: "150px" , paddingLeft: "20px"}}

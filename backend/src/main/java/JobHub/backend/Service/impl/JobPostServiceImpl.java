@@ -212,10 +212,11 @@ public class JobPostServiceImpl implements JobPostService {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("seniority").as(String.class)), "%" + seniority.toString().toLowerCase() + "%"));
             }
             if (tags != null && !tags.isEmpty()) {
-                for (Tags tag : tags) {
-                    predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("tags").as(String.class)), "%" + tag.toString().toLowerCase() + "%"));
-                }
+                Join<JobPost, Tags> tagsJoin = root.join("tags");
+                predicates.add(tagsJoin.in(tags));
             }
+
+
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
