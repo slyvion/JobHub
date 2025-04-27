@@ -4,6 +4,7 @@ package JobHub.backend.Service.impl;
 import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
+import JobHub.backend.Model.Dto.JobPostSearchDto;
 import JobHub.backend.Model.Dto.User.ApplyDto;
 import JobHub.backend.Repository.ApplicantsRepository;
 import JobHub.backend.exceptions.InvalidUserIdException;
@@ -70,23 +71,23 @@ public class JobPostServiceImpl implements JobPostService {
                 jobPostDto.getTags()
         );
 
-    return jobPostRepository.save(jobPost);
+        return jobPostRepository.save(jobPost);
     }
 
     @Override
     public JobPost update(Long id, JobPostDto jobPostDto) {
         JobPost jobPost = this.findById(id);
-            jobPost.setTitle(jobPostDto.getTitle());
-            jobPost.setJobType(jobPostDto.getJobType());
-            jobPost.setSeniority(jobPostDto.getSeniority());
-            jobPost.setDescription(jobPostDto.getDescription());
-            jobPost.setJobInfo(jobPostDto.getJobInfo());
-            jobPost.setRequirements(jobPostDto.getRequirements());
-            jobPost.setApplicationLink(jobPostDto.getApplicationLink());
-            jobPost.setTags(jobPostDto.getTags());
-            jobPost.setEmploymentType(jobPostDto.getEmploymentType());
-            jobPost.setLocation(jobPostDto.getLocation());
-            jobPost.setTags(jobPostDto.getTags());
+        jobPost.setTitle(jobPostDto.getTitle());
+        jobPost.setJobType(jobPostDto.getJobType());
+        jobPost.setSeniority(jobPostDto.getSeniority());
+        jobPost.setDescription(jobPostDto.getDescription());
+        jobPost.setJobInfo(jobPostDto.getJobInfo());
+        jobPost.setRequirements(jobPostDto.getRequirements());
+        jobPost.setApplicationLink(jobPostDto.getApplicationLink());
+        jobPost.setTags(jobPostDto.getTags());
+        jobPost.setEmploymentType(jobPostDto.getEmploymentType());
+        jobPost.setLocation(jobPostDto.getLocation());
+        jobPost.setTags(jobPostDto.getTags());
 
         return jobPostRepository.save(jobPost);
     }
@@ -99,7 +100,7 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public List<Apply> findApplicantsByJobpostId(Long id){
+    public List<Apply> findApplicantsByJobpostId(Long id) {
         JobPost jobPost = this.findById(id);
         return applicantsRepository.findByJobPostId(jobPost.getId());
     }
@@ -134,6 +135,7 @@ public class JobPostServiceImpl implements JobPostService {
 
         return savedApplication;
     }
+
     @Override
     public List<JobPost> findAllByTitle(String title) {
         return jobPostRepository.findJobPostsByTitle(title);
@@ -188,36 +190,54 @@ public class JobPostServiceImpl implements JobPostService {
 
 
     @Override
-    public List<JobPost> jobPostFilter(String title, String companyName, String location, JobType jobType, EmploymentType employmentType, Seniority seniority, List<Tags> tags) {
+    public List<JobPost> jobPostFilter(JobPostSearchDto searchDto) {
         return jobPostRepository.findAll((Specification<JobPost>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (title != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+            if (searchDto.getTitle() != null) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("title")),
+                        "%" + searchDto.getTitle().toLowerCase() + "%"
+                ));
             }
-            if (companyName != null) {
+            if (searchDto.getCompanyName() != null) {
                 Join<JobPost, Company> companyJoin = root.join("company");
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(companyJoin.get("companyName")), "%" + companyName.toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(companyJoin.get("companyName")),
+                        "%" + searchDto.getCompanyName().toLowerCase() + "%"
+                ));
             }
-            if (location != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("location")), "%" + location.toLowerCase() + "%"));
+            if (searchDto.getLocation() != null) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("location")),
+                        "%" + searchDto.getLocation().toLowerCase() + "%"
+                ));
             }
-            if (jobType != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("jobType").as(String.class)), "%" + jobType.toString().toLowerCase() + "%"));
+            if (searchDto.getJobType() != null) {
+                predicates.add(criteriaBuilder.equal(
+                        root.get("jobType"),
+                        searchDto.getJobType()
+                ));
             }
-            if (employmentType != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("employmentType").as(String.class)), "%" + employmentType.toString().toLowerCase() + "%"));
+            if (searchDto.getEmploymentType() != null) {
+                predicates.add(criteriaBuilder.equal(
+                        root.get("employmentType"),
+                        searchDto.getEmploymentType()
+                ));
             }
-            if (seniority != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("seniority").as(String.class)), "%" + seniority.toString().toLowerCase() + "%"));
+            if (searchDto.getSeniority() != null) {
+                predicates.add(criteriaBuilder.equal(
+                        root.get("seniority"),
+                        searchDto.getSeniority()
+                ));
             }
-            if (tags != null && !tags.isEmpty()) {
+            if (searchDto.getTags() != null && !searchDto.getTags().isEmpty()) {
                 Join<JobPost, Tags> tagsJoin = root.join("tags");
-                predicates.add(tagsJoin.in(tags));
+                predicates.add(tagsJoin.in(searchDto.getTags()));
             }
-
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
+
 }

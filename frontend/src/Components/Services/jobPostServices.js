@@ -5,9 +5,18 @@ export const fetchJobPosts = async (filterParams = {}) => {
             .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
 
         const queryString = new URLSearchParams(validParams).toString();
-        const url = `http://localhost:8080/jobposts${queryString ? `?${queryString}` : ''}`;
+        // const url = `http://localhost:8080/jobposts${queryString ? `?${queryString}` : ''}`;
+        const url = `http://localhost:8080/jobposts/search`;
 
-        const response = await fetch(url);
+        // const response = await fetch(url);
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(filterParams),
+        });
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);

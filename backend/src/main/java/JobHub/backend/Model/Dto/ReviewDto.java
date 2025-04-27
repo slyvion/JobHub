@@ -16,7 +16,7 @@ public class ReviewDto {
     private long companyId;
 
     @NotBlank
-    private Long rating; // req
+    private Long rating;
 
 
     private String pros;

@@ -27,12 +27,12 @@ public class ReviewsController {
     }
 
     @GetMapping("/company/{id}")
-    public List<Review> getReviewByCompanyId(@PathVariable long id){
+    public List<Review> getReviewByCompanyId(@PathVariable Long id){
         return reviewService.findAllByCompanyId(id);
     }
 
     @GetMapping("/user/{id}")
-    public List<Review> getReviewByUserId(@PathVariable long id){
+    public List<Review> getReviewByUserId(@PathVariable Long id){
         return reviewService.findAllByUserId(id);
     }
 

@@ -20,7 +20,7 @@ const items = [
         description:
             'test test test test test test test test test test test test test test test test test test test test' +
             'test test test test test test test test test',
-        imageLight: 'url("/static/images/templates/templates-images/dash-light.png")',
+        imageLight: 'url("/public/number1.png")',
         imageDark: 'url("/static/images/templates/templates-images/dash-dark.png")',
     },
     {
@@ -28,7 +28,7 @@ const items = [
         title: 'Anonimity',
         description:
             'Anonymously review the companies to provide better insight on potential applicants',
-        imageLight: 'url("/static/images/templates/templates-images/mobile-light.png")',
+        imageLight: 'url("public/number2.png")',
         imageDark: 'url("/static/images/templates/templates-images/mobile-dark.png")',
     },
     {
@@ -36,7 +36,7 @@ const items = [
         title: 'Available on all platforms',
         description:
             'You can access this application on the web browser through your desktop or your mobile device',
-        imageLight: 'url("/static/images/templates/templates-images/devices-light.png")',
+        imageLight: 'url("public/number3.png")',
         imageDark: 'url("/static/images/templates/templates-images/devices-dark.png")',
     },
 ];

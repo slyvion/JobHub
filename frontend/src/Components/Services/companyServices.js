@@ -2,7 +2,7 @@ export const fetchCompanies = async (filterParams = {}) => {
     try {
         const validParams = Object.entries(filterParams)
             .filter(([key, value]) => value !== undefined && value !== '')
-            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
+            .reduce((obj, [key, value]) => ({...obj, [key]: value}), {});
 
         const queryString = new URLSearchParams(validParams).toString();
         const url = `http://localhost:8080/companies${queryString ? `?${queryString}` : ''}`;
@@ -22,12 +22,19 @@ export const fetchAdminCompanies = async (filterParams = {}) => {
     try {
         const validParams = Object.entries(filterParams)
             .filter(([key, value]) => value !== undefined && value !== '')
-            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
+            .reduce((obj, [key, value]) => ({...obj, [key]: value}), {});
 
         const queryString = new URLSearchParams(validParams).toString();
-        const url = `http://localhost:8080/companies/admin${queryString ? `?${queryString}` : ''}`;
+        // const url = `http://localhost:8080/companies/admin${queryString ? `?${queryString}` : ''}`;
+        const url = `http://localhost:8080/companies/admin`;
 
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(filterParams),
+        });
 
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -77,8 +84,8 @@ export const updateCompanyBio = async (id, description) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateBio`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ description }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({description}),
         });
         if (!response.ok) throw new Error("Failed to update company description");
         return await response.json();
@@ -91,8 +98,8 @@ export const updateCompanyName = async (id, companyName) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateName`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ companyName }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({companyName}),
         });
         if (!response.ok) throw new Error("Failed to update company name");
         return await response.json();
@@ -105,8 +112,8 @@ export const updateCompanyWebsite = async (id, website) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateWebsite`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ website }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({website}),
         });
         if (!response.ok) throw new Error("Failed to update website");
         return await response.json();
@@ -119,8 +126,8 @@ export const updateCompanyLocation = async (id, location) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateLocation`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ location }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({location}),
         });
         if (!response.ok) throw new Error("Failed to update location");
         return await response.json();
@@ -153,8 +160,8 @@ export const updateCompanyFounded = async (id, founded) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateFounded`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ founded }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({founded}),
         });
         if (!response.ok) throw new Error("Failed to update founded year");
         return await response.json();
@@ -166,8 +173,8 @@ export const updateCompanyPhone = async (id, phoneNumber) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updatePhone`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ phoneNumber }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({phoneNumber}),
         });
         if (!response.ok) throw new Error("Failed to update phone number");
         return await response.json();
@@ -180,8 +187,8 @@ export const updateCompanyEmail = async (id, email) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateEmail`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email}),
         });
         if (!response.ok) throw new Error("Failed to update email");
         return await response.json();
@@ -196,7 +203,7 @@ export const updateCompanyPassword = async (id, oldPassword, newPassword, confir
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ oldPassword, newPassword, confirmPassword }),
+        body: JSON.stringify({oldPassword, newPassword, confirmPassword}),
     });
 
     if (!response.ok) {
@@ -205,16 +212,14 @@ export const updateCompanyPassword = async (id, oldPassword, newPassword, confir
 };
 
 
-
-
 export const updateCompanyEmployeeNumber = async (id, employeeNumber) => {
 
 
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateEmployeeNumber`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ employeeNumber }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({employeeNumber}),
         });
         if (!response.ok) throw new Error("Failed to update employee number");
         return await response.json();
@@ -270,14 +275,12 @@ export const getCompanyLogo = async (companyId) => {
 };
 
 
-
-
 export const updateCompanyOffices = async (id, cities) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateOffices`, {
             method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ cities: Array.isArray(cities) ? cities : [] }),
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({cities: Array.isArray(cities) ? cities : []}),
         });
 
         if (!response.ok) throw new Error("Failed to update offices");

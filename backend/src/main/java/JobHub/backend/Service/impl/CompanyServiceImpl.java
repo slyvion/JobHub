@@ -3,6 +3,7 @@ package JobHub.backend.Service.impl;
 import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Dto.Company.*;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Company;
@@ -64,7 +65,6 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
 
-
     @Override
     public Company employeeNumberUpdate(Long id, CompanyEmployeeNumberUpdateDto companyEmployeeNumberUpdateDto) {
         Company company = this.findById(id);
@@ -107,7 +107,7 @@ public class CompanyServiceImpl implements CompanyService {
     public Company phoneUpdate(Long id, CompanyPhoneUpdateDto companyPhoneUpdateDto) {
         Company company = this.findById(id);
         company.setPhoneNumber(companyPhoneUpdateDto.getPhoneNumber());
-        return  companyRepository.save(company);
+        return companyRepository.save(company);
     }
 
     @Override
@@ -220,36 +220,62 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> companyAdminFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber, Integer founded, String website, String email) {
+    public List<Company> companyAdminFilter(CompanyAdminSearchDto searchDto) {
         return companyRepository.findAll((Specification<Company>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            if (companyName != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("companyName")), "%" + companyName.toLowerCase() + "%"));
+            if (searchDto.getCompanyName() != null) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("companyName")),
+                        "%" + searchDto.getCompanyName().toLowerCase() + "%"
+                ));
             }
 
-            if (location != null) {
-                predicates.add(criteriaBuilder.equal(root.get("location"), location));
+            if (searchDto.getLocation() != null) {
+                predicates.add(criteriaBuilder.equal(
+                        root.get("location"),
+                        searchDto.getLocation()
+                ));
             }
 
-            if (rating != null) {
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), rating));
+            if (searchDto.getRating() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(
+                        root.get("rating"),
+                        searchDto.getRating()
+                ));
             }
-            if (employeeNumber != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("employeeNumber").as(String.class)), "%" + employeeNumber.toString().toLowerCase() + "%"));
+
+            if (searchDto.getEmployeeNumber() != null) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("employeeNumber").as(String.class)),
+                        "%" + searchDto.getEmployeeNumber().toString().toLowerCase() + "%"
+                ));
             }
-            if(founded != null) {
-                predicates.add(criteriaBuilder.equal(root.get("founded"), founded));
+
+            if (searchDto.getFounded() != null) {
+                predicates.add(criteriaBuilder.equal(
+                        root.get("founded"),
+                        searchDto.getFounded()
+                ));
             }
-            if (website != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("website")), "%" + website.toLowerCase() + "%"));
+
+            if (searchDto.getWebsite() != null) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("website")),
+                        "%" + searchDto.getWebsite().toLowerCase() + "%"
+                ));
             }
-            if (email != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), email.toLowerCase() + "%"));
+
+            if (searchDto.getEmail() != null) {
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get("email")),
+                        "%" + searchDto.getEmail().toLowerCase() + "%"
+                ));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
+
 
 }

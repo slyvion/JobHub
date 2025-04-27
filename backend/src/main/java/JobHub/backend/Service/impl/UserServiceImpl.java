@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("email")), "%" + email.toLowerCase() + "%"));
             }
             if (userRole != null) {
-                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("userRole").as(String.class)), "%" + userRole.toString().toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("role").as(String.class)), "%" + userRole.toString().toLowerCase() + "%"));
             }
 
 

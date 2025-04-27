@@ -55,6 +55,7 @@ export default function ReviewsTab() {
                             <TableRow>
                                 <TableCell><strong>Company Name</strong></TableCell>
                                 <TableCell><strong>Title</strong></TableCell>
+                                <TableCell><strong>User</strong></TableCell>
                                 <TableCell><strong>Rating</strong></TableCell>
                                 <TableCell><strong>Post Date</strong></TableCell>
                                 <TableCell><strong>Actions</strong></TableCell>
@@ -65,6 +66,7 @@ export default function ReviewsTab() {
                                 <TableRow key={index}>
                                     <TableCell>{review.company.companyName}</TableCell>
                                     <TableCell>{review.title}</TableCell>
+                                    <TableCell>{review.user.username}</TableCell>
                                     <TableCell>{review.rating}</TableCell>
                                     <TableCell>{review.postDate.slice(0, 10)}</TableCell>
                                     <TableCell>

@@ -83,7 +83,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public List<Review> findAllById(long id) {
+    public List<Review> findAllById(Long id) {
         return reviewRepository.findAllById(id);
     }
 
@@ -108,8 +108,9 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findReviewsByCompanyCompanyName(companyName);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Review> findAllByUserId(long id) {
+    public List<Review> findAllByUserId(Long id) {
         return reviewRepository.findAllByUserId(id);
     }
 

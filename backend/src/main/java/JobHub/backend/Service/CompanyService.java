@@ -52,6 +52,6 @@ public interface CompanyService {
 
     List<Company> companyFilter(String name, String location, Double rating, EmployeeNumber employeeNumber);
 
-    List<Company> companyAdminFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber, Integer founded, String website, String email);
+    List<Company> companyAdminFilter(CompanyAdminSearchDto searchDto);
 
 }

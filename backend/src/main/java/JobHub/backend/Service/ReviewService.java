@@ -17,7 +17,7 @@ public interface ReviewService {
     Review findById(Long id);
     Review deleteReview(Long id);
 
-    List<Review> findAllById(long id);
+    List<Review> findAllById(Long id);
 
     List<Review> listAll();
 
@@ -27,7 +27,7 @@ public interface ReviewService {
 
     List<Review> findByCompanyName(String companyName);
 
-    List<Review> findAllByUserId(long id);
+    List<Review> findAllByUserId(Long id);
     List<Review> findByRatingGreaterThan(long rating);
 
     List<Review> reviewFilter(String companyName, String title, Double rating);

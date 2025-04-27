@@ -25,7 +25,7 @@ public class Review {
     @ManyToOne
     private Company company;
 
-    private Long rating; // req
+    private Long rating;
 
     @Lob
     private String pros;

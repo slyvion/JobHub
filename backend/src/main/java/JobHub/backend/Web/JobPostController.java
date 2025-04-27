@@ -3,6 +3,7 @@ package JobHub.backend.Web;
 import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
+import JobHub.backend.Model.Dto.JobPostSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Company;
@@ -28,27 +29,10 @@ public class JobPostController {
     }
 
 
-    @GetMapping
-    public List<JobPost> jobPostsFilter(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String companyName,
-            @RequestParam(required = false) String location,
-            @RequestParam(required = false) JobType jobType,
-            @RequestParam(required = false) EmploymentType employmentType,
-            @RequestParam(required = false) Seniority seniority,
-            @RequestParam(required = false) List<Tags> tags) {
+    @PostMapping("/search")
+    public List<JobPost> jobPostsFilter(@RequestBody JobPostSearchDto searchDto) {
 
-        if( title == null &&
-            companyName == null &&
-            location == null &&
-            jobType == null &&
-            employmentType == null &&
-            seniority == null &&
-            tags == null){
-            return jobPostService.listAll();
-        }
-        return jobPostService.jobPostFilter(
-                title, companyName, location, jobType, employmentType, seniority, tags);
+        return jobPostService.jobPostFilter(searchDto);
     }
 
     @PostMapping
@@ -58,7 +42,7 @@ public class JobPostController {
 
     @PutMapping("/{id}/edit")
     public JobPost update(@PathVariable Long id,
-                          @Valid  @RequestBody JobPostDto jobPostDto) {
+                          @Valid @RequestBody JobPostDto jobPostDto) {
 
 
         return jobPostService.update(id, jobPostDto);
@@ -69,12 +53,14 @@ public class JobPostController {
         jobPostService.delete(id);
         return "redirect:/jobposts";
     }
+
     @GetMapping("/company/{id}")
     public List<JobPost> getJobPostByCompanyId(@PathVariable Long id) {
         return jobPostService.findJobPostsByCompanyId(id);
     }
+
     @GetMapping("/jobposts/id/applicants")
-    public List<Apply> getApplicantsByJobpostId(@PathVariable Long id){
+    public List<Apply> getApplicantsByJobpostId(@PathVariable Long id) {
         return jobPostService.findApplicantsByJobpostId(id);
     }
 
