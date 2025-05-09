@@ -30,7 +30,7 @@ const SavedJobPosts = () => {
     const handleUnsave = async (jobId) => {
         try {
             const userId = localStorage.getItem("userId") || 1;
-            const response = await fetch(`http://localhost:8080/user/${userId}/saved-jobposts/${jobId}`, {
+            const response = await fetch(`http://localhost:8080/user/${userId}/removeJob/${jobId}`, {
                 method: "DELETE",
             });
             if (!response.ok) throw new Error("Failed to remove job post");

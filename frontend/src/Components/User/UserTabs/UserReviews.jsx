@@ -36,9 +36,9 @@ export default function UserReviews({ reviews, loading, error }) {
                 <CircularProgress />
             ) : error ? (
                 <Typography color="error">{error}</Typography>
-            ) : reviews.length === 0 ? (
+            ) : !reviews || reviews.length === 0 ? (
                 <Typography variant="body1" color="text.secondary">
-                    You haven't written any reviews yet.
+                    You have not written any reviews yet.
                 </Typography>
             ) : (
                 reviews.map((review) => <Review key={review.id} review={review} />)

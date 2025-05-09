@@ -3,6 +3,7 @@ import { Box, CircularProgress, Typography, Table, TableBody, TableCell, TableCo
 import CompanyAdminFilter from "../AdminFilters/CompanyAdminFilter.jsx"
 import NoCompFound from "../../Company/NoCompFound.jsx";
 import { fetchAdminCompanies } from "../../Services/companyServices.js";
+import Button from "@mui/material/Button";
 
 export default function CompaniesTab() {
     const [companyData, setCompanyData] = useState([]);
@@ -26,6 +27,10 @@ export default function CompaniesTab() {
     useEffect(() => {
         getCompanies();
     }, []);
+
+    const handleEdit = (id) => {
+        console.log("Edit review", id);
+    };
 
     return (
         <Box
@@ -69,6 +74,7 @@ export default function CompaniesTab() {
                                 <TableCell><strong>Cities</strong></TableCell>
                                 <TableCell><strong>Employees</strong></TableCell>
                                 <TableCell><strong>Rating</strong></TableCell>
+                                {/*<TableCell><strong>Actions</strong></TableCell>*/}
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -102,6 +108,14 @@ export default function CompaniesTab() {
                                     <TableCell>{company.cities?.join(", ") || "N/A"}</TableCell>
                                     <TableCell>{company.employeeNumber || "N/A"}</TableCell>
                                     <TableCell>{company.rating}</TableCell>
+                                    {/*<TableCell>*/}
+                                    {/*    <Button variant="contained" color="primary" size="small" onClick={() => handleEdit(review.id)}>*/}
+                                    {/*        Edit*/}
+                                    {/*    </Button>*/}
+                                    {/*    <Button variant="contained" color="error" size="small" onClick={() => handleDelete(review.id)} sx={{ ml: 1 }}>*/}
+                                    {/*        Delete*/}
+                                    {/*    </Button>*/}
+                                    {/*</TableCell>*/}
                                 </TableRow>
                             ))}
                         </TableBody>

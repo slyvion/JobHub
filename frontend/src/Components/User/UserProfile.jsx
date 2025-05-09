@@ -11,6 +11,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import UserData from "./UserTabs/UserData.jsx";
 import UserReviews from "./UserTabs/UserReviews.jsx";
 import SavedJobs from "./UserTabs/SavedJobs.jsx";
+import JobApplications from "./UserTabs/JobApplications.jsx";
 import Help from "./UserTabs/Help.jsx";
 import { fetchUserData, fetchUserReviews } from "../Services/userServices";
 
@@ -80,7 +81,7 @@ export default function UserProfile() {
                     <Box sx={{ flex: 1 }}>
                         {value === 0 && user && <UserData user={user} />}
                         {value === 1 && <Typography> <SavedJobs /> </Typography>}
-                        {value === 2 && <Typography> Applications tab </Typography>}
+                        {value === 2 && <Typography> <JobApplications /> </Typography>}
                         {value === 3 && <UserReviews reviews={reviews} />}
                         {value === 4 && <Typography> <Help /></Typography>}
                     </Box>
