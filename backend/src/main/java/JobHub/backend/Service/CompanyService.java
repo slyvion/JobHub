@@ -3,6 +3,8 @@ package JobHub.backend.Service;
 import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Dto.Company.*;
 import JobHub.backend.Model.Company;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -50,7 +52,8 @@ public interface CompanyService {
     List<Company> listAll();
 
 
-    List<Company> companyFilter(String name, String location, Double rating, EmployeeNumber employeeNumber);
+    Page<Company> companyFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber, Pageable pageable);
+    Page<Company> listAll(Pageable pageable);
 
     List<Company> companyAdminFilter(CompanyAdminSearchDto searchDto);
 

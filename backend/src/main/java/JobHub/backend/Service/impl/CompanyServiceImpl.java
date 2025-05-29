@@ -3,7 +3,9 @@ package JobHub.backend.Service.impl;
 import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Dto.Company.*;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Company;
@@ -196,7 +198,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public List<Company> companyFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber) {
+    public Page<Company> companyFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber, Pageable pageable) {
         return companyRepository.findAll((Specification<Company>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -211,13 +213,20 @@ public class CompanyServiceImpl implements CompanyService {
             if (rating != null) {
                 predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("rating"), rating));
             }
+
             if (employeeNumber != null) {
                 predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get("employeeNumber").as(String.class)), "%" + employeeNumber.toString().toLowerCase() + "%"));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        });
+        }, pageable);
     }
+
+    @Override
+    public Page<Company> listAll(Pageable pageable) {
+        return companyRepository.findAll(pageable);
+    }
+
 
     @Override
     public List<Company> companyAdminFilter(CompanyAdminSearchDto searchDto) {

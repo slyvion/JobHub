@@ -1,21 +1,17 @@
-export const fetchJobPosts = async (filterParams = {}) => {
+export const fetchJobPosts = async (filterParams = {}, page = 0, size = 10) => {
     try {
         const validParams = Object.entries(filterParams)
-            .filter(([key, value]) => value !== undefined && value !== '')
+            .filter(([_, value]) => value !== undefined && value !== "")
             .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
 
-        const queryString = new URLSearchParams(validParams).toString();
-        // const url = `http://localhost:8080/jobposts${queryString ? `?${queryString}` : ''}`;
-        const url = `http://localhost:8080/jobposts/search`;
-
-        // const response = await fetch(url);
+        const url = `http://localhost:8080/jobposts/search?page=${page}&size=${size}`;
 
         const response = await fetch(url, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(filterParams),
+            body: JSON.stringify(validParams),
         });
 
         if (!response.ok) {
@@ -27,6 +23,8 @@ export const fetchJobPosts = async (filterParams = {}) => {
         throw new Error(err.message);
     }
 };
+
+
 export const fetchJobPost = async (id) => {
     try {
         const response = await fetch(`http://localhost:8080/jobposts/${id}`);

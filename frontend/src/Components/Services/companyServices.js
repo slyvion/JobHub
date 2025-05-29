@@ -1,11 +1,14 @@
-export const fetchCompanies = async (filterParams = {}) => {
+export const fetchCompanies = async (filterParams = {}, page = 0, size = 10) => {
     try {
         const validParams = Object.entries(filterParams)
             .filter(([key, value]) => value !== undefined && value !== '')
-            .reduce((obj, [key, value]) => ({...obj, [key]: value}), {});
+            .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {});
+
+        validParams.page = page;
+        validParams.size = size;
 
         const queryString = new URLSearchParams(validParams).toString();
-        const url = `http://localhost:8080/companies${queryString ? `?${queryString}` : ''}`;
+        const url = `http://localhost:8080/companies?${queryString}`;
 
         const response = await fetch(url);
 
@@ -18,13 +21,14 @@ export const fetchCompanies = async (filterParams = {}) => {
         throw new Error(err.message);
     }
 };
+
 export const fetchAdminCompanies = async (filterParams = {}) => {
     try {
         const validParams = Object.entries(filterParams)
             .filter(([key, value]) => value !== undefined && value !== '')
             .reduce((obj, [key, value]) => ({...obj, [key]: value}), {});
 
-        const queryString = new URLSearchParams(validParams).toString();
+        // const queryString = new URLSearchParams(validParams).toString();
         // const url = `http://localhost:8080/companies/admin${queryString ? `?${queryString}` : ''}`;
         const url = `http://localhost:8080/companies/admin`;
 

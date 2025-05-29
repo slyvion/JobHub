@@ -5,6 +5,9 @@ import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
 import JobHub.backend.Model.Dto.JobPostSearchDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Constants.EmploymentType;
@@ -30,10 +33,15 @@ public class JobPostController {
 
 
     @PostMapping("/search")
-    public List<JobPost> jobPostsFilter(@RequestBody JobPostSearchDto searchDto) {
-
-        return jobPostService.jobPostFilter(searchDto);
+    public Page<JobPost> jobPostsFilter(
+            @RequestBody JobPostSearchDto searchDto,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        return jobPostService.jobPostFilter(searchDto, pageable);
     }
+
 
     @PostMapping
     public JobPost create(@Valid @RequestBody JobPostDto jobPostDto) {
@@ -59,9 +67,16 @@ public class JobPostController {
         return jobPostService.findJobPostsByCompanyId(id);
     }
 
-    @GetMapping("/jobposts/id/applicants")
+    @GetMapping("/jobposts/{id}/applicants")
     public List<Apply> getApplicantsByJobpostId(@PathVariable Long id) {
         return jobPostService.findApplicantsByJobpostId(id);
     }
+
+    //@PostMapping("/jobposts/{id}/applicants/updateStatus")
+    // public Apply updateStatus(@PathVariable Long jobPostId,
+    //                           Status status,
+    //                           Long applicantId){
+    // return jobPostService.updateStatus(jobPostId, Status status, applicantId);
+    //}
 
 }

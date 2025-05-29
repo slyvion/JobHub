@@ -1,30 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Fab, CircularProgress } from "@mui/material";
+import {
+    Box,
+    CircularProgress,
+    Typography,
+    Pagination,
+    Fab,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import JobPostFilter from "./JobPostFilter.jsx";
 import JobPost from "./JobPost.jsx";
+import JobPostFilter from "./JobPostFilter.jsx";
 import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
+import { fetchJobPosts } from "../Services/jobPostServices.js";
 import NoJobsFound from "./NoJobsFound.jsx";
-import { fetchJobPosts as getJobPosts } from "../Services/jobPostServices.js";
 import { useNavigate } from "react-router-dom";
+
 export default function JobPostPage() {
     const [jobPosts, setJobPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    const [currentFilter, setCurrentFilter] = useState({});
+
     const navigate = useNavigate();
-    const handleAddJobpost = () => {
-        navigate('/createJobpost');
-    };
-    const loadJobPosts = async (filterParams = {}) => {
+
+    const loadJobPosts = async (filters = currentFilter, pageNum = 0) => {
         setLoading(true);
         setError(null);
-
         try {
-            const data = await getJobPosts(filterParams);
-            setJobPosts(data);
+            const data = await fetchJobPosts(filters, pageNum);
+            setJobPosts(data.content);
+            setTotalPages(data.totalPages);
+            setPage(data.number);
         } catch (err) {
-            setError(err.message);
+            setError(err.message || "Failed to fetch job posts.");
         } finally {
             setLoading(false);
         }
@@ -34,6 +44,23 @@ export default function JobPostPage() {
         loadJobPosts();
     }, []);
 
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [page]);
+
+    const handleFilter = (filters) => {
+        setCurrentFilter(filters);
+        loadJobPosts(filters, 0);
+    };
+
+    const handlePageChange = (event, value) => {
+        loadJobPosts(currentFilter, value - 1);
+    };
+
+    const handleAddJobpost = () => {
+        navigate("/createJobpost");
+    };
+
     return (
         <Box
             sx={{
@@ -41,7 +68,6 @@ export default function JobPostPage() {
                 flexDirection: "column",
                 minHeight: "100vh",
                 backgroundColor: "#f0f0f0",
-                position: "relative",
             }}
         >
             <AppAppBar />
@@ -56,10 +82,18 @@ export default function JobPostPage() {
                     zIndex: 10,
                 }}
             >
-                <JobPostFilter onFilter={loadJobPosts} />
+                <JobPostFilter onFilter={handleFilter} />
             </Box>
 
-            <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", mt: 4 }}>
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    mt: 4,
+                }}
+            >
                 {loading ? (
                     <Box display="flex" justifyContent="center" mt={4}>
                         <CircularProgress />
@@ -69,17 +103,32 @@ export default function JobPostPage() {
                         Error: {error}
                     </Typography>
                 ) : jobPosts.length === 0 ? (
-                    <Typography variant="body1" color="textSecondary">
+                    <Box display="flex" justifyContent="center" alignItems="center" mt={4}>
+                        <Typography variant="body1" color="textSecondary">
                         <NoJobsFound />
-                    </Typography>
-                ) : (
-                    <Box display="flex" flexDirection="column" alignItems="center">
-                        {jobPosts.map((job) => (
-                            <Box key={job.id} width="100%" maxWidth="800px">
-                                <JobPost job={job} />
-                            </Box>
-                        ))}
+                        </Typography>
+
                     </Box>
+                ) : (
+                    <>
+                        <Box display="flex" flexDirection="column" alignItems="center">
+                            {jobPosts.map((job) => (
+                                <Box key={job.id} mb={3}>
+                                    <JobPost job={job} />
+                                </Box>
+                            ))}
+                        </Box>
+
+                        <Box display="flex" justifyContent="center" mt={4}>
+                            <Pagination
+                                count={totalPages}
+                                page={page + 1}
+                                shape="rounded"
+                                onChange={handlePageChange}
+                                color="primary"
+                            />
+                        </Box>
+                    </>
                 )}
             </Box>
 
@@ -97,7 +146,10 @@ export default function JobPostPage() {
                 <Fab color="primary" aria-label="add" onClick={handleAddJobpost}>
                     <AddIcon />
                 </Fab>
-                <Typography variant="caption" sx={{color: 'black'}}mt={1}>
+                <Typography
+                    variant="caption"
+                    sx={{ color: "black", mt: 1 }}
+                >
                     Add JobPost
                 </Typography>
             </Box>

@@ -10,6 +10,8 @@ import JobHub.backend.Repository.ApplicantsRepository;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Company;
@@ -190,8 +192,8 @@ public class JobPostServiceImpl implements JobPostService {
 
 
     @Override
-    public List<JobPost> jobPostFilter(JobPostSearchDto searchDto) {
-        return jobPostRepository.findAll((Specification<JobPost>) (root, query, criteriaBuilder) -> {
+    public Page<JobPost> jobPostFilter(JobPostSearchDto searchDto, Pageable pageable) {
+        Specification<JobPost> spec = (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             if (searchDto.getTitle() != null) {
@@ -200,6 +202,7 @@ public class JobPostServiceImpl implements JobPostService {
                         "%" + searchDto.getTitle().toLowerCase() + "%"
                 ));
             }
+
             if (searchDto.getCompanyName() != null) {
                 Join<JobPost, Company> companyJoin = root.join("company");
                 predicates.add(criteriaBuilder.like(
@@ -207,37 +210,35 @@ public class JobPostServiceImpl implements JobPostService {
                         "%" + searchDto.getCompanyName().toLowerCase() + "%"
                 ));
             }
+
             if (searchDto.getLocation() != null) {
                 predicates.add(criteriaBuilder.like(
                         criteriaBuilder.lower(root.get("location")),
                         "%" + searchDto.getLocation().toLowerCase() + "%"
                 ));
             }
+
             if (searchDto.getJobType() != null) {
-                predicates.add(criteriaBuilder.equal(
-                        root.get("jobType"),
-                        searchDto.getJobType()
-                ));
+                predicates.add(criteriaBuilder.equal(root.get("jobType"), searchDto.getJobType()));
             }
+
             if (searchDto.getEmploymentType() != null) {
-                predicates.add(criteriaBuilder.equal(
-                        root.get("employmentType"),
-                        searchDto.getEmploymentType()
-                ));
+                predicates.add(criteriaBuilder.equal(root.get("employmentType"), searchDto.getEmploymentType()));
             }
+
             if (searchDto.getSeniority() != null) {
-                predicates.add(criteriaBuilder.equal(
-                        root.get("seniority"),
-                        searchDto.getSeniority()
-                ));
+                predicates.add(criteriaBuilder.equal(root.get("seniority"), searchDto.getSeniority()));
             }
+
             if (searchDto.getTags() != null && !searchDto.getTags().isEmpty()) {
                 Join<JobPost, Tags> tagsJoin = root.join("tags");
                 predicates.add(tagsJoin.in(searchDto.getTags()));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
-        });
+        };
+
+        return jobPostRepository.findAll(spec, pageable);
     }
 
 }

@@ -21,22 +21,23 @@ public class CompaniesController {
 
 
     @GetMapping("")
-    public List<Company> companiesFilter(
+    public Page<Company> companiesFilter(
             @RequestParam(required = false) String companyName,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) Double rating,
-            @RequestParam(required = false) EmployeeNumber employeeNumber
-            ) {
-
-        if ( companyName == null &&
-             location == null &&
-             rating == null &&
-             employeeNumber == null){
-            return companyService.listAll();
+            @RequestParam(required = false) EmployeeNumber employeeNumber,
+            Pageable pageable
+    ) {
+        if (companyName == null &&
+                location == null &&
+                rating == null &&
+                employeeNumber == null) {
+            return companyService.listAll(pageable);
         }
 
-        return companyService.companyFilter(companyName, location, rating, employeeNumber);
+        return companyService.companyFilter(companyName, location, rating, employeeNumber, pageable);
     }
+
 
     @PostMapping("/admin") // Page<Company>
         public List<Company> companiesAdminFilter(
