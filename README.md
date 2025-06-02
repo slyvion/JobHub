@@ -5,23 +5,30 @@
 
 **Technologies Used**
 - Java Spring
-- React with Vite
+- React.js
 - PostgreSQL
 
 **Prerequisites**
-- Before you start the project, make sure you have already installed the following 
+- Before you start the project, make sure you have already installed the following :
 
-- For Frontend (React with Vite)
+- Frontend 
+  - Node.js.
+  - WebStorm (preferred).
 
-  - Node.js and npm: Ensure you have Node.js installed (version 14 or higher) along with npm.
-  - WebStorm: Use WebStorm as your Integrated Development Environment (IDE) for frontend development.
-
-- For Backend (Java Spring)
-  - Java Development Kit (JDK): Install JDK 11 or higher.
-  - IntelliJ IDEA: Use IntelliJ IDEA as your Integrated Development Environment (IDE) for backend development.
-  - Apache Maven: Maven is required for building and managing Java-based projects.
+- Backend 
+  - IntelliJ (preferred).
+  - Apache Maven (required).
+  - JDK version 21 or higher (required),
+  - make sure your localhost:8080 is free.
 
 - Database
-  - PostgreSQL: Install and set up PostgreSQL (version 12 or higher) for the database backend.
+  - PostgreSQL
     - By default its setup for localhost:5432, if your port is different, please change it in the application properties.
+    - check for the connection username and password in the application properties.
+  - DBeaver or DataGrip.
+
+- Git in order to clone the project
+
+- There is a DummyData.txt which contains data you can input as dummy data using Dbeaver or DataGrip.
+
 

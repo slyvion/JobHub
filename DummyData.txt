@@ -1,0 +1,65 @@
+INSERT INTO app_user (id, username, email, password, role) VALUES (2, 'jane_smith', 'jane@example.com', 'password123', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (3, 'alice_admin', 'alice@admin.com', 'adminpass', 'ADMIN');
+INSERT INTO app_user (id, username, email, password, role) VALUES (4, 'bob_user', 'bob@user.com', 'userpass', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (5, 'charlie_manager', 'charlie@manager.com', 'manpass', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (6, 'diana_support', 'diana@support.com', 'supportpass', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (7, 'emily_writer', 'emily@contentworld.com', 'writepass', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (8, 'frank_analyst', 'frank@datascience.com', 'analyst123', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (9, 'george_admin', 'george@adminworld.com', 'admin789', 'ADMIN');
+INSERT INTO app_user (id, username, email, password, role) VALUES (10, 'hannah_dev', 'hannah@devhouse.com', 'devhousepass', 'USER');
+INSERT INTO app_user (id, username, email, password, role) VALUES (1, 'john_doe', 'john_doe@hotmail.com', 'JohndoePassword', 'USER');
+
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (1, null, null, 'Tech Innovators', null, null, 'Postman test working', 'info@techinnovators.com', 'MORE_THAN_500', null, 2010, null, null, 'Macedonia', 'jpg', 'image/jpeg', 'techpass', '+38975123456', 4, 'www.techinnovators.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (2, null, null, 'Green Solutions', null, null, 'Eco-friendly solutions for a greener world.', 'contact@greensolutions.com', null, '', 2018, 'www.instagram.com/greenSolutions', '', 'Serbia', null, null, 'greenpass', null, 2.2, 'www.greensolutions.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (3, null, null, 'Finance Gurus', null, null, 'asd', 'support@financegurus.com', 'BETWEEN_21_AND_50', 'www.facebook.com/financeGurus', 2010, '', '', 'Serbia', 'png', 'image/png', 'financepass', null, 3.8, 'www.financegurus.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (4, null, null, 'HealthFirst', null, null, 'Innovative healthcare services and solutions.', 'jobs@healthfirst.com', 'BETWEEN_21_AND_50', null, 2013, null, null, 'Germany', null, null, 'HealthPass1!', '+389756362', 0, 'www.healthfirst.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (5, null, null, 'Creative Studio', 'jpg', 'image/jpeg', 'Design and digital marketing experts.', 'hello@creativestudio.com', 'BETWEEN_101_AND_300', null, 2011, null, null, 'Germany', 'jpg', 'image/jpeg', 'creativepass', '+38977345678', 0, 'www.creativestudio.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (6, null, null, 'NextGen Solutions', 'jpg', 'image/jpeg', 'Leading the next generation of tech solutions.', 'contact@nextgensolutions.com', null, null, null, null, null, 'Switzerland', null, null, 'nextgenpass', null, 2.9, 'www.nextgensolutions.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (7, null, null, 'Bright Future', 'jpg', 'image/jpeg', 'Empowering education and innovation.', 'hello@brightfuture.com', null, null, null, null, null, 'Denmark', 'jpg', 'image/jpeg', 'brightpass', null, 5, 'www.brightfuture.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (8, null, null, 'DataWave', null, null, 'Pioneering in data analysis and AI solutions.', 'contact@datawave.com', null, null, null, null, null, 'Italy', null, null, 'wavepass', null, 5, 'www.datawave.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (9, null, null, 'Creative Minds', null, null, 'Design and digital marketing agency.', 'info@creativeminds.com', null, null, null, null, null, 'Greece', 'jpg', 'image/jpeg', 'creativepass', null, 4.72, 'www.creativeminds.com');
+INSERT INTO company (id, company_cover, company_logo, company_name, cover_extension, cover_type, description, email, employee_number, facebook_link, founded, instagram_link, linkedin_link, location, logo_extension, logo_type, password, phone_number, rating, website) VALUES (10, null, null, 'HealthPlus', null, null, 'Healthcare and wellness technology innovator.', 'team@healthplus.com', null, null, null, null, null, 'Spain', null, null, 'pluspass', null, 4.21, 'www.healthplus.com');
+
+INSERT INTO company_cities (company_id, city) VALUES (2, 'Belgrade');
+INSERT INTO company_cities (company_id, city) VALUES (2, 'Novi Sad');
+INSERT INTO company_cities (company_id, city) VALUES (4, 'Berlin');
+INSERT INTO company_cities (company_id, city) VALUES (4, 'Frankfurt');
+INSERT INTO company_cities (company_id, city) VALUES (3, 'Belgrade');
+INSERT INTO company_cities (company_id, city) VALUES (1, 'Skopje');
+INSERT INTO company_cities (company_id, city) VALUES (1, 'Ohrid');
+INSERT INTO company_cities (company_id, city) VALUES (1, 'Bitola');
+INSERT INTO company_cities (company_id, city) VALUES (1, 'Strumica');
+INSERT INTO company_cities (company_id, city) VALUES (5, 'Berlin');
+
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (1, 'Great Workplace', 1, 1, 5, '2024-09-01 10:15:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (2, 'Needs Improvement', 2, 2, 3, '2024-09-02 14:30:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (3, 'Fantastic Experience', 3, 3, 5, '2024-09-03 09:45:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (4, 'Not Bad', 4, 4, 4, '2024-09-04 12:00:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (5, 'Supportive Team', 5, 5, 5, '2024-09-05 11:30:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (6, 'Flexible Work Hours', 6, 6, 4, '2024-09-06 08:15:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (7, 'Great Learning Environment', 7, 7, 5, '2024-09-07 10:45:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (8, 'Innovative and Exciting', 8, 8, 5, '2024-09-08 13:15:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (9, 'Creative and Fun Workplace', 9, 9, 5, '2024-09-09 14:30:00.000000', null, null);
+INSERT INTO review (id, title, user_id, company_id, rating, post_date, cons, pros) VALUES (10, 'Could Improve Benefits', 10, 10, 3, '2024-09-10 15:05:00.000000', null, null);
+
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (2, 'Data Scientist', 'Analyze and interpret complex data to provide business insights.', 2, 'REMOTE', 'FULL_TIME', 'Serbia', 'https://www.blabla.com', 'asd', 'asd', 'INTERMEDIATE');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (1, 'Software Engineer', 'Develop and maintain software applications.', 1, 'ON_SITE', 'FULL_TIME', 'Macedonia', 'https://somelink.com', 'sdf', 'asd', 'JUNIOR');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (5, 'Marketing Specialist', 'Create and execute marketing strategies to drive brand awareness.', 5, 'ON_SITE', 'PART_TIME', 'Germany', 'asd', 'asd', 'asd', 'JUNIOR');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (4, 'UX Designer', 'Design user interfaces and experiences for web and mobile applications.', 4, 'HYBRID', 'FULL_TIME', 'Germany', 'https://uxdesign.com', 'test1', 'test2', 'SENIOR');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (3, 'Product Manager', 'Lead product development and ensure alignment with business goals.', 3, 'HYBRID', 'FULL_TIME', 'Serbia', 'asd', 'test', 'test', 'JUNIOR');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (7, 'Frontend Developer', 'Develop and maintain front-end features of our web applications.', 7, 'ON_SITE', 'FULL_TIME', 'Denmark', 'asd', 'frontend', 'experience', 'INTERN');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (8, 'Graphic Designer', 'Design graphics and visuals for marketing materials.', 8, 'ON_SITE', 'FULL_TIME', 'Italy', 'linkhere', 'asd' ,'asd' , 'INTERMEDIATE');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (9, 'Customer Support Specialist', 'Provide excellent customer service and support.', 9, 'ON_SITE', 'FULL_TIME', 'Greece', 'blabla', 'bla', 'bla', 'JUNIOR');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (6, 'Machine Learning Engineer', 'Develop machine learning models and algorithms for data analysis.', 6, 'REMOTE', 'FULL_TIME', 'Switzerland', 'bla', 'bla', 'bla', 'SENIOR');
+INSERT INTO job_post (id, title, description, company_id, job_type, employment_type, location, application_link, job_info, requirements, seniority) VALUES (10, 'Backend Developer', 'Build and maintain scalable backend systems.', 10, 'HYBRID', 'FULL_TIME', 'Spain', 'blabla', 'bla', 'bla', 'INTERMEDIATE');
+
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (2, 'GIT');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (2, 'PYTHON');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (2, 'PYTORCH');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (2, 'TENSORFLOW');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (1, 'REACT');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (1, 'AWS');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (1, 'PYTHON');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (1, 'PYTORCH');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (1, 'JAVASCRIPT');
+INSERT INTO job_post_tags (job_post_id, tags) VALUES (4, 'C');
