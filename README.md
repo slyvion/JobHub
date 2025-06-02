@@ -12,8 +12,8 @@
 - Before you start the project, make sure you have already installed the following :
 
 - Frontend 
-  - Node.js.
   - WebStorm (preferred).
+  - Node.js(required)
 
 - Backend 
   - IntelliJ (preferred).
