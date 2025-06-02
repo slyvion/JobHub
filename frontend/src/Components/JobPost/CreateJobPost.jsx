@@ -17,6 +17,7 @@ export default function CreateJobPost() {
         employmentType: "",
         description: "",
         jobInfo: "",
+        isLink: true,
         requirements: "",
         seniority: "",
         applicationLink: "",
@@ -41,11 +42,15 @@ export default function CreateJobPost() {
     };
 
     const handleSwitchChange = (event) => {
-        setIsLink(event.target.checked);
-        if (!event.target.checked) {
-            setFormData({ ...formData, applicationLink: "" });
-        }
+        const newValue = event.target.checked;
+        setIsLink(newValue);
+        setFormData({
+            ...formData,
+            isLink: newValue,
+            applicationLink: newValue ? formData.applicationLink : "",
+        });
     };
+
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -101,8 +106,7 @@ export default function CreateJobPost() {
                                 required
                             />
                         </Grid>
-
-                        {/* Switch to toggle between Link and Form */}
+                                    {/* form or link */}
                         <Grid item xs={12} sx={{ml: "150px"}}>
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                                 <Typography variant="body1">Form</Typography>

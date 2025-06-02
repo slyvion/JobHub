@@ -20,7 +20,7 @@ import java.util.List;
 public class Company {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String companyName;
@@ -55,18 +55,19 @@ public class Company {
     @Column(nullable = true)
     private double rating;
 
-    @JsonIgnore
     @Lob
+    @Column(name = "company_logo", nullable = true)
     private byte[] companyLogo;
     private String logoType;    // e.g., "image/jpeg"
     private String logoExtension; // e.g., "png"
 
-    @JsonIgnore
     @Lob
+    @Column(name = "company_cover", nullable = true)
     private byte[] companyCover;
     private String coverType;    // e.g., "image/jpeg"
     private String coverExtension; // e.g., "png"
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Review> reviews = new ArrayList<>();
 
@@ -85,7 +86,6 @@ public class Company {
         }
         this.website = "";
         this.description = "";
-        this.location = "";
         this.founded = null;
         this.rating = 0;
         this.employeeNumber = null;

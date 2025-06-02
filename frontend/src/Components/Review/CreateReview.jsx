@@ -1,26 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, TextField, Rating, Button, FormControl, FormHelperText, Box } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
+import { addReview } from '..//Services/reviewServices.js';
 
 export default function CreateReview({ onClose }) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({
         defaultValues: {
             title: '',
             rating: null,
-            comment: '',
+            pros: '',
+            cons: '',
         },
         mode: 'onSubmit',
     });
 
+    const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { id: companyId } = useParams();
 
-    const onSubmit = (data) => {
-        console.log(data);
-        reset();
-        navigate(`/company/${id}`);
-        onClose();
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem('token');
+            if (!token) return;
+
+            try {
+                const res = await fetch('http://localhost:8080/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!res.ok) throw new Error('Unauthorized');
+                const { type, data } = await res.json();
+
+                if (type === 'user') {
+                    setUserId(data.id);
+                }
+            } catch (err) {
+                console.error('Error fetching user:', err);
+                navigate('/sign-in');
+            }
+        };
+
+        fetchUser();
+    }, [navigate]);
+
+    const onSubmit = async (formData) => {
+        if (!userId) return;
+
+        const reviewData = {
+            ...formData,
+            userId,
+            companyId,
+        };
+
+        try {
+            await addReview(companyId, reviewData);
+            reset();
+            navigate(`/company/${companyId}`);
+            onClose();
+        } catch (err) {
+            console.error('Failed to submit review:', err);
+        }
     };
 
     return (
@@ -47,11 +89,7 @@ export default function CreateReview({ onClose }) {
                 }}
             >
                 <Grid item sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-                    <img
-                        src="/Logo.png"
-                        alt="Logo"
-                        style={{ width: '400px', height: 'auto' }}
-                    />
+                    <img src="/Logo.png" alt="Logo" style={{ width: '400px', height: 'auto' }} />
                 </Grid>
 
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -64,12 +102,11 @@ export default function CreateReview({ onClose }) {
                                 render={({ field }) => (
                                     <TextField
                                         {...field}
-                                        id="outlined-basic"
                                         label="Title"
                                         variant="outlined"
                                         fullWidth
                                         error={!!errors.title}
-                                        helperText={errors.title ? errors.title.message : ''}
+                                        helperText={errors.title?.message}
                                     />
                                 )}
                             />
@@ -85,13 +122,16 @@ export default function CreateReview({ onClose }) {
                                         <>
                                             <Rating
                                                 {...field}
-                                                name="half-rating"
-                                                defaultValue={null}
+                                                name="rating"
                                                 precision={0.5}
                                                 size="large"
-                                                onChange={(_, value) => field.onChange(value)}
+                                                onChange={(_, value) => {
+                                                    if (value && value >= 1) {
+                                                        field.onChange(value);
+                                                    }
+                                                }}
                                             />
-                                            <FormHelperText>{errors.rating ? errors.rating.message : ''}</FormHelperText>
+                                            <FormHelperText>{errors.rating?.message}</FormHelperText>
                                         </>
                                     )}
                                 />
@@ -100,7 +140,7 @@ export default function CreateReview({ onClose }) {
 
                         <Grid item xs={12}>
                             <Controller
-                                name="Pros"
+                                name="pros"
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -114,9 +154,10 @@ export default function CreateReview({ onClose }) {
                                 )}
                             />
                         </Grid>
+
                         <Grid item xs={12}>
                             <Controller
-                                name="Cons"
+                                name="cons"
                                 control={control}
                                 render={({ field }) => (
                                     <TextField
@@ -132,7 +173,7 @@ export default function CreateReview({ onClose }) {
                         </Grid>
 
                         <Grid item xs={12} textAlign="center">
-                            <Button type="submit" variant="contained" color="primary">
+                            <Button type="submit" variant="contained" color="primary" disabled={!userId}>
                                 Submit Review
                             </Button>
                         </Grid>

@@ -96,8 +96,7 @@ const countries = [
     { code: 'SM', label: 'San Marino', phone: '378' },
     { code: 'TR', label: 'Turkey', phone: '90' },
     { code: 'UA', label: 'Ukraine', phone: '380' },
-    { code: 'UK', label: 'United Kingdom', phone: '44' },
+    { code: 'GB', label: 'United Kingdom', phone: '44' },
     { code: 'VA', label: 'Vatican City', phone: '379' },
     { code: 'XK', label: 'Kosovo', phone: '383' },
-    { code: 'US', label: 'United States', phone: '1' }
 ];

@@ -1,13 +1,16 @@
 package JobHub.backend.Model;
 
 import JobHub.backend.Model.Constants.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 public class Apply {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String firstName;
@@ -25,9 +28,11 @@ public class Apply {
 
     private String additionalMessage;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private JobPost jobPost;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 

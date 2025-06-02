@@ -4,19 +4,31 @@ import StarIcon from '@mui/icons-material/Star';
 import { format } from 'date-fns';
 
 export default function Review({ review }) {
+    // Safely parse postDate
+    const parseDate = (dateString) => {
+        if (!dateString) return null;
+        // Replace space with 'T' for ISO format parsing
+        const isoString = dateString.replace(' ', 'T');
+        const dateObj = new Date(isoString);
+        return isNaN(dateObj) ? null : dateObj;
+    };
+
+    const postDateObj = parseDate(review.postDate);
+
     return (
-        <Card sx={{
-            width: '100%',
-            maxWidth: 600,
-            border: '1px solid #ddd',
-            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-            mb: 2,
-            mt: 2,
-            p: 2
-        }}>
+        <Card
+            sx={{
+                width: '100%',
+                maxWidth: 600,
+                border: '1px solid #ddd',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                mb: 2,
+                mt: 2,
+                p: 2,
+            }}
+        >
             <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-
                     <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                         <StarIcon sx={{ color: 'gold', fontSize: 20 }} />
                         <Typography variant="body1" sx={{ ml: 0.5 }}>
@@ -29,26 +41,25 @@ export default function Review({ review }) {
                     </Typography>
 
                     <Typography variant="body2" color="text.secondary">
-                        {format(new Date(review.postDate), 'dd/MM/yyyy')}
+                        {postDateObj ? format(postDateObj, 'dd/MM/yyyy') : 'Date unknown'}
                     </Typography>
                 </Box>
 
                 <Divider sx={{ mb: 1 }} />
 
-                <Typography variant="body2" sx={{ opacity: 0.7}}>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
                     Pros
                 </Typography>
                 <Typography variant="body2" sx={{ mb: 1 }}>
-                    {review.pros|| "The user has not given any Pros"}
+                    {review.pros || 'The user has not given any Pros'}
                 </Typography>
 
-                <Typography variant="body2" sx={{ opacity: 0.7}}>
+                <Typography variant="body2" sx={{ opacity: 0.7 }}>
                     Cons
                 </Typography>
                 <Typography variant="body2">
-                    {review.cons || "The user has not given any Cons"}
+                    {review.cons || 'The user has not given any Cons'}
                 </Typography>
-
             </CardContent>
         </Card>
     );

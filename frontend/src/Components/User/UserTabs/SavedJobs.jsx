@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";  // import useParams
 import {
     Table,
     TableBody,
@@ -7,34 +8,28 @@ import {
     TableHead,
     TableRow,
     Paper,
-    IconButton, Typography,
+    IconButton,
+    Typography,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { getSavedJobPosts, removeSavedJobPost } from "../../Services/userServices.js";
 
-const SavedJobPosts = () => {
+export default function SavedJobPosts() {
+    const { userId } = useParams();
     const [savedJobs, setSavedJobs] = useState([]);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId") || 1;
-        fetch(`http://localhost:8080/user/${userId}/saved-jobposts`)
-            .then((response) => response.json())
-            .then((data) => {
-                setSavedJobs(Array.isArray(data) ? data : []);
-            })
-            .catch((error) => {
-                console.error("Error fetching saved jobs:", error);
-                setSavedJobs([]);
-            });
-    }, []);
+        if (!userId) return;
+        const fetchSavedJobs = async () => {
+            const jobs = await getSavedJobPosts(userId);
+            setSavedJobs(Array.isArray(jobs) ? jobs : []);
+        };
+        fetchSavedJobs();
+    }, [userId]);
 
     const handleUnsave = async (jobId) => {
         try {
-            const userId = localStorage.getItem("userId") || 1;
-            const response = await fetch(`http://localhost:8080/user/${userId}/removeJob/${jobId}`, {
-                method: "DELETE",
-            });
-            if (!response.ok) throw new Error("Failed to remove job post");
-
+            await removeSavedJobPost(userId, jobId);
             setSavedJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
         } catch (error) {
             console.error("Error removing job post:", error);
@@ -42,8 +37,8 @@ const SavedJobPosts = () => {
     };
 
     return (
-        <TableContainer component={Paper} sx={{ maxWidth: 900, margin: "auto", mt: 4 , padding: 4 }}>
-            <Typography variant="h5"> Saved Jobposts</Typography>
+        <TableContainer component={Paper} sx={{ maxWidth: 900, margin: "auto", mt: 4, padding: 4 }}>
+            <Typography variant="h5">Saved Jobposts</Typography>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -58,10 +53,10 @@ const SavedJobPosts = () => {
                     {savedJobs.length > 0 ? (
                         savedJobs.map((job) => (
                             <TableRow key={job.id}>
-                                <TableCell><strong>{job.companyName}</strong></TableCell>
-                                <TableCell>{job.title}</TableCell>
-                                <TableCell>{job.seniority}</TableCell>
-                                <TableCell>{job.employmentType}</TableCell>
+                                <TableCell><strong>{job.jobPost.company.companyName}</strong></TableCell>
+                                <TableCell>{job.jobPost.title}</TableCell>
+                                <TableCell>{job.jobPost.seniority}</TableCell>
+                                <TableCell>{job.jobPost.employmentType}</TableCell>
                                 <TableCell align="right">
                                     <IconButton onClick={() => handleUnsave(job.id)}>
                                         <FavoriteIcon color="error" />
@@ -77,9 +72,8 @@ const SavedJobPosts = () => {
                         </TableRow>
                     )}
                 </TableBody>
+
             </Table>
         </TableContainer>
     );
-};
-
-export default SavedJobPosts;
+}

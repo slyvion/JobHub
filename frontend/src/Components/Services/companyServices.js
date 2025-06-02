@@ -75,7 +75,7 @@ export const fetchJobPostsByCompany = async (id) => {
 
 export const fetchReviewsByCompany = async (id) => {
     try {
-        const response = await fetch(`http://localhost:8080/reviews/company/${id}`);
+        const response = await fetch(`http://localhost:8080/company/${id}/reviews`);
         if (!response.ok) {
             throw new Error("Failed to fetch reviews");
         }
@@ -293,9 +293,3 @@ export const updateCompanyOffices = async (id, cities) => {
         throw new Error(err.message);
     }
 };
-
-
-
-
-
-

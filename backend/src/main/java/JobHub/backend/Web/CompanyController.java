@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/company")
@@ -42,6 +43,10 @@ public class CompanyController {
         return companyService.create(
                 companyDto
         );
+    }
+    @GetMapping("/{id}/reviews")
+    public List<Review> getReviewByCompanyId(@PathVariable Long id){
+        return reviewService.findAllByCompanyId(id);
     }
 
 

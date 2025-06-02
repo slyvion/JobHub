@@ -17,7 +17,7 @@ import java.util.List;
 public class JobPost {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -27,6 +27,8 @@ public class JobPost {
     private String requirements; // requirements
 
     private String jobInfo; // What you will do
+
+    private Boolean isLink;
 
     private String applicationLink;
 
@@ -52,12 +54,13 @@ public class JobPost {
     @Enumerated(EnumType.STRING)
     private List<Tags> tags;
 
-    public JobPost(String title, String description, String requirements, String jobInfo, String applicationLink, Company company, JobType jobType, EmploymentType employmentType, Seniority seniority, String location, List<Tags> tags) {
+    public JobPost(String title, String description, String requirements, String jobInfo, String applicationLink,Boolean isLink, Company company, JobType jobType, EmploymentType employmentType, Seniority seniority, String location, List<Tags> tags) {
         this.title = title;
         this.description = description;
         this.requirements = requirements;
         this.jobInfo = jobInfo;
         this.applicationLink = applicationLink;
+        this.isLink = isLink;
         this.company = company;
         this.jobType = jobType;
         this.employmentType = employmentType;

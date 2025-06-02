@@ -1,5 +1,5 @@
 export const addReview = async (id, reviewData) => {
-    const response = await fetch(`http://localhost:8080/${id}/add-review`, {
+    const response = await fetch(`http://localhost:8080/company/${id}/add-review`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

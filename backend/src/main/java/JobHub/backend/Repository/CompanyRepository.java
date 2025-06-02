@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long>, JpaSpecificationExecutor<Company> {
@@ -14,6 +15,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long>, JpaSpec
 
     List<Company> findCompaniesByCompanyName(String name);
 
+    Optional<Company> findCompanyByEmail(String email);
 
 
 }

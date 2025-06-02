@@ -24,6 +24,8 @@ import AppAppBar from "../AppAppBar.jsx";
 import CompanyOverview from "./CompanyTabs/CompanyOverview.jsx";
 import AboutUs from "./CompanyTabs/AboutUs.jsx";
 import CompanyContact from "./CompanyTabs/CompanyContact.jsx";
+import NoReviews from "../Review/NoReviews.jsx";
+import NoJobsListed from "../JobPost/NoJobsListed.jsx";
 
 import {
     fetchCompanyData,
@@ -83,8 +85,14 @@ export default function CompanyProfile() {
     };
 
     const handleAddReviewClick = () => {
-        navigate(`/company/${id}/add-review`);
+        const token = localStorage.getItem('token');
+        if (token) {
+            navigate(`/company/${id}/add-review`);
+        } else {
+            navigate('/sign-in');
+        }
     };
+
 
     const handleAddJobpost = () => {
         navigate('/createJobpost');
@@ -188,7 +196,7 @@ export default function CompanyProfile() {
                             {jobPosts.length > 0 ? (
                                 jobPosts.map((job) => <JobPost key={job.id} job={job} />)
                             ) : (
-                                <Typography>No job posts available</Typography>
+                                <NoJobsListed />
                             )}
                             <Box display="flex" justifyContent="center" mt={2}>
                                 <Button variant="contained" color="primary" onClick={handleAddJobpost}>
@@ -203,7 +211,7 @@ export default function CompanyProfile() {
                             {reviews.length > 0 ? (
                                 reviews.map((review) => <Review key={review.id} review={review} />)
                             ) : (
-                                <Typography>No reviews available</Typography>
+                                <NoReviews />
                             )}
                             <Box display="flex" justifyContent="center" mt={2}>
                                 <Button variant="contained" color="primary" onClick={handleAddReviewClick}>

@@ -29,7 +29,8 @@ public interface JobPostService {
 
     List<Apply> findApplicantsByJobpostId(Long id);
 
-    Apply apply(ApplyDto applyDto);
+    Apply apply(Long id, ApplyDto applyDto);
+
 
     List<JobPost> findAllByTitle(String title);
 

@@ -49,6 +49,9 @@ public class SavedJobPostsServiceImpl implements SavedJobPostsService {
 
     @Override
     public void removeSavedJobPost(Long userId, Long jobPostId) {
-
+        savedJobPostsRepository.findByUserIdAndJobPostId(userId, jobPostId).ifPresent(savedJobPost -> {
+            savedJobPostsRepository.delete(savedJobPost);
+        });
     }
+
 }

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography, Grid } from "@mui/material";
 import AppAppBar from "../../AppAppBar.jsx";
 import CvUpload from "./CvUpload";
+import { apply } from "../../Services/jobPostServices.js";
 
 export default function Apply() {
+    const { id: jobPostId } = useParams();
+
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -11,8 +15,12 @@ export default function Apply() {
         phoneNumber: "",
         linkedinLink: "",
         additionalMessage: "",
-        attachment: null
+        attachment: null,
     });
+
+    const [submitting, setSubmitting] = useState(false);
+    const [error, setError] = useState(null);
+    const [successMsg, setSuccessMsg] = useState(null);
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,15 +30,75 @@ export default function Apply() {
         setFormData({ ...formData, attachment: file });
     };
 
-    return (
-        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: "#f0f0f0", justifyContent: "center", alignItems: "center" }}>
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSubmitting(true);
+        setError(null);
+        setSuccessMsg(null);
 
+        try {
+            const applyDto = {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                phoneNumber: formData.phoneNumber,
+                linkedinLink: formData.linkedinLink,
+                additionalMessage: formData.additionalMessage,
+            };
+
+            const data = new FormData();
+            data.append("applyDto", new Blob([JSON.stringify(applyDto)], { type: "application/json" }));
+
+            if (formData.attachment) {
+                data.append("file", formData.attachment);
+            }
+
+            await apply(jobPostId, data);
+
+            setSuccessMsg("Application submitted successfully!");
+            setFormData({
+                firstName: "",
+                lastName: "",
+                email: "",
+                phoneNumber: "",
+                linkedinLink: "",
+                additionalMessage: "",
+                attachment: null,
+            });
+        } catch (err) {
+            setError(err.message || "Something went wrong");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+                backgroundColor: "#f0f0f0",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
             <AppAppBar />
 
-            <Box sx={{ maxWidth: 500, mx: "auto", p: 3, bgcolor: "white", borderRadius: 2, boxShadow: 3 }}>
-
+            <Box
+                component="form"
+                onSubmit={handleSubmit}
+                sx={{
+                    maxWidth: 500,
+                    mx: "auto",
+                    p: 3,
+                    bgcolor: "white",
+                    borderRadius: 2,
+                    boxShadow: 3,
+                }}
+            >
                 <Grid container spacing={2}>
-
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
@@ -70,14 +138,16 @@ export default function Apply() {
                             fullWidth
                             label="Phone Number"
                             name="phoneNumber"
+                            required
                             value={formData.phoneNumber}
                             onChange={handleChange}
-                            required
                         />
                     </Grid>
 
                     <Grid item xs={12}>
-                        <Typography variant="h7" sx={{color: "black", opacity: "0.7"}}>You must insert at least one of the following:</Typography>
+                        <Typography variant="subtitle2" sx={{ color: "black", opacity: 0.7 }}>
+                            You must insert at least one of the following:
+                        </Typography>
                     </Grid>
 
                     <Grid item xs={12}>
@@ -87,12 +157,11 @@ export default function Apply() {
                             name="linkedinLink"
                             value={formData.linkedinLink}
                             onChange={handleChange}
-
                         />
                     </Grid>
 
                     <Grid item xs={12}>
-                        <CvUpload />
+                        <CvUpload onFileChange={handleFileChange} />
                     </Grid>
 
                     <Grid item xs={12}>
@@ -101,17 +170,33 @@ export default function Apply() {
                             multiline
                             rows={3}
                             name="additionalMessage"
-                            placeholder="additional message to the company"
+                            placeholder="Additional message to the company"
                             value={formData.additionalMessage}
                             onChange={handleChange}
                         />
                     </Grid>
 
+                    {error && (
+                        <Grid item xs={12}>
+                            <Typography color="error" align="center">
+                                {error}
+                            </Typography>
+                        </Grid>
+                    )}
+
+                    {successMsg && (
+                        <Grid item xs={12}>
+                            <Typography color="success.main" align="center">
+                                {successMsg}
+                            </Typography>
+                        </Grid>
+                    )}
 
                     <Grid item xs={12} textAlign="center">
-                        <Button variant="contained" color="primary">Apply</Button>
+                        <Button type="submit" variant="contained" color="primary" disabled={submitting}>
+                            {submitting ? "Submitting..." : "Apply"}
+                        </Button>
                     </Grid>
-
                 </Grid>
             </Box>
         </Box>

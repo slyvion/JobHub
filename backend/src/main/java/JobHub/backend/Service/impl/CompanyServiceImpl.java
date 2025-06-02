@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Repository.CompanyRepository;
@@ -25,9 +26,11 @@ import java.util.List;
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, PasswordEncoder passwordEncoder) {
         this.companyRepository = companyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -48,15 +51,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company create(CompanyCreateDto companyDto) {
+        String encodedPassword = passwordEncoder.encode(companyDto.getPassword());
+
         Company company = new Company(
                 companyDto.getCompanyName(),
                 companyDto.getEmail(),
-                companyDto.getPassword(),
+                encodedPassword,
                 companyDto.getLocation()
         );
 
         return companyRepository.save(company);
     }
+
 
 
     @Override
@@ -130,16 +136,18 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company passwordUpdate(Long id, CompanyPasswordUpdateDto companyPasswordUpdateDto) {
         Company company = this.findById(id);
-        if (!company.getPassword().equals(companyPasswordUpdateDto.getOldPassword())) {
+
+        if (!passwordEncoder.matches(companyPasswordUpdateDto.getOldPassword(), company.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect");
         }
         if (!companyPasswordUpdateDto.getNewPassword().equals(companyPasswordUpdateDto.getConfirmPassword())) {
             throw new IllegalArgumentException("New password and confirm password do not match");
         }
-        company.setPassword(companyPasswordUpdateDto.getNewPassword());
+        company.setPassword(passwordEncoder.encode(companyPasswordUpdateDto.getNewPassword()));
 
         return companyRepository.save(company);
     }
+
 
 
     @Override

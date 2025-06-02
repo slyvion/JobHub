@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Table,
     TableBody,
@@ -7,17 +7,28 @@ import {
     TableHead,
     TableRow,
     Paper,
-    IconButton,
     Typography
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { fetchAppliedJobs } from "../../Services/userServices.js";
+import { useParams } from "react-router-dom";
 
 export default function JobApplications() {
     const [applications, setApplications] = useState([]);
+    const { id: userId } = useParams();
 
-    const handleDelete = (applicationId) => {
-        setApplications((prev) => prev.filter((app) => app.id !== applicationId));
-    };
+    useEffect(() => {
+        const loadApplications = async () => {
+            try {
+                const data = await fetchAppliedJobs(userId);
+                setApplications(data);
+            } catch (error) {
+                console.error("Error fetching job applications:", error);
+            }
+        };
+
+        loadApplications();
+    }, [userId]);
+
 
     return (
         <TableContainer component={Paper} sx={{ maxWidth: 900, margin: "auto", mt: 4, padding: 4 }}>
@@ -34,7 +45,6 @@ export default function JobApplications() {
                         <TableCell><strong>LinkedIn</strong></TableCell>
                         <TableCell><strong>Attachment</strong></TableCell>
                         <TableCell><strong>Status</strong></TableCell>
-                        <TableCell align="right"><strong>Actions</strong></TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -48,16 +58,11 @@ export default function JobApplications() {
                                 <TableCell>{app.linkedinLink}</TableCell>
                                 <TableCell>attachment</TableCell>
                                 <TableCell>{app.status}</TableCell>
-                                <TableCell align="right">
-                                    <IconButton onClick={() => handleDelete(app.id)}>
-                                        <DeleteIcon color="error" />
-                                    </IconButton>
-                                </TableCell>
                             </TableRow>
                         ))
                     ) : (
                         <TableRow>
-                            <TableCell colSpan={6} align="center">
+                            <TableCell colSpan={8} align="center">
                                 No job applications found.
                             </TableCell>
                         </TableRow>

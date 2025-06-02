@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Date;
 public class Review {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -27,17 +28,15 @@ public class Review {
 
     private Long rating;
 
-    @Lob
     private String pros;
 
-    @Lob
     private String cons;
 
-    private Date postDate;
-    
+    private LocalDateTime postDate;
+
     @PrePersist
     protected void onCreate() {
-        this.postDate = new Date();
+        this.postDate = LocalDateTime.now();
     }
     public Review(String title, User user, Company company, Long rating, String pros, String cons) {
         this.title = title;

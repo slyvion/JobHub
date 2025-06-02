@@ -1,16 +1,15 @@
 package JobHub.backend.Web;
 
-import JobHub.backend.Model.Company;
+import JobHub.backend.Model.*;
 import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Constants.UserRole;
-import JobHub.backend.Model.SavedJobPosts;
+import JobHub.backend.Service.ReviewService;
 import JobHub.backend.Service.SavedJobPostsService;
 import JobHub.backend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
 import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
-import JobHub.backend.Model.User;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,12 +22,21 @@ public class UserController {
     private UserService userService;
 
     @Autowired
+    private ReviewService reviewService;
+    @Autowired
     private SavedJobPostsService savedJobPostsService;
+
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.findById(id);
     }
+
+    @GetMapping("/{id}/reviews")
+    public List<Review> getReviewByUserId(@PathVariable Long id){
+        return reviewService.findAllByUserId(id);
+    }
+
 
     @PutMapping("/{id}/passwordUpdate")
     public User updatePassword(@PathVariable Long id,
@@ -44,6 +52,12 @@ public class UserController {
     public List<SavedJobPosts> getSavedJobPosts(@PathVariable Long id) {
         return savedJobPostsService.getSavedJobPostsByUser(id);
     }
+    @GetMapping("/{id}/appliedJobs")
+    public List<Apply> getAppliedJobs(@PathVariable Long id){
+        return userService.findAllAppliesByUserId(id);
+    }
+
+
     @PostMapping("/{id}/saveJob/{jobPostId}")
     public String saveJobPost(@PathVariable Long id,
                               @PathVariable Long jobPostId) {
@@ -57,6 +71,7 @@ public class UserController {
         savedJobPostsService.removeSavedJobPost(id, jobPostId);
         return "Job post removed";
     }
+
 
     @GetMapping("/admin")
         public List<User> userAdminFilter(

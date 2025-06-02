@@ -4,10 +4,12 @@ import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
 import JobHub.backend.Model.Dto.JobPostSearchDto;
+import JobHub.backend.Model.Dto.User.ApplyDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Constants.EmploymentType;
@@ -15,6 +17,7 @@ import JobHub.backend.Model.Constants.JobType;
 import JobHub.backend.Model.Dto.JobPostDto;
 import JobHub.backend.Model.JobPost;
 import JobHub.backend.Service.JobPostService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -67,13 +70,25 @@ public class JobPostController {
         return jobPostService.findJobPostsByCompanyId(id);
     }
 
-    @GetMapping("/jobposts/{id}/applicants")
+    @PutMapping("/{id}/apply")
+    public ResponseEntity<Apply> applyToJob(
+            @PathVariable Long id,
+            @RequestPart("applyDto") ApplyDto applyDto,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    ) {
+        applyDto.setAttachment(file);
+
+        Apply savedApplication = jobPostService.apply(id, applyDto);
+        return ResponseEntity.ok(savedApplication);
+    }
+
+    @GetMapping("/{id}/applicants")
     public List<Apply> getApplicantsByJobpostId(@PathVariable Long id) {
         return jobPostService.findApplicantsByJobpostId(id);
     }
 
     //@PostMapping("/jobposts/{id}/applicants/updateStatus")
-    // public Apply updateStatus(@PathVariable Long jobPostId,
+    // public Apply updateStatus(@PathVariable Long Id,
     //                           Status status,
     //                           Long applicantId){
     // return jobPostService.updateStatus(jobPostId, Status status, applicantId);

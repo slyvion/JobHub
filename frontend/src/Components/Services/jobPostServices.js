@@ -70,6 +70,34 @@ export const updateJobPost = async (id, jobPostData) => {
         throw error;
     }
 };
+export const apply = async (id, formData) => {
+    const token = localStorage.getItem("token");
+    return await fetch(`http://localhost:8080/jobposts/${id}/apply`, {
+        method: "PUT",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+    });
+};
+
+export const getApplicantsByJobPostId = async (jobPostId) => {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`http://localhost:8080/jobposts/${jobPostId}/applicants`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to fetch applicants.");
+    }
+
+    return await response.json();
+};
+
 
 export const Tags = [
     ".NET",

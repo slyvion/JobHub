@@ -42,8 +42,9 @@ public class JobPostDto {
 
     private List<Tags> tags;
 
-    @NotBlank(message = "Link for candidates to apply is required")
     private String applicationLink;
+
+    private Boolean isLink;
 
     public JobPostDto() {
     }

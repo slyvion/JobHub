@@ -1,6 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { TextField, Button, MenuItem, Grid, Paper, Box, Select, InputLabel, OutlinedInput, Chip } from "@mui/material";
+import {
+    TextField,
+    Button,
+    MenuItem,
+    Grid,
+    Paper,
+    Box,
+    Select,
+    InputLabel,
+    OutlinedInput,
+    Chip,
+    Typography, Switch
+} from "@mui/material";
 import { styled } from "@mui/system";
 import { fetchJobPost, updateJobPost, Tags } from "../Services/jobPostServices";
 
@@ -20,17 +32,23 @@ export default function EditJobPost() {
         employmentType: "",
         description: "",
         jobInfo: "",
+        isLink: false,
         requirements: "",
         seniority: "",
         applicationLink: "",
         tags: [],
+
     });
+
+    const [isLink, setIsLink] = useState(true); // true = Link, false = Form
+
 
     useEffect(() => {
         const loadJobPost = async () => {
             try {
                 const jobPost = await fetchJobPost(id);
                 setFormData(jobPost);
+                setIsLink(jobPost.isLink);
             } catch (error) {
                 console.error("Error loading job post:", error);
             }
@@ -39,6 +57,7 @@ export default function EditJobPost() {
         loadJobPost();
     }, [id]);
 
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({
@@ -46,6 +65,16 @@ export default function EditJobPost() {
             [name]: value,
         });
     };
+    const handleSwitchChange = (event) => {
+        const newValue = event.target.checked;
+        setIsLink(newValue);
+        setFormData({
+            ...formData,
+            isLink: newValue,
+            applicationLink: newValue ? formData.applicationLink : "",
+        });
+    };
+
 
     const handleTagChange = (event) => {
         setFormData({
@@ -87,9 +116,25 @@ export default function EditJobPost() {
                         <Grid item xs={12}>
                             <TextField label="Requirements" name="requirements" fullWidth multiline rows={4} value={formData.requirements} onChange={handleChange} required />
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField label="Application Link" name="applicationLink" fullWidth value={formData.applicationLink} onChange={handleChange} required />
+                        <Grid item xs={12} sx={{ml: "150px"}}>
+                            <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <Typography variant="body1">Form</Typography>
+                                <Switch
+                                    checked={isLink}
+                                    onChange={handleSwitchChange}
+                                    inputProps={{ 'aria-label': 'controlled' }}
+                                />
+                                <Typography variant="body1">Link</Typography>
+                            </Box>
                         </Grid>
+
+                        {isLink && (
+                            <Grid item xs={12}>
+                                <TextField label="Application Link" name="applicationLink" fullWidth value={formData.applicationLink} onChange={handleChange} required />
+                            </Grid>
+                        )}
+
+
                         <Grid item xs={12}>
                             <TextField select label="Seniority" name="seniority" fullWidth value={formData.seniority} onChange={handleChange} required>
                                 <MenuItem value="INTERN">Internship</MenuItem>

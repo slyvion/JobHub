@@ -7,7 +7,7 @@ export async function fetchUserData(id) {
 }
 
 export async function fetchUserReviews(id) {
-    const response = await fetch(`http://localhost:8080/reviews/user/${id}`);
+    const response = await fetch(`http://localhost:8080/user/${id}/reviews`);
     if (!response.ok) {
         throw new Error("Failed to fetch user reviews");
     }
@@ -45,6 +45,13 @@ export const updateUserEmail = async (userId, email) => {
     }
 };
 
+export const fetchAppliedJobs = async (userId) => {
+    const response = await fetch(`http://localhost:8080/user/${userId}/appliedJobs`);
+    if (!response.ok) {
+        throw new Error("Failed to fetch applied jobs");
+    }
+    return response.json();
+};
 export const fetchAdminUsers = async (filterParams = {}) => {
     try {
         const validParams = Object.entries(filterParams)
@@ -65,3 +72,38 @@ export const fetchAdminUsers = async (filterParams = {}) => {
         throw new Error(err.message);
     }
 };
+export const saveJobPost = async (userId, jobPostId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/user/${userId}/saveJob/${jobPostId}`, {
+            method: 'POST',
+        });
+
+    } catch (error) {
+        console.error("Error saving job post:", error);
+    }
+};
+
+export const removeSavedJobPost = async (userId, jobPostId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/user/${userId}/removeJob/${jobPostId}`, {
+            method: 'DELETE',
+        });
+
+        const message = await response.text();
+        alert(message);
+    } catch (error) {
+        console.error("Error removing saved job post:", error);
+    }
+};
+export const getSavedJobPosts = async (userId) => {
+    try {
+        const response = await fetch(`http://localhost:8080/user/${userId}/savedJobPosts`);
+        const savedJobs = await response.json();
+        console.log("API response:", savedJobs); // ✅ Add this
+        return savedJobs;
+    } catch (error) {
+        console.error("Error fetching saved job posts:", error);
+        return [];
+    }
+};
+

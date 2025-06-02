@@ -26,16 +26,6 @@ public class ReviewsController {
         return reviewService.findById(id);
     }
 
-    @GetMapping("/company/{id}")
-    public List<Review> getReviewByCompanyId(@PathVariable Long id){
-        return reviewService.findAllByCompanyId(id);
-    }
-
-    @GetMapping("/user/{id}")
-    public List<Review> getReviewByUserId(@PathVariable Long id){
-        return reviewService.findAllByUserId(id);
-    }
-
     @GetMapping("/admin")
     public List<Review> userAdminFilter(
             @RequestParam(required = false) String companyName,

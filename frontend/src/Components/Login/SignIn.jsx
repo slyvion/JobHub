@@ -1,21 +1,10 @@
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Modal from '@mui/material/Modal';
-import Paper from '@mui/material/Paper';
-import Divider from '@mui/material/Divider';
-import GoogleIcon from '@mui/icons-material/Google';
-
-
+import {
+    Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link,
+    Grid, Box, Typography, Container, Modal, Paper, createTheme,
+    ThemeProvider, Snackbar, Alert, Divider
+} from '@mui/material';
+import { login } from '../Services/authServices.js';
 
 function Copyright(props) {
     return (
@@ -37,6 +26,10 @@ export default function SignIn() {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
 
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState('success');
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
@@ -44,10 +37,7 @@ export default function SignIn() {
         setEmailError('');
     };
 
-    const validateEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
+    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
     const handleSend = () => {
         if (!validateEmail(email)) {
@@ -56,15 +46,32 @@ export default function SignIn() {
         }
         setEmailError('');
         console.log('Password reset email sent to:', email);
+        handleClose();
+        setSnackbarSeverity('info');
+        setSnackbarMessage('Password reset link sent (mock).');
+        setSnackbarOpen(true);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const email = data.get('email');
+        const password = data.get('password');
+
+        try {
+            const result = await login(email, password);
+            localStorage.setItem('token', result.token);
+            setSnackbarSeverity('success');
+            setSnackbarMessage('Login successful!');
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        } catch (error) {
+            setSnackbarSeverity('error');
+            setSnackbarMessage(error.message || 'Login failed');
+            setSnackbarOpen(true);
+        }
     };
 
     return (
@@ -82,9 +89,7 @@ export default function SignIn() {
                     <Link href={'/'}>
                         <img src={'src/Logo.png'} alt="logo of JobHub" />
                     </Link>
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
+                    <Typography component="h1" variant="h5">Sign in</Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -113,26 +118,12 @@ export default function SignIn() {
                         <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
                             Sign In
                         </Button>
-                        <Divider sx={{mb: 1}}> or </Divider>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 , mb: 1}}>
-                            <Button
-                                fullWidth
-                                variant="outlined"
-                                startIcon={<GoogleIcon />}
-                            >
-                                Sign in with Google
-                            </Button>
-                        </Box>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2" onClick={handleOpen}>
-                                    Forgot password?
-                                </Link>
+                                <Link href="#" variant="body2" onClick={handleOpen}>Forgot password?</Link>
                             </Grid>
                             <Grid item>
-                                <Link href={'/sign-up'} variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
+                                <Link href={'/sign-up'} variant="body2">{"Don't have an account? Sign Up"}</Link>
                             </Grid>
                         </Grid>
                     </Box>
@@ -164,6 +155,17 @@ export default function SignIn() {
                     </Box>
                 </Paper>
             </Modal>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={() => setSnackbarOpen(false)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </ThemeProvider>
     );
 }

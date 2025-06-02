@@ -1,8 +1,8 @@
-import {Box, Typography} from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info.js";
-import React from "react";
+import React from 'react';
+import { Box, Typography } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
-export default function NoReviews(){
+export default function NoJobsListed() {
     return (
         <Box
             display="flex"
@@ -10,13 +10,12 @@ export default function NoReviews(){
             justifyContent="center"
             bgcolor="#80bfff"
             p={2}
-            borderRadius={2}
+            borderRadius={3}
         >
             <InfoIcon />
             <Typography variant="body1" ml={1}>
-                There are currently no reviews for this company.
+                The company has no jobposts listed at the moment.
             </Typography>
         </Box>
     );
-
 }

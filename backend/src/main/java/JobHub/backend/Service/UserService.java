@@ -1,5 +1,6 @@
 package JobHub.backend.Service;
 
+import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Constants.UserRole;
 import JobHub.backend.Model.Dto.User.UserDto;
@@ -25,6 +26,7 @@ public interface UserService {
 
     User create(UserDto userDto);
 
+    List<Apply> findAllAppliesByUserId(Long id);
     User roleUpdate(Long id, UserRoleUpdateDto userRoleUpdateDto);
 
     List<User> userFilter(String username, String Email, UserRole role);

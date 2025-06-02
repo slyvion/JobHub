@@ -6,7 +6,9 @@ import JobHub.backend.Model.Constants.Seniority;
 import JobHub.backend.Model.Constants.Tags;
 import JobHub.backend.Model.Dto.JobPostSearchDto;
 import JobHub.backend.Model.Dto.User.ApplyDto;
+import JobHub.backend.Model.User;
 import JobHub.backend.Repository.ApplicantsRepository;
+import JobHub.backend.Repository.UserRepository;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -37,11 +39,13 @@ public class JobPostServiceImpl implements JobPostService {
     private final CompanyRepository companyRepository;
 
     private final ApplicantsRepository applicantsRepository;
+    private final UserRepository userRepository;
 
-    public JobPostServiceImpl(JobPostRepository jobPostRepository, CompanyRepository companyRepository, ApplicantsRepository applicantsRepository) {
+    public JobPostServiceImpl(JobPostRepository jobPostRepository, CompanyRepository companyRepository, ApplicantsRepository applicantsRepository, UserRepository userRepository) {
         this.jobPostRepository = jobPostRepository;
         this.companyRepository = companyRepository;
         this.applicantsRepository = applicantsRepository;
+        this.userRepository = userRepository;
     }
 
 
@@ -65,12 +69,14 @@ public class JobPostServiceImpl implements JobPostService {
                 jobPostDto.getRequirements(),
                 jobPostDto.getJobInfo(),
                 jobPostDto.getApplicationLink(),
+                jobPostDto.getIsLink(),
                 company,
                 jobPostDto.getJobType(),
                 jobPostDto.getEmploymentType(),
                 jobPostDto.getSeniority(),
                 jobPostDto.getLocation(),
                 jobPostDto.getTags()
+
         );
 
         return jobPostRepository.save(jobPost);
@@ -86,6 +92,7 @@ public class JobPostServiceImpl implements JobPostService {
         jobPost.setJobInfo(jobPostDto.getJobInfo());
         jobPost.setRequirements(jobPostDto.getRequirements());
         jobPost.setApplicationLink(jobPostDto.getApplicationLink());
+        jobPost.setIsLink(jobPostDto.getIsLink());
         jobPost.setTags(jobPostDto.getTags());
         jobPost.setEmploymentType(jobPostDto.getEmploymentType());
         jobPost.setLocation(jobPostDto.getLocation());
@@ -104,12 +111,16 @@ public class JobPostServiceImpl implements JobPostService {
     @Override
     public List<Apply> findApplicantsByJobpostId(Long id) {
         JobPost jobPost = this.findById(id);
-        return applicantsRepository.findByJobPostId(jobPost.getId());
+        return applicantsRepository.findAllByJobPostId(jobPost.getId());
     }
 
     @Override
-    public Apply apply(ApplyDto applyDto) {
-        JobPost jobpost = jobPostRepository.findById(applyDto.getJobPost().getId()).orElseThrow(InvalidJobPostIdException::new);
+    public Apply apply(Long id, ApplyDto applyDto) {
+        JobPost jobPost = jobPostRepository.findById(id)
+                .orElseThrow(InvalidJobPostIdException::new);
+
+        User user = userRepository.findById(applyDto.getUser().getId())
+                .orElseThrow(InvalidUserIdException::new);
 
         byte[] attachmentBytes = null;
         if (applyDto.getAttachment() != null) {
@@ -128,15 +139,16 @@ public class JobPostServiceImpl implements JobPostService {
                 applyDto.getLinkedinLink(),
                 attachmentBytes,
                 applyDto.getAdditionalMessage(),
-                applyDto.getJobPost(),
-                applyDto.getUser()
+                jobPost,
+                user
         );
 
         Apply savedApplication = applicantsRepository.save(apply);
-        jobpost.getApplicants().add(savedApplication);
+        jobPost.getApplicants().add(savedApplication);
 
         return savedApplication;
     }
+
 
     @Override
     public List<JobPost> findAllByTitle(String title) {

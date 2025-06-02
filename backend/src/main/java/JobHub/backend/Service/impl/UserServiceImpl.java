@@ -1,13 +1,16 @@
 package JobHub.backend.Service.impl;
 
+import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Constants.UserRole;
 import JobHub.backend.Model.Dto.User.UserDto;
 import JobHub.backend.Model.Dto.User.UserRoleUpdateDto;
+import JobHub.backend.Repository.ApplicantsRepository;
 import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
 import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
@@ -27,11 +30,16 @@ public class UserServiceImpl implements UserService {
 
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+
+    private final ApplicantsRepository applicantsRepository;
+
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ApplicantsRepository applicantsRepository) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.applicantsRepository = applicantsRepository;
     }
-
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
@@ -48,18 +56,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmail(email);
     }
 
+    @Override
+    public List<Apply> findAllAppliesByUserId(Long id){
+        return applicantsRepository.findAllByUserId(id);
+    }
 
     @Override
     public User PasswordUpdate(Long id, UserPasswordUpdateDto passwordUpdateDto) {
         User user = this.findById(id);
 
-        if (!user.getPassword().equals(passwordUpdateDto.getOldPassword())) {
+        if (!passwordEncoder.matches(passwordUpdateDto.getOldPassword(), user.getPassword())) {
             throw new IllegalArgumentException("Old password is incorrect");
         }
+
         if (!passwordUpdateDto.getNewPassword().equals(passwordUpdateDto.getConfirmPassword())) {
             throw new IllegalArgumentException("New password and confirm password do not match");
         }
-        user.setPassword(passwordUpdateDto.getNewPassword());
+        user.setPassword(passwordEncoder.encode(passwordUpdateDto.getNewPassword()));
+
 
         return userRepository.save(user);
     }
@@ -81,11 +95,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User create(UserDto userDto) {
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+
         User user = new User(
                 userDto.getUsername(),
                 userDto.getEmail(),
-                userDto.getPassword()
-                );
+                encodedPassword
+        );
 
         return userRepository.save(user);
     }
@@ -117,33 +133,4 @@ public class UserServiceImpl implements UserService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }
-
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return null;
-//    }
-
-
-    //public class UserServiceImpl implements UserService, UserDetailsService
-    //{
-    //    @Autowired
-    //    private UserRepository userRepository;
-    //    @Autowired
-    //    private PasswordEncoder passwordEncoder;
-    //    @Override
-    //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    //        User u = userRepository.findByUsername(username);
-    //        if(u==null)
-    //        {
-    //            throw new UsernameNotFoundException(username);
-    //        }
-    //
-    //        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-    //                u.getUsername(),
-    //                u.getPassword(),
-    //                Stream.of(new SimpleGrantedAuthority(u.getRole())).collect(Collectors.toList()));
-    //        return userDetails;
-    //    }
-    //}
-    //              OD WP
 }
