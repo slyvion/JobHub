@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Grid, TextField, Rating, Button, FormControl, FormHelperText, Box } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import { addReview } from '..//Services/reviewServices.js';
+import { addReview } from '../Services/reviewServices.js';
 
 export default function CreateReview({ onClose }) {
     const { control, handleSubmit, formState: { errors }, reset } = useForm({

@@ -21,7 +21,6 @@ export default function CvUpload({ onFileChange }) {
         },
     });
 
-    // Notify parent on file change
     useEffect(() => {
         if (onFileChange) {
             onFileChange(file);

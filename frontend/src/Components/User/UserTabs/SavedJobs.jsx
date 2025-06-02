@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";  // import useParams
+import { useParams } from "react-router-dom";
 import {
     Table,
     TableBody,
@@ -27,10 +27,12 @@ export default function SavedJobPosts() {
         fetchSavedJobs();
     }, [userId]);
 
-    const handleUnsave = async (jobId) => {
+    const handleUnsave = async (jobPostId) => {
         try {
-            await removeSavedJobPost(userId, jobId);
-            setSavedJobs((prevJobs) => prevJobs.filter((job) => job.id !== jobId));
+            await removeSavedJobPost(userId, jobPostId);
+            setSavedJobs((prevJobs) =>
+                prevJobs.filter((savedJob) => savedJob.jobPost.id !== jobPostId)
+            );
         } catch (error) {
             console.error("Error removing job post:", error);
         }
@@ -38,7 +40,7 @@ export default function SavedJobPosts() {
 
     return (
         <TableContainer component={Paper} sx={{ maxWidth: 900, margin: "auto", mt: 4, padding: 4 }}>
-            <Typography variant="h5">Saved Jobposts</Typography>
+            <Typography variant="h5" gutterBottom>Saved Jobposts</Typography>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -51,14 +53,14 @@ export default function SavedJobPosts() {
                 </TableHead>
                 <TableBody>
                     {savedJobs.length > 0 ? (
-                        savedJobs.map((job) => (
-                            <TableRow key={job.id}>
-                                <TableCell><strong>{job.jobPost.company.companyName}</strong></TableCell>
-                                <TableCell>{job.jobPost.title}</TableCell>
-                                <TableCell>{job.jobPost.seniority}</TableCell>
-                                <TableCell>{job.jobPost.employmentType}</TableCell>
+                        savedJobs.map((savedJob) => (
+                            <TableRow key={savedJob.jobPost.id}>
+                                <TableCell><strong>{savedJob.jobPost.company.companyName}</strong></TableCell>
+                                <TableCell>{savedJob.jobPost.title}</TableCell>
+                                <TableCell>{savedJob.jobPost.seniority}</TableCell>
+                                <TableCell>{savedJob.jobPost.employmentType}</TableCell>
                                 <TableCell align="right">
-                                    <IconButton onClick={() => handleUnsave(job.id)}>
+                                    <IconButton onClick={() => handleUnsave(savedJob.jobPost.id)}>
                                         <FavoriteIcon color="error" />
                                     </IconButton>
                                 </TableCell>
@@ -72,7 +74,6 @@ export default function SavedJobPosts() {
                         </TableRow>
                     )}
                 </TableBody>
-
             </Table>
         </TableContainer>
     );

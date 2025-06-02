@@ -95,15 +95,12 @@ export const removeSavedJobPost = async (userId, jobPostId) => {
         console.error("Error removing saved job post:", error);
     }
 };
+
 export const getSavedJobPosts = async (userId) => {
-    try {
         const response = await fetch(`http://localhost:8080/user/${userId}/savedJobPosts`);
-        const savedJobs = await response.json();
-        console.log("API response:", savedJobs); // ✅ Add this
-        return savedJobs;
-    } catch (error) {
-        console.error("Error fetching saved job posts:", error);
-        return [];
-    }
+        if (!response.ok) {
+            throw new Error("Failed to fetch saved jobposts");
+        }
+        return response.json();
 };
 

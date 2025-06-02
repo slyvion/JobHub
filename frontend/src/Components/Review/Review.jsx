@@ -4,10 +4,8 @@ import StarIcon from '@mui/icons-material/Star';
 import { format } from 'date-fns';
 
 export default function Review({ review }) {
-    // Safely parse postDate
     const parseDate = (dateString) => {
         if (!dateString) return null;
-        // Replace space with 'T' for ISO format parsing
         const isoString = dateString.replace(' ', 'T');
         const dateObj = new Date(isoString);
         return isNaN(dateObj) ? null : dateObj;

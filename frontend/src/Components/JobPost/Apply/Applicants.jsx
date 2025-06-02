@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { getApplicantsByJobPostId } from "../../Services/jobPostServices.js";
+import Button from "@mui/material/Button";
 
 export default function Applicants() {
     const { id: jobPostId } = useParams();
@@ -73,6 +74,7 @@ export default function Applicants() {
                                     <TableCell>Last Name</TableCell>
                                     <TableCell>Email</TableCell>
                                     <TableCell>Phone</TableCell>
+                                    <TableCell>Status</TableCell>
                                     <TableCell>Actions</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -85,20 +87,10 @@ export default function Applicants() {
                                             <TableCell>{applicant.lastName}</TableCell>
                                             <TableCell>{applicant.email}</TableCell>
                                             <TableCell>{applicant.phoneNumber}</TableCell>
+                                            <TableCell>{applicant.status}</TableCell>
                                             <TableCell>
-                                                {applicant.linkedinLink ? (
-                                                    <Link
-                                                        href={applicant.linkedinLink}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        View
-                                                    </Link>
-                                                ) : (
-                                                    "-"
-                                                )}
+                                                <Button variant="contained"> View </Button>
                                             </TableCell>
-                                            <TableCell>{applicant.additionalMessage || "-"}</TableCell>
                                         </TableRow>
                                     ))}
                             </TableBody>
