@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
     Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link,
     Grid, Box, Typography, Container, Modal, Paper, createTheme,
     ThemeProvider, Snackbar, Alert, Divider
 } from '@mui/material';
-import { login } from '../Services/authServices.js';
+import {login} from '../Services/authServices.js';
+import {useUser} from "../../store/UserContext.jsx";
 
 function Copyright(props) {
     return (
@@ -51,7 +52,7 @@ export default function SignIn() {
         setSnackbarMessage('Password reset link sent (mock).');
         setSnackbarOpen(true);
     };
-
+    const {loadUser} = useUser();
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -61,6 +62,7 @@ export default function SignIn() {
         try {
             const result = await login(email, password);
             localStorage.setItem('token', result.token);
+            loadUser();
             setSnackbarSeverity('success');
             setSnackbarMessage('Login successful!');
             setSnackbarOpen(true);
@@ -76,8 +78,9 @@ export default function SignIn() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs" sx={{ background: 'white', paddingTop: '100px', minHeight: '100vh' }}>
-                <CssBaseline />
+            <Container component="main" maxWidth="xs"
+                       sx={{background: 'white', paddingTop: '100px', minHeight: '100vh'}}>
+                <CssBaseline/>
                 <Box
                     sx={{
                         marginTop: 8,
@@ -87,10 +90,10 @@ export default function SignIn() {
                     }}
                 >
                     <Link href={'/'}>
-                        <img src={'src/Logo.png'} alt="logo of JobHub" />
+                        <img src={'src/Logo.png'} alt="logo of JobHub"/>
                     </Link>
                     <Typography component="h1" variant="h5">Sign in</Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
                         <TextField
                             margin="normal"
                             required
@@ -112,10 +115,10 @@ export default function SignIn() {
                             autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox value="remember" color="primary"/>}
                             label="Remember me"
                         />
-                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
+                        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 1}}>
                             Sign In
                         </Button>
                         <Grid container>
@@ -128,16 +131,17 @@ export default function SignIn() {
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{ mt: 8, mb: 4 }} />
+                <Copyright sx={{mt: 8, mb: 4}}/>
             </Container>
 
             <Modal open={open} onClose={handleClose}>
-                <Paper sx={{ width: 400, p: 4, mx: 'auto', mt: '20%', textAlign: 'center' }}>
+                <Paper sx={{width: 400, p: 4, mx: 'auto', mt: '20%', textAlign: 'center'}}>
                     <Typography variant="h4" gutterBottom>
                         Change your password
                     </Typography>
-                    <Typography sx={{ opacity: '0.7' }} variant="body2" gutterBottom>
-                        Enter the e-mail address that you registered your account with and we will send you a link to change your password.
+                    <Typography sx={{opacity: '0.7'}} variant="body2" gutterBottom>
+                        Enter the e-mail address that you registered your account with and we will send you a link to
+                        change your password.
                     </Typography>
                     <TextField
                         fullWidth
@@ -149,7 +153,7 @@ export default function SignIn() {
                         error={!!emailError}
                         helperText={emailError}
                     />
-                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+                    <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1}}>
                         <Button onClick={handleClose} variant="outlined">Close</Button>
                         <Button variant="contained" onClick={handleSend}>Send</Button>
                     </Box>
@@ -160,9 +164,9 @@ export default function SignIn() {
                 open={snackbarOpen}
                 autoHideDuration={6000}
                 onClose={() => setSnackbarOpen(false)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
             >
-                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{width: '100%'}}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>

@@ -84,6 +84,19 @@ export const fetchReviewsByCompany = async (id) => {
         throw new Error(err.message);
     }
 };
+
+export const deleteCompany = async (id) => {
+    const response = await fetch(`http://localhost:8080/company/${id}/delete`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete company');
+    }
+    return response;
+};
+
+
 export const updateCompanyBio = async (id, description) => {
     try {
         const response = await fetch(`http://localhost:8080/company/${id}/updateBio`, {

@@ -46,7 +46,7 @@ public class JobPostController {
     }
 
 
-    @PostMapping
+    @PostMapping("/create")
     public JobPost create(@Valid @RequestBody JobPostDto jobPostDto) {
         return jobPostService.create(jobPostDto);
     }
@@ -59,7 +59,7 @@ public class JobPostController {
         return jobPostService.update(id, jobPostDto);
     }
 
-    @PostMapping("/{id}/delete")
+    @DeleteMapping("/{id}/delete")
     public String delete(@PathVariable Long id) {
         jobPostService.delete(id);
         return "redirect:/jobposts";

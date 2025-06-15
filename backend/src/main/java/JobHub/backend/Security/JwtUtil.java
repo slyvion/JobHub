@@ -11,7 +11,7 @@ import java.util.Date;
 public class JwtUtil {
 
     private final String jwtSecret = "supersecretkeyforsigningjwtsthatneedtobesecure";
-    private final long jwtExpirationMs = 86400000; // 24 hours
+    private final long jwtExpirationMs = 3600000; // 1 saat
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes());

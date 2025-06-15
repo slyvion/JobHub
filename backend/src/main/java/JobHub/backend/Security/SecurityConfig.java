@@ -39,23 +39,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/login",
-                                "/auth/register/user",
-                                "/auth/register/company",
-                                "/companies",
-                                "/jobposts",
-                                "/company/**",
-                                "/jobposts/**",
-                                "/user/**",
-                                "/user/*/savedJobPosts",
-                                "/user/*/saveJob/**"
-                        ).permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/company/*/add-review").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT, "/jobposts/*/apply").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/jobposts/*/applicants").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .userDetailsService(userDetailsService)
@@ -63,6 +47,35 @@ public class SecurityConfig {
 
         return http.build();
     }
+    //    @Bean
+    //    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    //        http.csrf(csrf -> csrf.disable())
+    //                .authorizeHttpRequests(auth -> auth
+    //                        .requestMatchers(
+    //                                "/auth/login",
+    //                                "/auth/register/user",
+    //                                "/auth/register/company",
+    //                                "/companies",
+    //                                "/jobposts",
+    //                                "/company/**",
+    //                                "/jobposts/**",
+    //                                "/user/**",
+    //                                "/user/*/savedJobPosts",
+    //                                "/user/*/saveJob/**",
+    //                                "/jobposts/create"
+    //                        ).permitAll()
+    //                        .requestMatchers(HttpMethod.PUT, "/company/*/add-review").hasRole("USER")
+    //                        .requestMatchers(HttpMethod.PUT, "/jobposts/*/apply").permitAll()
+    //                        .requestMatchers(HttpMethod.GET, "/jobposts/*/applicants").permitAll()
+    //                        .requestMatchers("/admin").hasRole("ADMIN")
+    //                        .anyRequest().authenticated()
+    //                )
+    //                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    //                .userDetailsService(userDetailsService)
+    //                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+    //
+    //        return http.build();
+    //    }
 
 
 }

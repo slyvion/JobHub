@@ -40,4 +40,10 @@ public class ReviewsController {
         return reviewService.reviewFilter(companyName, title, rating);
 
     }
+    @DeleteMapping("/{id}/delete")
+    public String delete(@PathVariable Long id) {
+        reviewService.deleteReview(id);
+        return "redirect:/admin";
+    }
+
 }

@@ -80,7 +80,7 @@ export default function UserProfile() {
 
                     <Box sx={{ flex: 1 }}>
                         {value === 0 && user && <UserData user={user} />}
-                        {value === 1 && <Typography> <SavedJobs /> </Typography>}
+                        {value === 1 && <SavedJobs userId={id} />}
                         {value === 2 && <Typography> <JobApplications /> </Typography>}
                         {value === 3 && <UserReviews reviews={reviews} />}
                         {value === 4 && <Typography> <Help /></Typography>}

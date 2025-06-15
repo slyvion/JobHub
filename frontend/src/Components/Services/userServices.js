@@ -89,8 +89,6 @@ export const removeSavedJobPost = async (userId, jobPostId) => {
             method: 'DELETE',
         });
 
-        const message = await response.text();
-        alert(message);
     } catch (error) {
         console.error("Error removing saved job post:", error);
     }

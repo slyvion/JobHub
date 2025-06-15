@@ -69,3 +69,23 @@ export const navigateToProfile = async (navigate) => {
         navigate('/sign-in');
     }
 };
+export const me = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+        const response = await fetch('http://localhost:8080/auth/me', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) throw new Error('Not authenticated');
+
+        const result = await response.json();
+        return result;
+    } catch (err) {
+        console.error('Error fetching ID from JWT:', err);
+        return null;
+    }
+};

@@ -33,3 +33,15 @@ export const fetchAdminReviews = async (filterParams = {}) => {
         throw new Error(err.message);
     }
 };
+
+export const deleteReview = async (id) => {
+    const response = await fetch(`http://localhost:8080/reviews/${id}/delete`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete job post');
+    }
+
+    return response;
+};

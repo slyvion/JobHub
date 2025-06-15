@@ -40,7 +40,7 @@ export const fetchJobPost = async (id) => {
 };
 
 export const deleteJobPost = async (id) => {
-    const response = await fetch(`http://localhost:8080/jobposts/${id}`, {
+    const response = await fetch(`http://localhost:8080/jobposts/${id}/delete`, {
         method: 'DELETE',
     });
 
@@ -48,8 +48,28 @@ export const deleteJobPost = async (id) => {
         throw new Error('Failed to delete job post');
     }
 
-    return true;
+    return response;
 };
+
+
+export async function createJobPost(jobPostData, token) {
+    const response = await fetch("http://localhost:8080/jobposts/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(jobPostData),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Failed to create job post: ${errorData}`);
+    }
+
+    return response.json();
+}
+
 
 
 export const updateJobPost = async (id, jobPostData) => {

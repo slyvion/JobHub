@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, CircularProgress, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from "@mui/material";
 import CompanyAdminFilter from "../AdminFilters/CompanyAdminFilter.jsx"
 import NoCompFound from "../../Company/NoCompFound.jsx";
-import { fetchAdminCompanies } from "../../Services/companyServices.js";
+import { fetchAdminCompanies, deleteCompany } from "../../Services/companyServices.js";
 import Button from "@mui/material/Button";
 
 export default function CompaniesTab() {
@@ -28,8 +28,17 @@ export default function CompaniesTab() {
         getCompanies();
     }, []);
 
-    const handleEdit = (id) => {
-        console.log("Edit review", id);
+
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this company?")) return;
+
+        try {
+            await deleteCompany(id);
+            setCompanyData(prev => prev.filter(company => company.id !== id));
+        } catch (error) {
+            console.error("Failed to delete company:", error);
+            alert("Failed to delete company.");
+        }
     };
 
     return (
@@ -74,7 +83,7 @@ export default function CompaniesTab() {
                                 <TableCell><strong>Cities</strong></TableCell>
                                 <TableCell><strong>Employees</strong></TableCell>
                                 <TableCell><strong>Rating</strong></TableCell>
-                                {/*<TableCell><strong>Actions</strong></TableCell>*/}
+                                <TableCell><strong>Actions</strong></TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -108,14 +117,17 @@ export default function CompaniesTab() {
                                     <TableCell>{company.cities?.join(", ") || "N/A"}</TableCell>
                                     <TableCell>{company.employeeNumber || "N/A"}</TableCell>
                                     <TableCell>{company.rating}</TableCell>
-                                    {/*<TableCell>*/}
-                                    {/*    <Button variant="contained" color="primary" size="small" onClick={() => handleEdit(review.id)}>*/}
-                                    {/*        Edit*/}
-                                    {/*    </Button>*/}
-                                    {/*    <Button variant="contained" color="error" size="small" onClick={() => handleDelete(review.id)} sx={{ ml: 1 }}>*/}
-                                    {/*        Delete*/}
-                                    {/*    </Button>*/}
-                                    {/*</TableCell>*/}
+                                    <TableCell>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            size="small"
+                                            onClick={() => handleDelete(company.id)}
+                                            sx={{ ml: 1 }}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

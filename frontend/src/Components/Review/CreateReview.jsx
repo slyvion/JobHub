@@ -123,7 +123,7 @@ export default function CreateReview({ onClose }) {
                                             <Rating
                                                 {...field}
                                                 name="rating"
-                                                precision={0.5}
+                                                precision={1}
                                                 size="large"
                                                 onChange={(_, value) => {
                                                     if (value && value >= 1) {

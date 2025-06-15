@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import { CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography
 } from "@mui/material";
 import ReviewsFilter from "../AdminFilters/ReviewsFilter.jsx";
-import {fetchAdminReviews} from "../../Services/reviewServices.js";
+import {fetchAdminReviews, deleteReview} from "../../Services/reviewServices.js";
 import Button from "@mui/material/Button";
 
 export default function ReviewsTab() {
@@ -32,9 +32,18 @@ export default function ReviewsTab() {
         console.log("Edit review", id);
     };
 
-    const handleDelete = (id) => {
-        console.log("Delete review", id);
+    const handleDelete = async (id) => {
+        if (!window.confirm('Are you sure you want to delete this review?')) return;
+
+        try {
+            await deleteReview(id);
+            setReviewData(prev => prev.filter(review => review.id !== id));
+        } catch (err) {
+            console.error('Failed to delete review:', err);
+            alert('Failed to delete review.');
+        }
     };
+
     return (
         <Box>
              <ReviewsFilter onFilter={getReviews} />
