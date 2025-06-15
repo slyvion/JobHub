@@ -12,8 +12,8 @@
 - Before you start the project, make sure you have already installed the following :
 
 - Frontend 
-  - Node.js.
   - WebStorm (preferred).
+  - Node.js(required)
 
 - Backend 
   - IntelliJ (preferred).
@@ -25,7 +25,7 @@
   - PostgreSQL
     - By default its setup for localhost:5432, if your port is different, please change it in the application properties.
     - check for the connection username and password in the application properties.
-  - DBeaver or DataGrip.
+  - DBeaver or DataGrip.(if you plan on inserting the dummy data)
 
 - Git in order to clone the project
 
