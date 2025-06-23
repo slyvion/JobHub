@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Box, CircularProgress, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,} from "@mui/material";
 import CompanyAdminFilter from "../AdminFilters/CompanyAdminFilter.jsx"
 import NoCompFound from "../../Company/NoCompFound.jsx";

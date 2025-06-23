@@ -1,23 +1,42 @@
-import Box from "@mui/material/Box";
 import React, { useEffect, useState } from "react";
-import { Typography, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import {
+    Box,
+    Typography,
+    CircularProgress,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+    Button
+} from "@mui/material";
 import { Link } from "react-router-dom";
 import JobPostFilter from "../../JobPost/JobPostFilter.jsx";
-import { fetchJobPosts as getJobPosts } from "../../Services/jobPostServices.js";
-import Button from "@mui/material/Button";
+import {
+    fetchJobPosts as getJobPosts,
+    deleteJobPost
+} from "../../Services/jobPostServices.js";
 
 export default function JobpostsTab() {
     const [jobPosts, setJobPosts] = useState([]);
+    const [pagination, setPagination] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const loadJobPosts = async (filterParams = {}) => {
+    const loadJobPosts = async (filterParams = {}, page = 0, size = 15) => {
         setLoading(true);
         setError(null);
 
         try {
-            const data = await getJobPosts(filterParams);
-            setJobPosts(data);
+            const data = await getJobPosts(filterParams, page, size);
+            setJobPosts(Array.isArray(data.content) ? data.content : []);
+            setPagination({
+                totalPages: data.totalPages,
+                currentPage: data.number,
+                totalElements: data.totalElements
+            });
         } catch (err) {
             setError(err.message);
         } finally {
@@ -29,12 +48,18 @@ export default function JobpostsTab() {
         loadJobPosts();
     }, []);
 
-    const handleEdit = (id) => {
-        console.log("Edit review", id);
-    };
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this job post?")) return;
 
-    const handleDelete = (id) => {
-        console.log("Delete review", id);
+        setLoading(true);
+        try {
+            await deleteJobPost(id);
+            await loadJobPosts(); // Refresh list
+        } catch (err) {
+            setError("Failed to delete job post: " + err.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -55,8 +80,7 @@ export default function JobpostsTab() {
                 </Typography>
             ) : (
                 <TableContainer component={Paper} sx={{ mt: 2, maxWidth: 1550, mx: 'auto' }}>
-
-                <Table>
+                    <Table>
                         <TableHead>
                             <TableRow>
                                 <TableCell><strong>Job Title</strong></TableCell>
@@ -78,20 +102,22 @@ export default function JobpostsTab() {
                                         </Link>
                                     </TableCell>
                                     <TableCell>
-                                        <Link to={`/company/${job.company.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                            {job.company.companyName}
+                                        <Link to={`/company/${job.company?.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                            {job.company?.companyName}
                                         </Link>
                                     </TableCell>
                                     <TableCell>{job.location}</TableCell>
-                                    <TableCell>{job.jobType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</TableCell>
-                                    <TableCell>{job.employmentType.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</TableCell>
-                                    <TableCell>{job.seniority.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase()}</TableCell>
-                                    <TableCell>{job.tags.join(', ')}</TableCell>
+                                    <TableCell>{job.jobType?.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</TableCell>
+                                    <TableCell>{job.employmentType?.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')}</TableCell>
+                                    <TableCell>{job.seniority?.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase()}</TableCell>
+                                    <TableCell>{job.tags?.join(', ')}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="primary" size="small" onClick={() => handleEdit(review.id)}>
-                                            Edit
-                                        </Button>
-                                        <Button variant="contained" color="error" size="small" onClick={() => handleDelete(review.id)} sx={{ ml: 1 }}>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            size="small"
+                                            onClick={() => handleDelete(job.id)}
+                                        >
                                             Delete
                                         </Button>
                                     </TableCell>

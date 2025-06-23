@@ -115,12 +115,13 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public Apply apply(Long id, ApplyDto applyDto) {
+    public Apply apply(Long id,ApplyDto applyDto) {
         JobPost jobPost = jobPostRepository.findById(id)
                 .orElseThrow(InvalidJobPostIdException::new);
 
-        User user = userRepository.findById(applyDto.getUser().getId())
-                .orElseThrow(InvalidUserIdException::new);
+        User user = userRepository.findUserByEmail(UserServiceImpl.getCurrentEmail())
+                .orElseThrow(InvalidUserIdException::new); // Change to email
+
 
         byte[] attachmentBytes = null;
         if (applyDto.getAttachment() != null) {

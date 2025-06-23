@@ -37,5 +37,5 @@ public class ApplyDto {
 
     private JobPost jobPost;
 
-    private User user;
+    private Long userId;
 }

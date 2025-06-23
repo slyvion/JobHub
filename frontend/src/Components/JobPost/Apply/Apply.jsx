@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, TextField, Button, Typography, Grid } from "@mui/material";
 import AppAppBar from "../../AppAppBar.jsx";
 import CvUpload from "./CvUpload";
 import { apply } from "../../Services/jobPostServices.js";
+import {useUser} from "../../../store/UserContext.jsx";
 
 export default function Apply() {
     const { id: jobPostId } = useParams();
+    const { user } = useUser();
+
+
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -52,8 +56,9 @@ export default function Apply() {
             if (formData.attachment) {
                 data.append("file", formData.attachment);
             }
+            const userId = user.id
 
-            await apply(jobPostId, data);
+            await apply(jobPostId,userId , data);
 
             setSuccessMsg("Application submitted successfully!");
             setFormData({

@@ -90,9 +90,9 @@ export const updateJobPost = async (id, jobPostData) => {
         throw error;
     }
 };
-export const apply = async (id, formData) => {
+export const apply = async (jobPostId, userId, formData) => {
     const token = localStorage.getItem("token");
-    return await fetch(`http://localhost:8080/jobposts/${id}/apply`, {
+    return await fetch(`http://localhost:8080/jobposts/${jobPostId}/apply`, {
         method: "PUT",
         headers: {
             Authorization: `Bearer ${token}`,
