@@ -10,6 +10,9 @@ import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
@@ -40,6 +43,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
         this.applicantsRepository = applicantsRepository;
     }
+
     @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
@@ -57,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Apply> findAllAppliesByUserId(Long id){
+    public List<Apply> findAllAppliesByUserId(Long id) {
         return applicantsRepository.findAllByUserId(id);
     }
 
@@ -79,14 +83,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User EmailUpdate(Long  id, UserEmailUpdateDto userEmailUpdateDto) {
+    public User EmailUpdate(Long id, UserEmailUpdateDto userEmailUpdateDto) {
         User user = this.findById(id);
 
         Optional<User> existingUserOptional = userRepository.findUserByEmail(userEmailUpdateDto.getEmail());
         if (existingUserOptional.isPresent() && !existingUserOptional.get().getId().equals(user.getId())) {
             throw new IllegalArgumentException("Email already in use");
-        }
-        else {
+        } else {
             user.setEmail(userEmailUpdateDto.getEmail());
         }
 
@@ -114,7 +117,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> userFilter(String username, String email, UserRole userRole){
+    public List<User> userFilter(String username, String email, UserRole userRole) {
         return userRepository.findAll((Specification<User>) (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -132,5 +135,15 @@ public class UserServiceImpl implements UserService {
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
+    }
+
+    public static String getCurrentEmail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails principal = (UserDetails) authentication.getPrincipal();
+            return principal.getUsername();
+        }
+        return null;
+
     }
 }
