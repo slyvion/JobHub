@@ -33,7 +33,6 @@ export default function SignUp() {
     const [value, setValue] = useState(0);
     const [companyCountry, setCompanyCountry] = useState('');
 
-    // Snackbar states
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');

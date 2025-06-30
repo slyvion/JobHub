@@ -14,6 +14,8 @@ import { styled } from "@mui/system";
 import StarIcon from "@mui/icons-material/Star";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams, useNavigate } from "react-router-dom";
+import { useUser } from "../../store/UserContext.jsx";
+
 
 import Review from "../Review/Review.jsx";
 import JobPost from "../JobPost/JobPost.jsx";
@@ -68,6 +70,7 @@ const EditButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export default function CompanyProfile() {
+    const { user } = useUser();
     const { id } = useParams();
     const navigate = useNavigate();
     const [value, setValue] = useState(0);
@@ -151,9 +154,11 @@ export default function CompanyProfile() {
             <AppAppBar />
             <CompanyCover image={coverUrl || "/companyCover.jpg"} />
             <Root>
-                <EditButton onClick={handleEditClick}>
-                    <EditIcon />
-                </EditButton>
+                {user && user.type === 'company' && user.id === Number(id) && (
+                    <EditButton onClick={handleEditClick}>
+                        <EditIcon />
+                    </EditButton>
+                )}
 
                 <LogoContainer>
                     <StyledAvatar src={logoUrl || "/companyLogo.jpg"} variant="square" />
@@ -199,9 +204,13 @@ export default function CompanyProfile() {
                                 <NoJobsListed />
                             )}
                             <Box display="flex" justifyContent="center" mt={2}>
-                                <Button variant="contained" color="primary" onClick={handleAddJobpost}>
-                                    Add Jobpost
-                                </Button>
+                                {user && user.type === 'company' && user.id === Number(id) && (
+                                    <Box display="flex" justifyContent="center" mt={2}>
+                                        <Button variant="contained" color="primary" onClick={handleAddJobpost}>
+                                            Add Jobpost
+                                        </Button>
+                                    </Box>
+                                )}
                             </Box>
                         </Box>
                     )}
@@ -214,9 +223,13 @@ export default function CompanyProfile() {
                                 <NoReviews />
                             )}
                             <Box display="flex" justifyContent="center" mt={2}>
-                                <Button variant="contained" color="primary" onClick={handleAddReviewClick}>
-                                    Add Review
-                                </Button>
+                                {(!user || user.type === 'user') && (
+                                    <Box display="flex" justifyContent="center" mt={2}>
+                                        <Button variant="contained" color="primary" onClick={handleAddReviewClick}>
+                                            Add Review
+                                        </Button>
+                                    </Box>
+                                )}
                             </Box>
                         </Box>
                     )}

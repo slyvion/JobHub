@@ -10,8 +10,10 @@ import AppAppBar from "../AppAppBar.jsx";
 import Footer from "../HomePage/Footer.jsx";
 import { fetchJobPost, deleteJobPost } from '../Services/jobPostServices';
 import { saveJobPost } from '../Services/userServices.js';
+import {useUser} from "../../store/UserContext.jsx";
 
 export default function FullJobPost() {
+    const { user } = useUser();
     const { id } = useParams();
     const navigate = useNavigate();
     const [job, setJob] = useState(null);
@@ -138,92 +140,102 @@ export default function FullJobPost() {
                         </Box>
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>
-                            <Button
-                                variant="contained"
-                                onClick={handleSaveJob}
-                                sx={{
-                                    width: '60px',
-                                    height: '40px',
-                                    backgroundColor: 'white',
-                                    color: 'black',
-                                    border: '1px solid #ccc',
-                                    '&:hover': {
-                                        backgroundColor: '#f0f0f0',
-                                    }
-                                }}
-                            >
-                                Save
-                            </Button>
+                            {(!user || user.type === 'user') && (
+                                <>
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleSaveJob}
+                                        sx={{
+                                            width: '60px',
+                                            height: '40px',
+                                            backgroundColor: 'white',
+                                            color: 'black',
+                                            border: '1px solid #ccc',
+                                            '&:hover': { backgroundColor: '#f0f0f0' },
+                                        }}
+                                    >
+                                        Save
+                                    </Button>
 
-                            {job.isLink ? (
-                                <a href={job.applicationLink} target="_blank" rel="noopener noreferrer">
-                                    <Button
-                                        variant="contained"
-                                        sx={{
-                                            width: '60px',
-                                            height: '40px',
-                                            backgroundColor: '#1976d2',
-                                            color: 'white',
-                                            '&:hover': {
-                                                backgroundColor: '#1565c0',
-                                            },
-                                            marginLeft: 1
-                                        }}
-                                    >
-                                        Apply
-                                    </Button>
-                                </a>
-                            ) : (
-                                <Link to={`/jobposts/${id}/apply`}>
-                                    <Button
-                                        variant="contained"
-                                        sx={{
-                                            width: '60px',
-                                            height: '40px',
-                                            backgroundColor: '#1976d2',
-                                            color: 'white',
-                                            '&:hover': {
-                                                backgroundColor: '#1565c0',
-                                            },
-                                            marginLeft: 1
-                                        }}
-                                    >
-                                        Apply
-                                    </Button>
-                                </Link>
+                                    {job.isLink ? (
+                                        <Button
+                                            variant="contained"
+                                            sx={{
+                                                width: '60px',
+                                                height: '40px',
+                                                backgroundColor: '#1976d2',
+                                                color: 'white',
+                                                '&:hover': { backgroundColor: '#1565c0' },
+                                                marginLeft: 1,
+                                            }}
+                                            onClick={() => {
+                                                if (!user) {
+                                                    navigate('/login');
+                                                    return;
+                                                }
+                                                window.open(job.applicationLink, '_blank');
+                                            }}
+                                        >
+                                            Apply
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="contained"
+                                            sx={{
+                                                width: '60px',
+                                                height: '40px',
+                                                backgroundColor: '#1976d2',
+                                                color: 'white',
+                                                '&:hover': { backgroundColor: '#1565c0' },
+                                                marginLeft: 1,
+                                            }}
+                                            onClick={() => {
+                                                if (!user) {
+                                                    navigate('/sign-in');
+                                                } else {
+                                                    navigate(`/jobposts/${id}/apply`);
+                                                }
+                                            }}
+                                        >
+                                            Apply
+                                        </Button>
+                                    )}
+                                </>
                             )}
 
-                            <Link to={`/jobposts/${id}/edit`}>
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        width: '60px',
-                                        height: '40px',
-                                        backgroundColor: 'white',
-                                        color: 'black',
-                                        border: '1px solid #ccc',
-                                        '&:hover': {
-                                            backgroundColor: '#f0f0f0',
-                                        },
-                                        marginLeft: 1
-                                    }}
-                                >
-                                    Edit
-                                </Button>
-                            </Link>
+                            {(user && user.type === 'company' && user.id === job.company.id) && (
+                                <>
+                                    <Link to={`/jobposts/${id}/edit`}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{
+                                                width: '60px',
+                                                height: '40px',
+                                                backgroundColor: 'white',
+                                                color: 'black',
+                                                border: '1px solid #ccc',
+                                                '&:hover': { backgroundColor: '#f0f0f0' },
+                                                marginLeft: 1,
+                                            }}
+                                        >
+                                            Edit
+                                        </Button>
+                                    </Link>
 
-                            <Button
-                                variant="contained"
-                                color="error"
-                                sx={{
-                                    width: '70px',
-                                    height: '40px',
-                                    marginLeft: 1,
-                                }}
-                                onClick={() => setOpenDeleteModal(true)}
-                            >
-                                Delete
-                            </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="error"
+                                        sx={{
+                                            width: '70px',
+                                            height: '40px',
+                                            marginLeft: 1,
+                                        }}
+                                        onClick={() => setOpenDeleteModal(true)}
+                                    >
+                                        Delete
+                                    </Button>
+                                </>
+                            )}
                         </Box>
                     </Paper>
                 </Box>

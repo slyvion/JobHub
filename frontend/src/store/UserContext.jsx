@@ -7,13 +7,23 @@ export const UserProvider = ({children}) => {
     const [user, setUser] = useState({});
 
     const loadUser = async () => {
-        const res = await me();
-        setUser({
-            name: res.data.name,
-            id: res.data.id,
-            type: res.type
-        })
+        try {
+            const res = await me();
+            if (res && res.data) {
+                setUser({
+                    name: res.data.name,
+                    id: res.data.id,
+                    type: res.type
+                });
+            } else {
+                setUser(null);
+            }
+        } catch (error) {
+            console.error("Error loading user:", error);
+            setUser(null);
+        }
     }
+
     useEffect(() => {
         loadUser();
     }, [])

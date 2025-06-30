@@ -73,6 +73,7 @@ export default function Footer() {
                     width: '100%',
                     justifyContent: 'space-between',
                     maxWidth: '1200px',
+                    flexWrap: 'wrap',
                 }}
             >
                 <Box
@@ -80,7 +81,8 @@ export default function Footer() {
                         display: 'flex',
                         flexDirection: 'column',
                         gap: 4,
-                        minWidth: { xs: '100%', sm: '60%' },
+                        width: { xs: '100%', sm: '60%' },
+                        mb: { xs: 4, sm: 0 },
                     }}
                 >
                     <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
@@ -97,7 +99,12 @@ export default function Footer() {
                         <Typography variant="body2" color="text.secondary" mb={2}>
                             Subscribe to our newsletter for weekly updates and promotions.
                         </Typography>
-                        <Stack direction="row" spacing={1} useFlexGap>
+                        <Stack
+                            direction={{ xs: 'column', sm: 'row' }}
+                            spacing={1}
+                            useFlexGap
+                            sx={{ width: '100%' }}
+                        >
                             <TextField
                                 id="outlined-basic"
                                 hiddenLabel
@@ -110,20 +117,19 @@ export default function Footer() {
                                     autoComplete: 'off',
                                     'aria-label': 'Enter your email address',
                                 }}
+                                sx={{ mb: { xs: 1, sm: 0 } }}
                             />
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ flexShrink: 0 }}
-                                    onClick={handleClick}
-                                >
-                                    Subscribe
-                                </Button>
-                                <Popper id={id} open={open} anchorEl={anchorEl}>
-                                    <Typography sx={{ p: 1 }}>ne rabote</Typography>
-                                </Popper>
-                            </div>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                sx={{ flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}
+                                onClick={handleClick}
+                            >
+                                Subscribe
+                            </Button>
+                            <Popper id={id} open={open} anchorEl={anchorEl}>
+                                <Typography sx={{ p: 1 }}>ne rabote</Typography>
+                            </Popper>
                         </Stack>
                     </Box>
                 </Box>
@@ -132,6 +138,8 @@ export default function Footer() {
                         display: { xs: 'none', sm: 'flex' },
                         flexDirection: 'column',
                         gap: 1,
+                        width: { xs: '100%', sm: 'auto' },
+                        mb: { xs: 4, sm: 0 },
                     }}
                 >
                     <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
@@ -155,7 +163,7 @@ export default function Footer() {
 
                     <Link
                         color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        sx={{ fontFamily: 'Arial, sans-serif' }}
                         href="companies"
                     >
                         Companies
@@ -163,7 +171,7 @@ export default function Footer() {
 
                     <Link
                         color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif'}}
+                        sx={{ fontFamily: 'Arial, sans-serif' }}
                         href="jobposts"
                     >
                         JobPosts
@@ -174,6 +182,8 @@ export default function Footer() {
                         display: { xs: 'none', sm: 'flex' },
                         flexDirection: 'column',
                         gap: 1,
+                        width: { xs: '100%', sm: 'auto' },
+                        mb: { xs: 4, sm: 0 },
                     }}
                 >
                     <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
@@ -181,8 +191,9 @@ export default function Footer() {
                     </Typography>
                     <Link
                         color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif'}}
-                        href="/about-us">
+                        sx={{ fontFamily: 'Arial, sans-serif' }}
+                        href="/about-us"
+                    >
                         About us
                     </Link>
                 </Box>
@@ -191,6 +202,8 @@ export default function Footer() {
                         display: { xs: 'none', sm: 'flex' },
                         flexDirection: 'column',
                         gap: 1,
+                        width: { xs: '100%', sm: 'auto' },
+                        mb: { xs: 4, sm: 0 },
                     }}
                 >
                     <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
@@ -204,12 +217,15 @@ export default function Footer() {
             <Box
                 sx={{
                     display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: { xs: 'center', sm: 'flex-start' },
                     justifyContent: 'space-between',
                     pt: { xs: 4, sm: 8 },
                     width: '100%',
                     borderTop: '1px solid',
                     borderColor: 'divider',
                     maxWidth: '1200px',
+                    gap: { xs: 2, sm: 0 },
                 }}
             >
                 <div>
@@ -222,6 +238,7 @@ export default function Footer() {
                     useFlexGap
                     sx={{
                         color: 'text.secondary',
+                        pl: { xs: 2, sm: 0 },
                     }}
                 >
                     <IconButton

@@ -103,7 +103,7 @@ function AppAppBar() {
                                 </>
                             )}
                             <MenuItem component={Link} to="/companies" sx={{ py: '6px', px: '12px' }}>
-                                <Typography variant="body2" color="text.primary">Companies</Typography>
+                                <Typography variant="body2" color="text.primary" >Companies</Typography>
                             </MenuItem>
                             <MenuItem component={Link} to="/jobposts" sx={{ py: '6px', px: '12px' }}>
                                 <Typography variant="body2" color="text.primary">JobPosts</Typography>

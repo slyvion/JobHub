@@ -53,7 +53,9 @@ export default function Hero() {
                         <Typography
                             component="span"
                             variant="h1"
+
                             sx={{
+
                                 fontSize: 'clamp(3rem, 10vw, 4rem)',
                                 color: (theme) =>
                                     theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',

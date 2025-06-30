@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, TextField, Button, Typography, Grid } from "@mui/material";
+import {
+    Box,
+    TextField,
+    Button,
+    Typography,
+    Grid,
+    Container
+} from "@mui/material";
 import AppAppBar from "../../AppAppBar.jsx";
 import CvUpload from "./CvUpload";
 import { apply } from "../../Services/jobPostServices.js";
-import {useUser} from "../../../store/UserContext.jsx";
+import { useUser } from "../../../store/UserContext.jsx";
 
 export default function Apply() {
     const { id: jobPostId } = useParams();
     const { user } = useUser();
-
-
 
     const [formData, setFormData] = useState({
         firstName: "",
@@ -56,9 +61,9 @@ export default function Apply() {
             if (formData.attachment) {
                 data.append("file", formData.attachment);
             }
-            const userId = user.id
 
-            await apply(jobPostId,userId , data);
+            const userId = user.id;
+            await apply(jobPostId, userId, data);
 
             setSuccessMsg("Application submitted successfully!");
             setFormData({
@@ -77,133 +82,147 @@ export default function Apply() {
         }
     };
 
-
     return (
         <Box
             sx={{
-                display: "flex",
-                flexDirection: "column",
                 minHeight: "100vh",
                 backgroundColor: "#f0f0f0",
-                justifyContent: "center",
-                alignItems: "center",
+                display: "flex",
+                flexDirection: "column",
+                pt: { xs: 8, sm: 10 },
             }}
         >
             <AppAppBar />
 
-            <Box
-                component="form"
-                onSubmit={handleSubmit}
+            <Container
+                maxWidth="sm"
                 sx={{
-                    maxWidth: 500,
-                    mx: "auto",
-                    p: 3,
-                    bgcolor: "white",
-                    borderRadius: 2,
-                    boxShadow: 3,
+                    flex: 1,
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    py: 5,
                 }}
             >
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label="First Name"
-                            name="firstName"
-                            required
-                            value={formData.firstName}
-                            onChange={handleChange}
-                        />
-                    </Grid>
+                <Box
+                    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
+                        width: "100%",
+                        p: { xs: 2, sm: 3 },
+                        bgcolor: "white",
+                        borderRadius: 2,
+                        boxShadow: 3,
+                    }}
+                >
+                    <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="First Name"
+                                name="firstName"
+                                required
+                                value={formData.firstName}
+                                onChange={handleChange}
+                            />
+                        </Grid>
 
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label="Last Name"
-                            name="lastName"
-                            required
-                            value={formData.lastName}
-                            onChange={handleChange}
-                        />
-                    </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                fullWidth
+                                label="Last Name"
+                                name="lastName"
+                                required
+                                value={formData.lastName}
+                                onChange={handleChange}
+                            />
+                        </Grid>
 
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="Email"
-                            name="email"
-                            type="email"
-                            required
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="Phone Number"
-                            name="phoneNumber"
-                            required
-                            value={formData.phoneNumber}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle2" sx={{ color: "black", opacity: 0.7 }}>
-                            You must insert at least one of the following:
-                        </Typography>
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="LinkedIn Profile"
-                            name="linkedinLink"
-                            value={formData.linkedinLink}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <CvUpload onFileChange={handleFileChange} />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            multiline
-                            rows={3}
-                            name="additionalMessage"
-                            placeholder="Additional message to the company"
-                            value={formData.additionalMessage}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-
-                    {error && (
                         <Grid item xs={12}>
-                            <Typography color="error" align="center">
-                                {error}
+                            <TextField
+                                fullWidth
+                                label="Email"
+                                name="email"
+                                type="email"
+                                required
+                                value={formData.email}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                label="Phone Number"
+                                name="phoneNumber"
+                                required
+                                value={formData.phoneNumber}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <Typography variant="subtitle2" sx={{ color: "black", opacity: 0.7 }}>
+                                You must insert at least one of the following:
                             </Typography>
                         </Grid>
-                    )}
 
-                    {successMsg && (
                         <Grid item xs={12}>
-                            <Typography color="success.main" align="center">
-                                {successMsg}
-                            </Typography>
+                            <TextField
+                                fullWidth
+                                label="LinkedIn Profile"
+                                name="linkedinLink"
+                                value={formData.linkedinLink}
+                                onChange={handleChange}
+                            />
                         </Grid>
-                    )}
 
-                    <Grid item xs={12} textAlign="center">
-                        <Button type="submit" variant="contained" color="primary" disabled={submitting}>
-                            {submitting ? "Submitting..." : "Apply"}
-                        </Button>
+                        <Grid item xs={12}>
+                            <CvUpload onFileChange={handleFileChange} />
+                        </Grid>
+
+                        <Grid item xs={12}>
+                            <TextField
+                                fullWidth
+                                multiline
+                                rows={3}
+                                name="additionalMessage"
+                                placeholder="Additional message to the company"
+                                value={formData.additionalMessage}
+                                onChange={handleChange}
+                            />
+                        </Grid>
+
+                        {error && (
+                            <Grid item xs={12}>
+                                <Typography color="error" align="center">
+                                    {error}
+                                </Typography>
+                            </Grid>
+                        )}
+
+                        {successMsg && (
+                            <Grid item xs={12}>
+                                <Typography color="success.main" align="center">
+                                    {successMsg}
+                                </Typography>
+                            </Grid>
+                        )}
+
+                        <Grid item xs={12} textAlign="center">
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                disabled={submitting}
+                                fullWidth
+                            >
+                                {submitting ? "Submitting..." : "Apply"}
+                            </Button>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </Box>
+                </Box>
+            </Container>
         </Box>
     );
 }

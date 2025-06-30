@@ -120,7 +120,7 @@ public class JobPostServiceImpl implements JobPostService {
                 .orElseThrow(InvalidJobPostIdException::new);
 
         User user = userRepository.findUserByEmail(UserServiceImpl.getCurrentEmail())
-                .orElseThrow(InvalidUserIdException::new); // Change to email
+                .orElseThrow(InvalidUserIdException::new);
 
 
         byte[] attachmentBytes = null;
