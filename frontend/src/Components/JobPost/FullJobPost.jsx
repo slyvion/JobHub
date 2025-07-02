@@ -234,6 +234,20 @@ export default function FullJobPost() {
                                     >
                                         Delete
                                     </Button>
+
+                                    <Link to={`/jobposts/${id}/applications`}>
+                                        <Button
+                                            variant="contained"
+                                            sx={{
+                                                width: '120px',
+                                                height: '40px',
+                                                color: 'white',
+                                                marginLeft: 1,
+                                            }}
+                                        >
+                                            Applications
+                                        </Button>
+                                    </Link>
                                 </>
                             )}
                         </Box>

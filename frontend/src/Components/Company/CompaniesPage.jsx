@@ -8,6 +8,7 @@ import Footer from "../HomePage/Footer.jsx";
 import { Typography, CircularProgress, Pagination } from "@mui/material";
 import NoCompFound from "./NoCompFound.jsx";
 import { fetchCompanies } from "../Services/companyServices.js";
+import { useLocation } from "react-router-dom";
 
 export default function CompaniesPage() {
     const [companyData, setCompanyData] = useState([]);
@@ -16,6 +17,10 @@ export default function CompaniesPage() {
     const [totalPages, setTotalPages] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [filterParams, setFilterParams] = useState({});
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const queryCompanyName = queryParams.get("companyName");
 
     const getCompanies = async (filters = filterParams, page = 0) => {
         setLoading(true);
@@ -33,8 +38,14 @@ export default function CompaniesPage() {
     };
 
     useEffect(() => {
-        getCompanies();
-    }, []);
+        if (queryCompanyName) {
+            const initialFilters = { companyName: queryCompanyName };
+            setFilterParams(initialFilters);
+            getCompanies(initialFilters, 0);
+        } else {
+            getCompanies();
+        }
+    }, [queryCompanyName]);
 
     const handlePageChange = (event, value) => {
         getCompanies(filterParams, value - 1);

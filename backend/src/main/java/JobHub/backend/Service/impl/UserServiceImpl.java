@@ -1,7 +1,6 @@
 package JobHub.backend.Service.impl;
 
 import JobHub.backend.Model.Apply;
-import JobHub.backend.Model.Company;
 import JobHub.backend.Model.Constants.UserRole;
 import JobHub.backend.Model.Dto.User.UserDto;
 import JobHub.backend.Model.Dto.User.UserRoleUpdateDto;
@@ -20,11 +19,9 @@ import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
 import JobHub.backend.Model.User;
 import JobHub.backend.Repository.UserRepository;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.ArrayList;
-import java.util.Base64;
+
 import java.util.List;
 import java.util.Optional;
 

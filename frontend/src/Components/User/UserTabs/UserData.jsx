@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
     Box, Typography, TextField, Button, Modal, Snackbar, Alert
 } from "@mui/material";
@@ -61,7 +61,7 @@ export default function UserData({ user }) {
     const handleCorrectPasswordEntry = (event) => {
         const enteredPassword = event.target.value;
         setPassword(enteredPassword);
-        setIsPasswordValid(enteredPassword === user.password);
+        setIsPasswordValid(enteredPassword === "Password");
     };
 
     const handleSnackbarClose = () => {

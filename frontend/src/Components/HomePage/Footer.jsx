@@ -6,7 +6,7 @@ import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import FacebookIcon from '@mui/icons-material/GitHub';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import Terms from "./FooterComps/Terms.jsx";
 import Privacy from "./FooterComps/Privacy.jsx";
@@ -62,7 +62,7 @@ export default function Footer() {
                 alignItems: 'center',
                 gap: { xs: 4, sm: 8 },
                 py: { xs: 8, sm: 10 },
-                textAlign: { sm: 'center', md: 'left' },
+                textAlign: { xs: 'center', sm: 'left' },
                 boxShadow: "0 4px 6px rgba(0, 1, 0, 0)",
             }}
         >
@@ -74,6 +74,8 @@ export default function Footer() {
                     justifyContent: 'space-between',
                     maxWidth: '1200px',
                     flexWrap: 'wrap',
+                    px: { xs: 2, sm: 0 },
+                    gap: { xs: 4, sm: 0 },
                 }}
             >
                 <Box
@@ -82,11 +84,10 @@ export default function Footer() {
                         flexDirection: 'column',
                         gap: 4,
                         width: { xs: '100%', sm: '60%' },
-                        mb: { xs: 4, sm: 0 },
                     }}
                 >
-                    <Box sx={{ width: { xs: '100%', sm: '60%' } }}>
-                        <Box sx={{ ml: '-15px' }}>
+                    <Box sx={{ width: '100%' }}>
+                        <Box sx={{ ml: { xs: 0, sm: '-15px' }, mb: 2 }}>
                             <img
                                 src={'/Logo.png'}
                                 style={logoStyle}
@@ -117,7 +118,6 @@ export default function Footer() {
                                     autoComplete: 'off',
                                     'aria-label': 'Enter your email address',
                                 }}
-                                sx={{ mb: { xs: 1, sm: 0 } }}
                             />
                             <Button
                                 variant="contained"
@@ -128,133 +128,97 @@ export default function Footer() {
                                 Subscribe
                             </Button>
                             <Popper id={id} open={open} anchorEl={anchorEl}>
-                                <Typography sx={{ p: 1 }}>ne rabote</Typography>
+                                <Typography sx={{ p: 1 }}>This feature is under construction</Typography>
                             </Popper>
                         </Stack>
                     </Box>
                 </Box>
+
                 <Box
                     sx={{
-                        display: { xs: 'none', sm: 'flex' },
-                        flexDirection: 'column',
-                        gap: 1,
-                        width: { xs: '100%', sm: 'auto' },
-                        mb: { xs: 4, sm: 0 },
+                        display: 'flex',
+                        flexDirection: { xs: 'column', sm: 'row' },
+                        gap: { xs: 2, sm: 8 },
+                        width: { xs: '100%', sm: '40%' },
+                        justifyContent: { xs: 'center', sm: 'flex-end' },
+                        textAlign: { xs: 'center', sm: 'left' },
                     }}
                 >
-                    <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
-                        Product
-                    </Typography>
-                    <Link
-                        color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer' }}
-                        onClick={() => scrollToSection('features')}
-                    >
-                        Features
-                    </Link>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
+                            Product
+                        </Typography>
+                        <Link color="text.secondary" sx={{ cursor: 'pointer' }} onClick={() => scrollToSection('features')}>
+                            Features
+                        </Link>
+                        <Link color="text.secondary" sx={{ cursor: 'pointer' }} onClick={() => scrollToSection('highlights')}>
+                            Highlights
+                        </Link>
+                        <Link color="text.secondary" href="companies">
+                            Companies
+                        </Link>
+                        <Link color="text.secondary" href="jobposts">
+                            JobPosts
+                        </Link>
+                    </Box>
 
-                    <Link
-                        color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer' }}
-                        onClick={() => scrollToSection('highlights')}
-                    >
-                        Highlights
-                    </Link>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
+                            Company
+                        </Typography>
+                        <Link color="text.secondary" href="/about-us">
+                            About us
+                        </Link>
+                    </Box>
 
-                    <Link
-                        color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif' }}
-                        href="companies"
-                    >
-                        Companies
-                    </Link>
-
-                    <Link
-                        color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif' }}
-                        href="jobposts"
-                    >
-                        JobPosts
-                    </Link>
-                </Box>
-                <Box
-                    sx={{
-                        display: { xs: 'none', sm: 'flex' },
-                        flexDirection: 'column',
-                        gap: 1,
-                        width: { xs: '100%', sm: 'auto' },
-                        mb: { xs: 4, sm: 0 },
-                    }}
-                >
-                    <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
-                        Company
-                    </Typography>
-                    <Link
-                        color="text.secondary"
-                        sx={{ fontFamily: 'Arial, sans-serif' }}
-                        href="/about-us"
-                    >
-                        About us
-                    </Link>
-                </Box>
-                <Box
-                    sx={{
-                        display: { xs: 'none', sm: 'flex' },
-                        flexDirection: 'column',
-                        gap: 1,
-                        width: { xs: '100%', sm: 'auto' },
-                        mb: { xs: 4, sm: 0 },
-                    }}
-                >
-                    <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
-                        Legal
-                    </Typography>
-                    <Terms />
-                    <Privacy />
-                    <Contact />
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
+                            Legal
+                        </Typography>
+                        <Terms />
+                        <Privacy />
+                        <Contact />
+                    </Box>
                 </Box>
             </Box>
+
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: { xs: 'column', sm: 'row' },
-                    alignItems: { xs: 'center', sm: 'flex-start' },
+                    alignItems: 'center',
                     justifyContent: 'space-between',
                     pt: { xs: 4, sm: 8 },
                     width: '100%',
                     borderTop: '1px solid',
                     borderColor: 'divider',
                     maxWidth: '1200px',
+                    px: { xs: 2, sm: 0 },
                     gap: { xs: 2, sm: 0 },
                 }}
             >
-                <div>
-                    <Copyright />
-                </div>
+                <Copyright />
+
                 <Stack
                     direction="row"
-                    justifyContent="left"
+                    justifyContent={{ xs: 'center', sm: 'flex-start' }}
                     spacing={1}
                     useFlexGap
                     sx={{
                         color: 'text.secondary',
-                        pl: { xs: 2, sm: 0 },
                     }}
                 >
                     <IconButton
                         color="inherit"
                         href="https://github.com/slyvion/JobHub"
                         aria-label="GitHub"
-                        sx={{ alignSelf: 'center' }}
                     >
-                        <FacebookIcon />
+                        <GitHubIcon />
                     </IconButton>
-
                     <IconButton
                         color="inherit"
                         href="https://www.linkedin.com/in/slave-stamenov/"
                         aria-label="LinkedIn"
-                        sx={{ alignSelf: 'center' }}
                     >
                         <LinkedInIcon />
                     </IconButton>
