@@ -9,7 +9,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class UserPasswordUpdateDto {
 
-
     @NotBlank(message = "Provide old password")
     private String oldPassword;
 

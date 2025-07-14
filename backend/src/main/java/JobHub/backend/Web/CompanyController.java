@@ -32,7 +32,6 @@ public class CompanyController {
     @Autowired
     private ReviewService reviewService;
 
-
     @GetMapping("/{id}")
     public CompanyDetailsDto getCompanyById(@PathVariable Long id) {
         return companyService.findById(id).mapToDetails();

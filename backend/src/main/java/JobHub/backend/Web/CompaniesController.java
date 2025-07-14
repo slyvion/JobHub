@@ -19,7 +19,6 @@ public class CompaniesController {
     @Autowired
     private CompanyService companyService;
 
-
     @GetMapping("")
     public Page<Company> companiesFilter(
             @RequestParam(required = false) String companyName,
@@ -47,8 +46,6 @@ public class CompaniesController {
 //        Pageable pageable = PageRequest.of(page - 1, size);
         return companyService.companyAdminFilter(searchDto); //, pageable
 
-
     }
-
 
 }

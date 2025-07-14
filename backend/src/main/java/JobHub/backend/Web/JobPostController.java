@@ -48,7 +48,6 @@ public class JobPostController {
         return jobPostService.jobPostFilter(searchDto, pageable);
     }
 
-
     @PostMapping("/create")
     public JobPost create(@Valid @RequestBody JobPostDto jobPostDto) {
         return jobPostService.create(jobPostDto);

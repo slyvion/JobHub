@@ -23,9 +23,9 @@ public class UserController {
 
     @Autowired
     private ReviewService reviewService;
+
     @Autowired
     private SavedJobPostsService savedJobPostsService;
-
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
@@ -72,7 +72,6 @@ public class UserController {
         return "Job post removed";
     }
 
-
     @GetMapping("/admin")
         public List<User> userAdminFilter(
             @RequestParam(required = false) String username,
@@ -85,7 +84,6 @@ public class UserController {
             return userService.listAll();
         }
         return userService.userFilter(username, email, role);
-
     }
 
 }
