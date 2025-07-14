@@ -11,12 +11,12 @@ public interface ReviewService {
 
     Integer reviewsCount();
 
-
     Review create(ReviewDto reviewDto);
 
     Review update(Long id, ReviewDto reviewDto);
 
     Review findById(Long id);
+
     Review deleteReview(Long id);
 
     List<Review> findAllById(Long id);
@@ -30,6 +30,7 @@ public interface ReviewService {
     List<Review> findByCompanyName(String companyName);
 
     List<Review> findAllByUserId(Long id);
+
     List<Review> findByRatingGreaterThan(long rating);
 
     List<Review> reviewFilter(String companyName, String title, Double rating);

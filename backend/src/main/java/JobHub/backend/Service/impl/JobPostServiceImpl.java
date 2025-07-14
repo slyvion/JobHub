@@ -155,7 +155,6 @@ public class JobPostServiceImpl implements JobPostService {
         return savedApplication;
     }
 
-
     @Override
     public List<JobPost> findAllByTitle(String title) {
         return jobPostRepository.findJobPostsByTitle(title);
@@ -180,7 +179,6 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPost> findAllByLocation(String location) {
         return jobPostRepository.findJobPostsByLocation(location);
     }
-
 
     @Transactional(readOnly = true)
     @Override
@@ -207,7 +205,6 @@ public class JobPostServiceImpl implements JobPostService {
     public List<JobPost> findAllBySeniority(Seniority seniority) {
         return jobPostRepository.findJobPostsBySeniority(seniority);
     }
-
 
     @Override
     public Page<JobPost> jobPostFilter(JobPostSearchDto searchDto, Pageable pageable) {

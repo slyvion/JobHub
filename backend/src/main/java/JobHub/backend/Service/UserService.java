@@ -16,7 +16,6 @@ public interface UserService {
 
     Integer usersCount();
 
-
     User findById(Long id);
 
     public List<User> listAll();
@@ -30,9 +29,9 @@ public interface UserService {
     User create(UserDto userDto);
 
     List<Apply> findAllAppliesByUserId(Long id);
+
     User roleUpdate(Long id, UserRoleUpdateDto userRoleUpdateDto);
 
     List<User> userFilter(String username, String Email, UserRole role);
-
 
 }

@@ -68,8 +68,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.save(company);
     }
 
-
-
     @Override
     public Company nameUpdate(Long id, CompanyNameUpdateDto companyNameUpdateDto) {
         Company company = this.findById(id);
@@ -100,7 +98,6 @@ public class CompanyServiceImpl implements CompanyService {
         company.setLinkedinLink(companySocialMediaUpdateDto.getLinkedinLink());
         return companyRepository.save(company);
     }
-
 
     @Override
     public Company bioUpdate(Long id, CompanyBioUpdateDto companyBioUpdateDto) {
@@ -153,8 +150,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyRepository.save(company);
     }
 
-
-
     @Override
     public Company delete(Long id) {
         Company company = this.findById(id);
@@ -181,7 +176,6 @@ public class CompanyServiceImpl implements CompanyService {
 
         return companyRepository.save(company);
     }
-
 
     @Override
     public Company companyCoverUpdate(Long companyId, MultipartFile file) throws IOException {
@@ -239,7 +233,6 @@ public class CompanyServiceImpl implements CompanyService {
     public Page<Company> listAll(Pageable pageable) {
         return companyRepository.findAll(pageable);
     }
-
 
     @Override
     public List<Company> companyAdminFilter(CompanyAdminSearchDto searchDto) {

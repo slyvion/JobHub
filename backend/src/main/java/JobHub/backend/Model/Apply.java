@@ -14,18 +14,19 @@ public class Apply {
     private Long id;
 
     private String firstName;
+
     private String lastName;
 
     private String email;
 
     private String phoneNumber;
+
     private String linkedinLink;
 
     private byte[] attachment;
 
     @Enumerated(EnumType.STRING)
     private Status status;
-
 
     private String additionalMessage;
 

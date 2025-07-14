@@ -165,7 +165,6 @@ public class ReviewServiceImpl implements ReviewService {
                 }
             }
 
-
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         });
     }

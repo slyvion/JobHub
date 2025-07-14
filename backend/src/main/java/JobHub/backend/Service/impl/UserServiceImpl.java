@@ -28,11 +28,8 @@ import java.util.Optional;
 @Service
 public class UserServiceImpl implements UserService {
 
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
-
     private final ApplicantsRepository applicantsRepository;
 
     public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, ApplicantsRepository applicantsRepository) {
@@ -146,6 +143,5 @@ public class UserServiceImpl implements UserService {
             return principal.getUsername();
         }
         return null;
-
     }
 }

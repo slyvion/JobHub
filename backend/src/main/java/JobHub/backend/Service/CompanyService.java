@@ -28,7 +28,6 @@ public interface CompanyService {
 
     Company socialMediaUpdate(Long id, CompanySocialMediaUpdateDto companySocialMediaUpdateDto);
 
-
     Company bioUpdate(Long id, CompanyBioUpdateDto companyBioUpdateDto);
 
     Company foundedUpdate(Long id, CompanyFoundedUpdateDto companyFoundedUpdateDto);
@@ -49,11 +48,10 @@ public interface CompanyService {
 
     Company delete(Long id);
 
-
     List<Company> listAll();
 
-
     Page<Company> companyFilter(String companyName, String location, Double rating, EmployeeNumber employeeNumber, Pageable pageable);
+
     Page<Company> listAll(Pageable pageable);
 
     List<Company> companyAdminFilter(CompanyAdminSearchDto searchDto);

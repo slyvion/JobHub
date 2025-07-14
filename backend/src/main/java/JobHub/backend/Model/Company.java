@@ -31,7 +31,6 @@ public class Company {
 
     private String website;
 
-
     private String description;
 
     private String location;
@@ -39,7 +38,9 @@ public class Company {
     private String phoneNumber;
 
     private String facebookLink;
+
     private String instagramLink;
+
     private String linkedinLink;
 
     private Integer founded;
