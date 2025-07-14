@@ -40,6 +40,11 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
+    public Integer companiesCount() {
+        return companyRepository.countAllDistinctCompanies();
+    }
+
+    @Override
     public Company findById(Long id) {
         return companyRepository.findById(id).orElseThrow(InvalidCompanyIdException::new);
     }

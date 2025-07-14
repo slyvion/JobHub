@@ -95,13 +95,18 @@ function AppAppBar() {
                             {location.pathname === '/' && (
                                 <>
                                     <MenuItem onClick={() => scrollToSection('features')} sx={{ py: '6px', px: '12px' }}>
-                                        <Typography variant="body2" color="text.primary">Features</Typography>
+                                        <Typography variant="body2" color="text.primary" >Features</Typography>
+
+
                                     </MenuItem>
                                     <MenuItem onClick={() => scrollToSection('highlights')} sx={{ py: '6px', px: '12px' }}>
-                                        <Typography variant="body2" color="text.primary">Highlights</Typography>
+                                        <Typography variant="body2" color="text.primary" >Highlights</Typography>
                                     </MenuItem>
                                 </>
                             )}
+                            <MenuItem component={Link} to="/about-us" sx={{ py: '6px', px: '12px' }}>
+                                <Typography variant="body2" color="text.primary" >About Us</Typography>
+                            </MenuItem>
                             <MenuItem component={Link} to="/companies" sx={{ py: '6px', px: '12px' }}>
                                 <Typography variant="body2" color="text.primary" >Companies</Typography>
                             </MenuItem>
@@ -129,7 +134,7 @@ function AppAppBar() {
                             </>
                         ) : (
                             <>
-                                <Button color="primary" variant="text" size="small" component={Link} to="/sign-in">
+                                <Button color="primary" variant="text" size="large" component={Link} to="/sign-in">
                                     Sign in
                                 </Button>
                                 <Button color="primary" variant="contained" size="small" component={Link} to="/sign-up">
@@ -152,6 +157,9 @@ function AppAppBar() {
                                         <MenuItem onClick={() => scrollToSection('highlights')}>Highlights</MenuItem>
                                     </>
                                 )}
+                                <MenuItem component={Link} to="/about-us">
+                                    <Typography variant="body2" color="text.primary">About Us</Typography>
+                                </MenuItem>
                                 <MenuItem component={Link} to="/companies">
                                     <Typography variant="body2" color="text.primary">Companies</Typography>
                                 </MenuItem>

@@ -14,8 +14,10 @@ import Footer from "../HomePage/Footer.jsx";
 import { fetchJobPosts } from "../Services/jobPostServices.js";
 import NoJobsFound from "./NoJobsFound.jsx";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../store/UserContext.jsx";
 
 export default function JobPostPage() {
+    const { user } = useUser();
     const [jobPosts, setJobPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -104,10 +106,7 @@ export default function JobPostPage() {
                     </Typography>
                 ) : jobPosts.length === 0 ? (
                     <Box display="flex" justifyContent="center" alignItems="center" mt={4}>
-                        <Typography variant="body1" color="textSecondary">
                         <NoJobsFound />
-                        </Typography>
-
                     </Box>
                 ) : (
                     <>
@@ -132,27 +131,29 @@ export default function JobPostPage() {
                 )}
             </Box>
 
-            <Box
-                sx={{
-                    position: "fixed",
-                    bottom: 24,
-                    right: 24,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    zIndex: 999,
-                }}
-            >
-                <Fab color="primary" aria-label="add" onClick={handleAddJobpost}>
-                    <AddIcon />
-                </Fab>
-                <Typography
-                    variant="caption"
-                    sx={{ color: "black", mt: 1 }}
+            {user && user.type === 'company' && (
+                <Box
+                    sx={{
+                        position: "fixed",
+                        bottom: 24,
+                        right: 24,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        zIndex: 999,
+                    }}
                 >
-                    Add JobPost
-                </Typography>
-            </Box>
+                    <Fab color="primary" aria-label="add" onClick={handleAddJobpost}>
+                        <AddIcon />
+                    </Fab>
+                    <Typography
+                        variant="caption"
+                        sx={{ color: "black", mt: 1 }}
+                    >
+                        Add JobPost
+                    </Typography>
+                </Box>
+            )}
 
             <Footer />
         </Box>

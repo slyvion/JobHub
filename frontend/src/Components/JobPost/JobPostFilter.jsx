@@ -69,6 +69,7 @@ export default function JobPostFilter({ onFilter }) {
                         fullWidth
                         value={companyName}
                         onChange={(e) => setCompanyName(e.target.value)}
+
                     />
                 </Grid>
                 <Grid item xs={12} sm={1.5}>

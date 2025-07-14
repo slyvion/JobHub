@@ -125,18 +125,23 @@ export default function FullJobPost() {
 
                     <Paper sx={{ padding: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <Box>
-                            <Typography variant="h4" sx={{ paddingBottom: '10px' }}>About the Role</Typography>
-                            <Typography variant="body1" color="text.secondary">{job.description}</Typography>
+                            <Typography variant="h4" sx={{ paddingBottom: '10px', fontFamily: "'Barlow', sans-serif" }}>About the Role</Typography>
+                            <Typography variant="body1" color="text.secondary" component="pre" sx={{ whiteSpace: 'pre-wrap', fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
+                                {job.description}
+                            </Typography>
                         </Box>
 
                         <Box>
-                            <Typography variant="h4" sx={{ paddingBottom: '10px' }}>What You’ll Do</Typography>
-                            <Typography variant="body1" color="text.secondary">{job.jobInfo}</Typography>
-                        </Box>
+                            <Typography variant="h4" sx={{ paddingBottom: '10px', fontFamily: "'Barlow', sans-serif" }}>What You’ll Do</Typography>
+                            <Typography variant="body1" color="text.secondary" component="pre" sx={{ whiteSpace: 'pre-wrap', fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
+                                {job.jobInfo}
+                            </Typography>                        </Box>
 
                         <Box>
-                            <Typography variant="h4" sx={{ paddingBottom: '10px' }}>Requirements</Typography>
-                            <Typography variant="body1" color="text.secondary">{job.requirements}</Typography>
+                            <Typography variant="h4" sx={{ paddingBottom: '10px', fontFamily: "'Barlow', sans-serif" }}>Requirements</Typography>
+                            <Typography variant="body1" color="text.secondary" component="pre" sx={{ whiteSpace: 'pre-wrap', fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
+                                {job.requirements}
+                            </Typography>
                         </Box>
 
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: 3 }}>

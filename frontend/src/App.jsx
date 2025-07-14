@@ -19,6 +19,12 @@ import EditJobPost from "./Components/JobPost/EditJobPost.jsx";
 import Apply from "./Components/JobPost/Apply/Apply.jsx";
 import Dashboard from "./Components/Admin/Dashboard.jsx";
 import Applicants from "./Components/JobPost/Apply/Applicants.jsx";
+import Stats from "./Components/HomePage/Stats.jsx";
+import Employers from "./Components/HomePage/Employers.jsx";
+import {Divider} from "@mui/material";
+import CareersFeatures from "./Components/HomePage/CareersFeatures.jsx";
+import About from "./Components/HomePage/About.jsx";
+import AboutUsPage from "./Components/AboutUs/AboutUsPage.jsx";
 
 function App() {
 
@@ -30,7 +36,16 @@ function App() {
                         <>
                             <Hero />
                             <Features />
+                            <Divider />
+
+                            <CareersFeatures />
                             <Highlights />
+                            <Stats />
+                            <Divider />
+                            <Employers />
+                            <Divider />
+
+                            <About />
                             <Footer />
                         </>
                     } />
@@ -39,6 +54,8 @@ function App() {
                 <Route path="/company/:id" element={<CompanyProfile />} />
                 <Route path="/user/:id" element={<UserProfile />} />
                 <Route path="/company/:id/add-review" element={<CreateReview />}/>
+
+                <Route path="/About-Us" element={<AboutUsPage />} />
 
                 <Route path="sign-in" element={<SignIn />} />
                 <Route path="sign-up" element={<SignUp />} />

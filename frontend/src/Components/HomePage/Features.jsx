@@ -1,45 +1,143 @@
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import Chip from '@mui/material/Chip';
+import MuiChip from '@mui/material/Chip';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { styled } from '@mui/material/styles';
+
 import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
-import InsertCommentIcon from '@mui/icons-material/InsertComment';
-import PersonIcon from '@mui/icons-material/Person';
+
+import filters from "../../assets/filtering.png"
+import home from "../../assets/homePage.png"
+import reviewTest from "../../assets/reviewTest.png"
+
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 const items = [
     {
-        icon: <PersonIcon />,
-        title: 'Title 1',
+        icon: <FilterListIcon />,
+        title: 'Advanced Filtering',
         description:
-            'test test test test test test test test test test test test test test test test test test test test' +
-            'test test test test test test test test test',
-        imageLight: 'url("/public/number1.png")',
-        imageDark: 'url("/static/images/templates/templates-images/dash-dark.png")',
+            'Find jobs tailored to your needs by filtering offers by title, company, location, rating, work type, seniority, and required technologies.',
+        imageLight: `url(${filters})`,
+        imageDark: 'url("/static/images/templates/templates-images/filter-dark.png")',
     },
     {
-        icon: <InsertCommentIcon />,
-        title: 'Anonimity',
+        icon: <PersonOutlineIcon />,
+        title: 'Anonymity',
         description:
-            'Anonymously review the companies to provide better insight on potential applicants',
-        imageLight: 'url("public/number2.png")',
+            'Anonymously review the companies to provide better insight on potential applicants.',
+        imageLight: `url(${reviewTest})`,
         imageDark: 'url("/static/images/templates/templates-images/mobile-dark.png")',
     },
     {
         icon: <DevicesRoundedIcon />,
-        title: 'Available on all platforms',
+        title: 'Desktop and Mobile friendly',
         description:
-            'You can access this application on the web browser through your desktop or your mobile device',
-        imageLight: 'url("public/number3.png")',
+            'You can access this application on the web browser through your desktop or your mobile device.',
+        imageLight: `url(${home})`,
         imageDark: 'url("/static/images/templates/templates-images/devices-dark.png")',
     },
 ];
+
+const Chip = styled(MuiChip)(({ theme }) => ({
+    variants: [
+        {
+            props: ({ selected }) => !!selected,
+            style: {
+                background:
+                    'linear-gradient(to bottom right, hsl(210, 98%, 48%), hsl(210, 98%, 35%))',
+                color: 'hsl(0, 0%, 100%)',
+                borderColor: (theme.vars || theme).palette.primary.light,
+                '& .MuiChip-label': {
+                    color: 'hsl(0, 0%, 100%)',
+                },
+                ...theme.applyStyles('dark', {
+                    borderColor: (theme.vars || theme).palette.primary.dark,
+                }),
+            },
+        },
+    ],
+}));
+
+function MobileLayout({ selectedItemIndex, handleItemClick, selectedFeature }) {
+    if (!items[selectedItemIndex]) {
+        return null;
+    }
+
+    return (
+        <Box
+            sx={{
+                display: { xs: 'flex', sm: 'none' },
+                flexDirection: 'column',
+                gap: 2,
+            }}
+        >
+            <Box sx={{ display: 'flex', gap: 2, overflow: 'auto' }}>
+                {items.map(({ title }, index) => (
+                    <Chip
+                        size="medium"
+                        key={index}
+                        label={title}
+                        onClick={() => handleItemClick(index)}
+                        selected={selectedItemIndex === index}
+                    />
+                ))}
+            </Box>
+            <Card variant="outlined">
+                <Box
+                    sx={(theme) => ({
+                        mb: 2,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        minHeight: 280,
+                        backgroundImage: 'var(--items-imageLight)',
+                        ...theme.applyStyles('dark', {
+                            backgroundImage: 'var(--items-imageDark)',
+                        }),
+                    })}
+                    style={
+                        items[selectedItemIndex]
+                            ? {
+                                '--items-imageLight': items[selectedItemIndex].imageLight,
+                                '--items-imageDark': items[selectedItemIndex].imageDark,
+                            }
+                            : {}
+                    }
+                />
+                <Box sx={{ px: 2, pb: 2 }}>
+                    <Typography
+                        gutterBottom
+                        sx={{ color: 'text.primary', fontWeight: 'medium' }}
+                    >
+                        {selectedFeature.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
+                        {selectedFeature.description}
+                    </Typography>
+                </Box>
+            </Card>
+        </Box>
+    );
+}
+
+MobileLayout.propTypes = {
+    handleItemClick: PropTypes.func.isRequired,
+    selectedFeature: PropTypes.shape({
+        description: PropTypes.string.isRequired,
+        icon: PropTypes.element,
+        imageDark: PropTypes.string.isRequired,
+        imageLight: PropTypes.string.isRequired,
+        title: PropTypes.string.isRequired,
+    }).isRequired,
+    selectedItemIndex: PropTypes.number.isRequired,
+};
+
+export { MobileLayout };
 
 export default function Features() {
     const [selectedItemIndex, setSelectedItemIndex] = React.useState(0);
@@ -52,196 +150,94 @@ export default function Features() {
 
     return (
         <Container id="features" sx={{ py: { xs: 8, sm: 16 } }}>
-            <Grid container spacing={6}>
-                <Grid item xs={12} md={6}>
-                    <div>
-                        <Typography component="h2" variant="h4" color="text.primary">
-                            Product features
-                        </Typography>
-                        <Typography
-                            variant="body1"
-                            color="text.secondary"
-                            sx={{ mb: { xs: 2, sm: 4 } }}
-                        >
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                        </Typography>
-                    </div>
-                    <Grid container item gap={1} sx={{ display: { xs: 'auto', sm: 'none' } }}>
-                        {items.map(({ title }, index) => (
-                            <Chip
-                                key={index}
-                                label={title}
-                                onClick={() => handleItemClick(index)}
-                                sx={{
-                                    borderColor: (theme) => {
-                                        if (theme.palette.mode === 'light') {
-                                            return selectedItemIndex === index ? 'primary.light' : '';
-                                        }
-                                        return selectedItemIndex === index ? 'primary.light' : '';
-                                    },
-                                    background: (theme) => {
-                                        if (theme.palette.mode === 'light') {
-                                            return selectedItemIndex === index ? 'none' : '';
-                                        }
-                                        return selectedItemIndex === index ? 'none' : '';
-                                    },
-                                    backgroundColor: selectedItemIndex === index ? 'primary.main' : '',
-                                    '& .MuiChip-label': {
-                                        color: selectedItemIndex === index ? '#fff' : '',
-                                    },
-                                }}
-                            />
-                        ))}
-                    </Grid>
+            <Box sx={{ width: { sm: '100%', md: '60%' } }}>
+                <Typography
+                    component="h2"
+                    variant="h4"
+                    gutterBottom
+                    sx={{ color: 'text.primary',fontFamily: "'Barlow', sans-serif", fontWeight: 500  }}
+                >
+                    Features
+                </Typography>
+                <Typography
+                    variant="body1"
+                    sx={{ color: 'text.secondary', mb: { xs: 2, sm: 4 }, fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}
+                >
+                    JobHub simplifies job searching and hiring with powerful, user-friendly features. Whether you're a developer or a company, the platform is fast, clear, and works on any device.
+                </Typography>
+            </Box>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', md: 'row-reverse' },
+                    gap: 2,
+                }}
+            >
+                <div>
                     <Box
-                        component={Card}
-                        variant="outlined"
                         sx={{
-                            display: { xs: 'auto', sm: 'none' },
-                            mt: 4,
+                            display: { xs: 'none', sm: 'flex' },
+                            flexDirection: 'column',
+                            gap: 2,
+                            height: '100%',
                         }}
                     >
-                        <Box
-                            sx={{
-                                backgroundImage: (theme) =>
-                                    theme.palette.mode === 'light'
-                                        ? items[selectedItemIndex].imageLight
-                                        : items[selectedItemIndex].imageDark,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center',
-                                minHeight: 280,
-                            }}
-                        />
-                        <Box sx={{ px: 2, pb: 2 }}>
-                            <Typography color="text.primary" variant="body2" fontWeight="bold">
-                                {selectedFeature.title}
-                            </Typography>
-                            <Typography color="text.secondary" variant="body2" sx={{ my: 0.5 }}>
-                                {selectedFeature.description}
-                            </Typography>
-                            <Link
-                                color="primary"
-                                variant="body2"
-                                fontWeight="bold"
-                                sx={{
-                                    display: 'inline-flex',
-                                    alignItems: 'center',
-                                    '& > svg': { transition: '0.2s' },
-                                    '&:hover > svg': { transform: 'translateX(2px)' },
-                                }}
-                            >
-                                <span>Learn more</span>
-                                <ChevronRightRoundedIcon
-                                    fontSize="small"
-                                    sx={{ mt: '1px', ml: '2px' }}
-                                />
-                            </Link>
-                        </Box>
-                    </Box>
-                    <Stack
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="flex-start"
-                        spacing={2}
-                        useFlexGap
-                        sx={{ width: '100%', display: { xs: 'none', sm: 'flex' } }}
-                    >
                         {items.map(({ icon, title, description }, index) => (
-                            <Card
+                            <Box
                                 key={index}
-                                variant="outlined"
                                 component={Button}
                                 onClick={() => handleItemClick(index)}
-                                sx={{
-                                    p: 3,
-                                    height: 'fit-content',
-                                    width: '100%',
-                                    background: 'none',
-                                    backgroundColor:
-                                        selectedItemIndex === index ? 'action.selected' : undefined,
-                                    borderColor: (theme) => {
-                                        if (theme.palette.mode === 'light') {
-                                            return selectedItemIndex === index
-                                                ? 'primary.light'
-                                                : 'grey.200';
-                                        }
-                                        return selectedItemIndex === index ? 'primary.dark' : 'grey.800';
+                                sx={[
+                                    (theme) => ({
+                                        p: 2,
+                                        height: '100%',
+                                        width: '100%',
+                                        '&:hover': {
+                                            backgroundColor: (theme.vars || theme).palette.action.hover,
+                                        },
+                                    }),
+                                    selectedItemIndex === index && {
+                                        backgroundColor: 'action.selected',
                                     },
-                                }}
+                                ]}
                             >
                                 <Box
-                                    sx={{
-                                        width: '100%',
-                                        display: 'flex',
-                                        textAlign: 'left',
-                                        flexDirection: { xs: 'column', md: 'row' },
-                                        alignItems: { md: 'center' },
-                                        gap: 2.5,
-                                    }}
+                                    sx={[
+                                        {
+                                            width: '100%',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'left',
+                                            gap: 1,
+                                            textAlign: 'left',
+                                            textTransform: 'none',
+                                            color: 'text.secondary',
+                                        },
+                                        selectedItemIndex === index && {
+                                            color: 'text.primary',
+                                        },
+                                    ]}
                                 >
-                                    <Box
-                                        sx={{
-                                            color: (theme) => {
-                                                if (theme.palette.mode === 'light') {
-                                                    return selectedItemIndex === index
-                                                        ? 'primary.main'
-                                                        : 'grey.300';
-                                                }
-                                                return selectedItemIndex === index
-                                                    ? 'primary.main'
-                                                    : 'grey.700';
-                                            },
-                                        }}
-                                    >
-                                        {icon}
-                                    </Box>
-                                    <Box sx={{ textTransform: 'none' }}>
-                                        <Typography
-                                            color="text.primary"
-                                            variant="body2"
-                                            fontWeight="bold"
-                                        >
-                                            {title}
-                                        </Typography>
-                                        <Typography
-                                            color="text.secondary"
-                                            variant="body2"
-                                            sx={{ my: 0.5 }}
-                                        >
-                                            {description}
-                                        </Typography>
-                                        <Link
-                                            color="primary"
-                                            variant="body2"
-                                            fontWeight="bold"
-                                            sx={{
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                '& > svg': { transition: '0.2s' },
-                                                '&:hover > svg': { transform: 'translateX(2px)' },
-                                            }}
-                                            onClick={(event) => {
-                                                event.stopPropagation();
-                                            }}
-                                        >
-                                            <span>Learn more</span>
-                                            <ChevronRightRoundedIcon
-                                                fontSize="small"
-                                                sx={{ mt: '1px', ml: '2px' }}
-                                            />
-                                        </Link>
-                                    </Box>
+                                    {icon}
+
+                                    <Typography variant="h6" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>{title}</Typography>
+                                    <Typography variant="body2" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>{description}</Typography>
                                 </Box>
-                            </Card>
+                            </Box>
                         ))}
-                    </Stack>
-                </Grid>
-                <Grid
-                    item
-                    xs={12}
-                    md={6}
-                    sx={{ display: { xs: 'none', sm: 'flex' }, width: '100%' }}
+                    </Box>
+                    <MobileLayout
+                        selectedItemIndex={selectedItemIndex}
+                        handleItemClick={handleItemClick}
+                        selectedFeature={selectedFeature}
+                    />
+                </div>
+                <Box
+                    sx={{
+                        display: { xs: 'none', sm: 'flex' },
+                        width: { xs: '100%', md: '70%' },
+                        height: 'var(--items-image-height)',
+                    }}
                 >
                     <Card
                         variant="outlined"
@@ -253,20 +249,28 @@ export default function Features() {
                         }}
                     >
                         <Box
-                            sx={{
+                            sx={(theme) => ({
                                 m: 'auto',
                                 width: 420,
                                 height: 500,
                                 backgroundSize: 'contain',
-                                backgroundImage: (theme) =>
-                                    theme.palette.mode === 'light'
-                                        ? items[selectedItemIndex].imageLight
-                                        : items[selectedItemIndex].imageDark,
-                            }}
+                                backgroundImage: 'var(--items-imageLight)',
+                                ...theme.applyStyles('dark', {
+                                    backgroundImage: 'var(--items-imageDark)',
+                                }),
+                            })}
+                            style={
+                                items[selectedItemIndex]
+                                    ? {
+                                        '--items-imageLight': items[selectedItemIndex].imageLight,
+                                        '--items-imageDark': items[selectedItemIndex].imageDark,
+                                    }
+                                    : {}
+                            }
                         />
                     </Card>
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
         </Container>
     );
 }

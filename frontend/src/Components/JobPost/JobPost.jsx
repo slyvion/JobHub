@@ -40,27 +40,53 @@ export default function JobPost({ job }) {
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
 
                 <Link to={`/jobposts/${job.id}`} style={{ textDecoration: 'none' }}>
-                    <Typography variant="h6" noWrap sx={{ mb: 1 }}>
+                    <Typography variant="h6" noWrap sx={{ mb: 1 , fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                         {job.title}
                     </Typography>
                 </Link>
 
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <Link to={`/company/${job.company.id}`} style={{ textDecoration: 'none' }}>
-                        <Typography variant="body2" sx={{ color: '#6495ED', fontWeight: 500, mr: 1 }}>
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                color: '#6495ED',
+                                fontWeight: 500,
+                                mr: 1,
+                                fontFamily: "'Barlow', sans-serif",
+                                lineHeight: 1,
+                            }}
+                        >
                             {job.company.companyName}
                         </Typography>
                     </Link>
-                    <StarIcon sx={{ color: 'gold', fontSize: 18, mr: 0.5 }} />
-                    <Typography variant="body2" color="text.primary">
-                        {job.company.rating}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{marginLeft: '10px'}}>
+
+                    <Box sx={{ display: 'flex', alignItems: 'center', mr: 1 }}>
+                        <StarIcon sx={{ color: 'gold', fontSize: 20, mr: 0.3 }} />
+                        <Typography
+                            variant="body1"
+                            color="text.primary"
+                            sx={{ fontWeight: 500, fontSize: 16, lineHeight: 1 }}
+                        >
+                            {job.company.rating}
+                        </Typography>
+                    </Box>
+
+                    <Typography
+                        variant="body1"
+                        color="text.secondary"
+                        sx={{
+                            fontFamily: "'Barlow', sans-serif",
+                            fontWeight: 500,
+                            lineHeight: 1,
+                        }}
+                    >
                         {job.location}
                     </Typography>
                 </Box>
 
-                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+
+                <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mb: 1 , fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                     {job.seniority && (
                         <>
                             {job.seniority.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase()}
@@ -74,7 +100,7 @@ export default function JobPost({ job }) {
                 <Divider variant="left" sx={{mt: 1, width: "10%"}}/>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', mt: 1 }}>
                     {job.tags && job.tags.map((tag, index) => (
-                        <Chip key={index} label={tag} size="small" sx={{ margin: 0.5, borderRadius: 2 }} />
+                        <Chip key={index} label={tag} size="small" sx={{ margin: 0.5, borderRadius: 2 , fontFamily: "'Barlow', sans-serif", fontWeight: 500}} />
                     ))}
                 </Box>
 

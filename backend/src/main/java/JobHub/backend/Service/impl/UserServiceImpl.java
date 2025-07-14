@@ -42,6 +42,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Integer usersCount() {
+        return userRepository.countAllDistinctUser();
+    }
+
+    @Override
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(InvalidUserIdException::new);
     }

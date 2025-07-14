@@ -50,6 +50,11 @@ public class JobPostServiceImpl implements JobPostService {
 
 
     @Override
+    public Integer jobpostsCount() {
+        return jobPostRepository.countAllDistinctJobPosts();
+    }
+
+    @Override
     public List<JobPost> listAll() {
         return jobPostRepository.findAll();
     }

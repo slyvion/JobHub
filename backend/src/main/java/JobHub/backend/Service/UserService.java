@@ -14,6 +14,9 @@ import java.util.Optional;
 
 public interface UserService {
 
+    Integer usersCount();
+
+
     User findById(Long id);
 
     public List<User> listAll();

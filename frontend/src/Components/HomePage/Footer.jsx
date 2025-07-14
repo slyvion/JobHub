@@ -94,10 +94,10 @@ export default function Footer() {
                                 alt="logo of jobhub"
                             />
                         </Box>
-                        <Typography variant="body2" fontWeight={600} gutterBottom sx={{ color: 'black' }}>
+                        <Typography variant="body2" fontWeight={600} gutterBottom sx={{ color: 'black' , fontFamily: "Barlow, sans-serif"}}>
                             Newsletter
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" mb={2}>
+                        <Typography variant="body2" color="text.secondary" mb={2} sx={{fontFamily: "Barlow, sans-serif"}}>
                             Subscribe to our newsletter for weekly updates and promotions.
                         </Typography>
                         <Stack
@@ -111,13 +111,13 @@ export default function Footer() {
                                 hiddenLabel
                                 size="small"
                                 variant="outlined"
-                                fullWidth
                                 aria-label="Enter your email address"
                                 placeholder="Your email address"
                                 inputProps={{
                                     autoComplete: 'off',
                                     'aria-label': 'Enter your email address',
                                 }}
+                                sx={{ width: {md:300, xs: '100%' } }}
                             />
                             <Button
                                 variant="contained"
@@ -145,34 +145,34 @@ export default function Footer() {
                     }}
                 >
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
+                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black', fontFamily: "Barlow, sans-serif" }}>
                             Product
                         </Typography>
-                        <Link color="text.secondary" sx={{ cursor: 'pointer' }} onClick={() => scrollToSection('features')}>
+                        <Link color="text.secondary" sx={{ cursor: 'pointer', fontFamily: "Barlow, sans-serif" }} onClick={() => scrollToSection('features')}>
                             Features
                         </Link>
-                        <Link color="text.secondary" sx={{ cursor: 'pointer' }} onClick={() => scrollToSection('highlights')}>
+                        <Link color="text.secondary" sx={{ cursor: 'pointer',fontFamily: "Barlow, sans-serif" }} onClick={() => scrollToSection('highlights')}>
                             Highlights
                         </Link>
-                        <Link color="text.secondary" href="companies">
+                        <Link color="text.secondary" href="companies" sx={{fontFamily: "Barlow, sans-serif"}}>
                             Companies
                         </Link>
-                        <Link color="text.secondary" href="jobposts">
+                        <Link color="text.secondary" href="jobposts" sx={{fontFamily: "Barlow, sans-serif"}}>
                             JobPosts
                         </Link>
                     </Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
+                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black', fontFamily: "Barlow, sans-serif" }}>
                             Company
                         </Typography>
-                        <Link color="text.secondary" href="/about-us">
+                        <Link color="text.secondary" href="/about-us" sx={{fontFamily: "Barlow, sans-serif"}}>
                             About us
                         </Link>
                     </Box>
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' }}>
+                        <Typography variant="body2" fontWeight={600} sx={{ color: 'black' , fontFamily: "Barlow, sans-serif"}}>
                             Legal
                         </Typography>
                         <Terms />

@@ -4,6 +4,7 @@ import JobHub.backend.Model.JobPost;
 import JobHub.backend.Model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import JobHub.backend.Model.Company;
 import JobHub.backend.Model.User;
@@ -25,5 +26,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long>, JpaSpecif
     List<Review> findAllByUserId(Long id);
 
     List<Review> findReviewsByRatingGreaterThan(Long rating);
+
+    @Query("SELECT COUNT(DISTINCT r) FROM Review r")
+    Integer countAllDistinctReviews();
 
 }

@@ -17,6 +17,9 @@ import java.util.List;
 
 public interface JobPostService {
 
+    Integer jobpostsCount();
+
+
     List<JobPost> listAll();
 
     JobPost findById(Long id);

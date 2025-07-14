@@ -163,11 +163,11 @@ export default function CompanyProfile() {
                 <LogoContainer>
                     <StyledAvatar src={logoUrl || "/companyLogo.jpg"} variant="square" />
                     <CompanyInfo>
-                        <Typography variant="h4" fontWeight="bold">{company.companyName}</Typography>
-                        <Typography variant="h6" sx={{ paddingTop: '7px' }}>{company.location}</Typography>
+                        <Typography variant="h4" sx={{fontFamily: "'Barlow', sans-serif",fontWeight: 600}}>{company.companyName}</Typography>
+                        <Typography variant="h6" sx={{ paddingTop: '7px', fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>{company.location}</Typography>
                         <Box display="flex" alignItems="center" sx={{ gap: 1 }}>
                             <StarIcon sx={{ color: "#FFD700" }} />
-                            <Typography variant="h6">{company.rating || "N/A"}</Typography>
+                            <Typography variant="h6" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>{company.rating || "N/A"}</Typography>
                         </Box>
                     </CompanyInfo>
                 </LogoContainer>
@@ -180,9 +180,9 @@ export default function CompanyProfile() {
                     centered
                     TabIndicatorProps={{ style: { backgroundColor: "blue" } }}
                 >
-                    <Tab label="About Us" sx={{ minWidth: 300 }} />
-                    <Tab label="JobPosts" sx={{ minWidth: 300 }} />
-                    <Tab label="Reviews" sx={{ minWidth: 300 }} />
+                    <Tab label="About Us" sx={{ minWidth: 300, fontFamily: "'Barlow', sans-serif", fontWeight: 600 }} />
+                    <Tab label="JobPosts" sx={{ minWidth: 300, fontFamily: "'Barlow', sans-serif", fontWeight: 600 }} />
+                    <Tab label="Reviews" sx={{ minWidth: 300, fontFamily: "'Barlow', sans-serif", fontWeight: 600 }} />
                 </Tabs>
             </Box>
 

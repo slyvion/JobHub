@@ -13,33 +13,33 @@ export default function CompanyContact({ company }) {
                 width: "100%",
             }}
         >
-            <Typography variant="h5" gutterBottom sx={{ color: "black", mb: 4, fontSize: "1.5rem" }}>
+            <Typography variant="h5" gutterBottom sx={{ color: "black", mb: 4, fontSize: "1.5rem", fontFamily: "'Barlow', sans-serif", fontWeight: 500  }}>
                 Contact Information
             </Typography>
 
             <Grid container spacing={3} sx={{ color: "black", alignItems: "center" }}>
                 <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <Typography variant="body1" fontWeight="500" sx={{ fontSize: "1rem" }}>
+                    <Typography variant="body1" fontWeight="500" sx={{ fontSize: "1rem", fontFamily: "'Barlow', sans-serif"  }}>
                         Phone:
                     </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px',  opacity: 0.7 }}>
+                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px',  opacity: 0.7, fontFamily: "'Barlow', sans-serif"  }}>
                         {company.phoneNumber || "N/A"}
                     </Typography>
                     <Divider sx={{ mt: 2 }} />
                 </Grid>
 
                 <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <Typography variant="body1" fontWeight="500" sx={{fontSize: "1rem" }}>
+                    <Typography variant="body1" fontWeight="500" sx={{fontSize: "1rem", fontFamily: "'Barlow', sans-serif"  }}>
                         Email:
                     </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px', opacity: 0.7 }}>
+                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px', opacity: 0.7, fontFamily: "'Barlow', sans-serif"  }}>
                         {company.email || "N/A"}
                     </Typography>
                     <Divider sx={{ mt: 2 }} />
                 </Grid>
 
                 <Grid item xs={4} sx={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                    <Typography variant="body1" fontWeight="500" sx={{ fontSize: "1rem" }}>
+                    <Typography variant="body1" fontWeight="500" sx={{ fontSize: "1rem", fontFamily: "'Barlow', sans-serif"  }}>
                         Social Media:
                     </Typography>
                     <Box sx={{ display: "flex", gap: 1 }}>

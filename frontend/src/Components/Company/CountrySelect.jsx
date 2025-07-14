@@ -2,11 +2,11 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-export default function CountrySelect({ value, onChange }) {
+export default function CountrySelect({ value, onChange, sx }) {
     return (
         <Autocomplete
             id="country-select-demo"
-            sx={{ width: 300 }}
+            sx={{ width: 300, ...sx }}
             options={countries}
             autoHighlight
             getOptionLabel={(option) => option.label}
@@ -40,13 +40,14 @@ export default function CountrySelect({ value, onChange }) {
                     label="Country"
                     inputProps={{
                         ...params.inputProps,
-                        autoComplete: 'new-password', // disable autocomplete and autofill
+                        autoComplete: 'new-password',
                     }}
                 />
             )}
         />
     );
 }
+
 
 const countries = [
     { code: 'AD', label: 'Andorra', phone: '376' },

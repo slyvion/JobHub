@@ -17,7 +17,7 @@ export default function Privacy() {
             <Link
                 color="text.secondary"
                 onClick={handleClickOpen}
-                sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer'}}>
+                sx={{ fontFamily: "Barlow, sans-serif", cursor: 'pointer'}}>
                 Privacy
             </Link>
             <Dialog open={open} onClose={handleClose} scroll="paper">

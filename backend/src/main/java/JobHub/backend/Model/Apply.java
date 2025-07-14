@@ -26,6 +26,7 @@ public class Apply {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+
     private String additionalMessage;
 
     @JsonIgnore

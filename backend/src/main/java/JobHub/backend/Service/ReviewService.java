@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ReviewService {
 
+    Integer reviewsCount();
+
 
     Review create(ReviewDto reviewDto);
 

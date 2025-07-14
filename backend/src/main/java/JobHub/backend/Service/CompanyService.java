@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface CompanyService {
 
+    Integer companiesCount();
 
     Company findById(Long id);
 

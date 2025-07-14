@@ -20,13 +20,13 @@ public class JobPostDto {
     @NotBlank(message = "Title is required")
     private String title;
 
-    @NotBlank(message = "Job post description is required")
+//    @NotBlank(message = "Job post description is required")
     private String description;
 
-    @NotBlank(message = "Job post requirements are required")
+//    @NotBlank(message = "Job post requirements are required")
     private String requirements;
 
-    @NotBlank(message = "Job post info is required")
+//    @NotBlank(message = "Job post info is required")
     private String jobInfo;
 
     @NotNull(message = "Job Type is required")

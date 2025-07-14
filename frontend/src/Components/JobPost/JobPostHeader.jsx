@@ -44,7 +44,7 @@ export default function JobPostHeader({ job }) {
             </Box>
 
             <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <Typography variant="h5" sx={{ mb: 1 }}>
+                <Typography variant="h5" sx={{ mb: 1, fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
                     {job.title}
                 </Typography>
 
@@ -52,32 +52,32 @@ export default function JobPostHeader({ job }) {
                     <Link to={`/company/${job.company.id}`} style={{ textDecoration: 'none' }}>
                         <Typography
                             variant="h6"
-                            sx={{ color: '#6495ED', fontWeight: 500, mr: 1 }}
+                            sx={{ color: '#6495ED', fontWeight: 500, mr: 1, fontFamily: "'Barlow', sans-serif" }}
                         >
                             {job.company.companyName}
                         </Typography>
                     </Link>
                     <StarIcon sx={{ color: 'gold', fontSize: 18, mr: 0.5 }} />
-                    <Typography variant="h6" color="text.primary">
+                    <Typography variant="h6" color="text.primary" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                         {job.company.rating}
                     </Typography>
                 </Box>
 
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                     <strong>Location:</strong> {job.location}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                     <strong>Seniority:</strong> {job.seniority
                     ? job.seniority.charAt(0).toUpperCase() + job.seniority.slice(1).toLowerCase()
                     : 'N/A'}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                     <strong>Job Type:</strong> {job.jobType
                     ? job.jobType.split('_').map(word =>
                         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
                     : 'N/A'}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                     <strong>Employment:</strong> {job.employmentType
                     ? job.employmentType.split('_').map(word =>
                         word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
@@ -92,7 +92,7 @@ export default function JobPostHeader({ job }) {
                             key={index}
                             label={tag}
                             size="small"
-                            sx={{ margin: 0.5, borderRadius: 2 }}
+                            sx={{ margin: 0.5, borderRadius: 2 , fontFamily: "'Barlow', sans-serif", fontWeight: 500}}
                         />
                     ))}
                 </Box>

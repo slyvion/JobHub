@@ -34,7 +34,7 @@ export default function Terms() {
         <React.Fragment>
             <Link
                 color="text.secondary"
-                sx={{ fontFamily: 'Arial, sans-serif', cursor: 'pointer'}}
+                sx={{fontFamily: "Barlow, sans-serif", cursor: 'pointer'}}
                 onClick={handleClickOpen}>
                 Terms
             </Link>

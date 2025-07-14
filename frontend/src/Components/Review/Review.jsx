@@ -29,33 +29,33 @@ export default function Review({ review }) {
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                         <StarIcon sx={{ color: 'gold', fontSize: 20 }} />
-                        <Typography variant="body1" sx={{ ml: 0.5 }}>
+                        <Typography variant="body1" sx={{ ml: 0.5, fontFamily: "'Barlow', sans-serif" , fontWeight: 500 }}>
                             {review.rating}
                         </Typography>
                     </Box>
 
-                    <Typography variant="h6" sx={{ flex: 1, textAlign: 'left' }}>
+                    <Typography variant="h6" sx={{ flex: 1, textAlign: 'left', fontFamily: "'Barlow', sans-serif"  }}>
                         {review.title}
                     </Typography>
 
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body2" color="text.secondary" sx={{ fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
                         {postDateObj ? format(postDateObj, 'dd/MM/yyyy') : 'Date unknown'}
                     </Typography>
                 </Box>
 
                 <Divider sx={{ mb: 1 }} />
 
-                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                <Typography variant="body2" sx={{ opacity: 0.7 , fontFamily: "'Barlow', sans-serif" , fontWeight: 500}}>
                     Pros
                 </Typography>
-                <Typography variant="body2" sx={{ mb: 1 }}>
+                <Typography variant="body2" sx={{ mb: 1, fontFamily: "'Barlow', sans-serif" , fontWeight: 500 }}>
                     {review.pros || 'The user has not given any Pros'}
                 </Typography>
 
-                <Typography variant="body2" sx={{ opacity: 0.7 }}>
+                <Typography variant="body2" sx={{ opacity: 0.7 , fontFamily: "'Barlow', sans-serif" , fontWeight: 500}}>
                     Cons
                 </Typography>
-                <Typography variant="body2">
+                <Typography variant="body2" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
                     {review.cons || 'The user has not given any Cons'}
                 </Typography>
             </CardContent>

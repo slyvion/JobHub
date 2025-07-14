@@ -30,7 +30,7 @@ export default function CompanyCard({ company }) {
                         }}
                     />
                     <Link to={`/company/${company.id}`}>
-                        <Typography variant="h6" component="div" noWrap>
+                        <Typography variant="h5" component="div" noWrap sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                             {company.companyName}
                         </Typography>
                     </Link>
@@ -38,13 +38,15 @@ export default function CompanyCard({ company }) {
 
 
                 <Typography
-                    variant="body2"
+                    variant="body"
                     color="text.secondary"
                     sx={{
                         display: 'block',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
+                        fontFamily: "'Barlow', sans-serif",
+                        fontWeight: 500,
                     }}
                 >
                     {company.description}
@@ -53,11 +55,11 @@ export default function CompanyCard({ company }) {
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <StarIcon sx={{ color: 'gold' }} />
-                        <Typography variant="body2" color="text.primary" sx={{ ml: 0.5 }}>
+                        <Typography variant="body" color="text.primary" sx={{ ml: 0.5, fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
                             {company.rating}
                         </Typography>
                     </Box>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant="body" color="text.secondary" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>
                         {company.location}
                     </Typography>
                 </Box>

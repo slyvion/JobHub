@@ -34,6 +34,11 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public Integer reviewsCount() {
+        return reviewRepository.countAllDistinctReviews();
+    }
+
+    @Override
     public Review create(ReviewDto reviewDto) {
         User user = userRepository.findById(reviewDto.getUserId()).orElseThrow(InvalidUserIdException::new);
         Company company = companyRepository.findById(reviewDto.getCompanyId()).orElseThrow(InvalidCompanyIdException::new);

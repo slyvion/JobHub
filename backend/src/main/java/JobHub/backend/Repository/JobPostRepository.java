@@ -8,6 +8,7 @@ import JobHub.backend.Model.Constants.Tags;
 import JobHub.backend.Model.JobPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,6 +27,9 @@ public interface JobPostRepository extends JpaRepository<JobPost, Long>, JpaSpec
     List<JobPost> findJobPostsByLocation(String location);
     List<JobPost> findJobPostsByJobType(JobType jobType);
     List<JobType> findJobPostsByEmploymentType(EmploymentType employmentType);
+
+    @Query("SELECT COUNT(DISTINCT jp) FROM JobPost jp")
+    Integer countAllDistinctJobPosts();
 
 
 }
