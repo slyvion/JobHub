@@ -27,10 +27,12 @@ public class Company {
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String website;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
     private String location;

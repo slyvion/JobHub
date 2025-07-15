@@ -8,6 +8,7 @@ import JobHub.backend.Repository.ApplicantsRepository;
 import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
 import jakarta.persistence.criteria.Predicate;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -107,6 +108,17 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Transactional
+    @Override
+    public User deleteUser(Long id) {
+        User user = this.findById(id);
+        applicantsRepository.deleteByUserId(id);
+
+        userRepository.delete(user);
+        return user;
+    }
+
 
     @Override
     public User roleUpdate(Long id, UserRoleUpdateDto userRoleUpdateDto) {

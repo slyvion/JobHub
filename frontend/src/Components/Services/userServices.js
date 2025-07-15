@@ -102,3 +102,24 @@ export const getSavedJobPosts = async (userId) => {
         return response.json();
 };
 
+export const deleteUser = async (id) => {
+    const response = await fetch(`http://localhost:8080/user/${id}/delete`, {
+        method: 'DELETE',
+    });
+
+    if (!response.ok) {
+        throw new Error('Failed to delete user');
+    }
+
+    return response;
+};
+
+export const verifyUserPassword = async (id, password) => {
+    const response = await fetch(`http://localhost:8080/user/${id}/verifyPassword`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+    });
+    return response;
+};
+

@@ -2,10 +2,7 @@ package JobHub.backend.Service;
 
 import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Company;
-import JobHub.backend.Model.Constants.EmploymentType;
-import JobHub.backend.Model.Constants.JobType;
-import JobHub.backend.Model.Constants.Seniority;
-import JobHub.backend.Model.Constants.Tags;
+import JobHub.backend.Model.Constants.*;
 import JobHub.backend.Model.Dto.JobPostDto;
 import JobHub.backend.Model.Dto.JobPostSearchDto;
 import JobHub.backend.Model.Dto.User.ApplyDto;
@@ -32,6 +29,8 @@ public interface JobPostService {
     List<Apply> findApplicantsByJobpostId(Long id);
 
     Apply apply(Long id,ApplyDto applyDto);
+
+    Apply updateStatus(Long jobPostId, Status status,Long applicantId);
 
     List<JobPost> findAllByTitle(String title);
 

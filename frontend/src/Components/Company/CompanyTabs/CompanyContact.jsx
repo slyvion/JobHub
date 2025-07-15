@@ -32,7 +32,8 @@ export default function CompanyContact({ company }) {
                     <Typography variant="body1" fontWeight="500" sx={{fontSize: "1rem", fontFamily: "'Barlow', sans-serif"  }}>
                         Email:
                     </Typography>
-                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px', opacity: 0.7, fontFamily: "'Barlow', sans-serif"  }}>
+                    <Typography variant="body1" sx={{ fontWeight: 500, fontSize: "1rem", paddingTop: '16px', opacity: 0.7, fontFamily: "'Barlow', sans-serif"
+                    }}>
                         {company.email || "N/A"}
                     </Typography>
                     <Divider sx={{ mt: 2 }} />

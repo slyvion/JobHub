@@ -43,6 +43,8 @@ export default function Hero() {
                     <Typography
                         variant="h1"
                         sx={{
+                            fontFamily: "Barlow, sans-serif",
+                            fontWeight: 500,
                             display: 'flex',
                             flexDirection: { xs: 'column', md: 'row' },
                             alignSelf: 'center',
@@ -55,7 +57,8 @@ export default function Hero() {
                             variant="h1"
 
                             sx={{
-
+                                fontFamily: "Barlow, sans-serif",
+                                fontWeight: 500,
                                 fontSize: 'clamp(3rem, 10vw, 4rem)',
                                 color: (theme) =>
                                     theme.palette.mode === 'light' ? 'primary.main' : 'primary.light',
@@ -69,7 +72,7 @@ export default function Hero() {
                     <Typography
                         textAlign="center"
                         color="text.secondary"
-                        sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' } }}
+                        sx={{ alignSelf: 'center', width: { sm: '100%', md: '80%' }, fontFamily: "Barlow, sans-serif", fontWeight: 500 }}
                     >
                         Explore through companies, find the answers to your questions and check the jobposts
                         for a potential job!

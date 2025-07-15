@@ -22,15 +22,12 @@ public class JobPost {
 
     private String title;
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String description; // About the role
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String requirements; // requirements
 
-    @Lob
     @Column(columnDefinition = "TEXT")
     private String jobInfo; // What you will do
 

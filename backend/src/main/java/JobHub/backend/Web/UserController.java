@@ -1,18 +1,21 @@
 package JobHub.backend.Web;
 
 import JobHub.backend.Model.*;
-import JobHub.backend.Model.Constants.EmployeeNumber;
 import JobHub.backend.Model.Constants.UserRole;
 import JobHub.backend.Service.ReviewService;
 import JobHub.backend.Service.SavedJobPostsService;
 import JobHub.backend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
 import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -27,6 +30,14 @@ public class UserController {
     @Autowired
     private SavedJobPostsService savedJobPostsService;
 
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
+    public UserController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
         return userService.findById(id);
@@ -35,6 +46,23 @@ public class UserController {
     @GetMapping("/{id}/reviews")
     public List<Review> getReviewByUserId(@PathVariable Long id){
         return reviewService.findAllByUserId(id);
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public User delete(@PathVariable Long id) {
+
+        return userService.deleteUser(id);
+    }
+    @PostMapping("/{id}/verifyPassword")
+    public ResponseEntity<?> verifyPassword(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String inputPassword = body.get("password");
+        User user = userService.findById(id);
+
+        if (passwordEncoder.matches(inputPassword, user.getPassword())) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect password");
+        }
     }
 
 

@@ -28,6 +28,7 @@ public class Apply {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Column(columnDefinition = "TEXT")
     private String additionalMessage;
 
     @JsonIgnore

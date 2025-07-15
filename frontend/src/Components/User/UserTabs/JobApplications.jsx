@@ -57,8 +57,18 @@ export default function JobApplications() {
                                 <TableCell>{app.phoneNumber}</TableCell>
                                 <TableCell>{app.linkedinLink}</TableCell>
                                 <TableCell>attachment</TableCell>
-                                <TableCell>{app.status}</TableCell>
-                            </TableRow>
+                                <TableCell
+                                    sx={{
+                                        fontWeight: 'bold',
+                                        color:
+                                            app.status === 'PENDING' ? 'black' :
+                                                app.status === 'DECLINED' ? 'red' :
+                                                    app.status === 'ACCEPTED' ? 'green' :
+                                                        'inherit',
+                                    }}
+                                >
+                                    {app.status}
+                                </TableCell>                            </TableRow>
                         ))
                     ) : (
                         <TableRow>

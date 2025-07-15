@@ -28,6 +28,8 @@ public interface UserService {
 
     User create(UserDto userDto);
 
+    User deleteUser(Long id);
+
     List<Apply> findAllAppliesByUserId(Long id);
 
     User roleUpdate(Long id, UserRoleUpdateDto userRoleUpdateDto);

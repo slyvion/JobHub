@@ -118,6 +118,15 @@ export const getApplicantsByJobPostId = async (jobPostId) => {
     return await response.json();
 };
 
+export async function updateApplicantStatus(jobPostId, applicantId, status) {
+    const response = await fetch(`http://localhost:8080/jobposts/${jobPostId}/applicants/${applicantId}/updateStatus?status=${status}`, {
+        method: "PUT",
+    });
+    if (!response.ok) throw new Error("Failed to update status");
+}
+
+
+
 
 export const Tags = [
     ".NET",

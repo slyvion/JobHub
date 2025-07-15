@@ -16,7 +16,7 @@ export default function AboutUs( {company}) {
             <Typography variant="h5" align="left" gutterBottom sx={{ color: 'black', fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
                 About Us
             </Typography>
-            <Typography variant="body1" sx={{ color: 'black', opacity: 0.7 ,fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
+            <Typography component="pre" variant="body1" sx={{ color: 'black', opacity: 0.7 ,fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
                 {company.description}
             </Typography>
         </Box>

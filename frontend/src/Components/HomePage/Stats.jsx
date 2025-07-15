@@ -3,10 +3,10 @@ import { Box, Typography, Grid } from '@mui/material';
 
 const StatsCounter = () => {
     const [stats, setStats] = useState([
-        { label: 'Companies', target: 20 },
-        { label: 'Reviews', target: 15 },
-        { label: 'Users', target: 11 },
-        { label: 'Jobposts', target: 11 },
+        { label: 'Companies', target: 0 },
+        { label: 'Reviews', target: 0 },
+        { label: 'Users', target: 0 },
+        { label: 'Jobposts', target: 0 },
     ]);
 
     const counterRefs = useRef([]);

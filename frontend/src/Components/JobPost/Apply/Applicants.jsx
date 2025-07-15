@@ -11,11 +11,11 @@ import {
     Paper,
     Typography,
     CircularProgress,
-    Link,
+    Button,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { getApplicantsByJobPostId } from "../../Services/jobPostServices.js";
-import Button from "@mui/material/Button";
+import ApplicationDetails from "./ApplicationDetails"; // adjust path if needed
 
 export default function Applicants() {
     const { id: jobPostId } = useParams();
@@ -23,6 +23,9 @@ export default function Applicants() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [loading, setLoading] = useState(true);
+
+    const [selectedApplicant, setSelectedApplicant] = useState(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchApplicants = async () => {
@@ -48,6 +51,16 @@ export default function Applicants() {
         setPage(0);
     };
 
+    const handleViewDetails = (applicant) => {
+        setSelectedApplicant(applicant);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedApplicant(null);
+        setModalOpen(false);
+    };
+
     return (
         <Box sx={{ p: 4, backgroundColor: "#fff", minHeight: "100vh" }}>
             <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
@@ -61,7 +74,7 @@ export default function Applicants() {
                     <CircularProgress />
                 </Box>
             ) : applicants.length === 0 ? (
-                <Typography variant="body1" mt={3} sx={{color: "black"}}>
+                <Typography variant="body1" mt={3} sx={{ color: "black" }}>
                     No applicants yet.
                 </Typography>
             ) : (
@@ -89,7 +102,12 @@ export default function Applicants() {
                                             <TableCell>{applicant.phoneNumber}</TableCell>
                                             <TableCell>{applicant.status}</TableCell>
                                             <TableCell>
-                                                <Button variant="contained"> View </Button>
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={() => handleViewDetails(applicant)}
+                                                >
+                                                    View
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -107,6 +125,16 @@ export default function Applicants() {
                     />
                 </Paper>
             )}
+
+            {/* Modal for applicant details */}
+            <ApplicationDetails
+                open={modalOpen}
+                handleClose={handleCloseModal}
+                applicant={selectedApplicant}
+                jobPostId={jobPostId}
+            />
+
+
         </Box>
     );
 }

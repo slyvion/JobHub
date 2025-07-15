@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import UserFilter from "../AdminFilters/UserFilter.jsx";
 import Box from "@mui/material/Box";
 import {
@@ -11,10 +11,8 @@ import {
     TableRow,
     Typography
 } from "@mui/material";
-import { fetchAdminUsers } from "../../Services/userServices.js"
+import { fetchAdminUsers, deleteUser } from "../../Services/userServices.js"; // 👈 Import deleteUser
 import Button from "@mui/material/Button";
-
-
 
 export default function UsersTab() {
     const [userData, setUserData] = useState([]);
@@ -24,7 +22,6 @@ export default function UsersTab() {
     const getUsers = async (filterParams = {}) => {
         setLoading(true);
         setError(null);
-
         try {
             const data = await fetchAdminUsers(filterParams);
             setUserData(data);
@@ -34,16 +31,25 @@ export default function UsersTab() {
             setLoading(false);
         }
     };
+
     useEffect(() => {
         getUsers();
     }, []);
 
     const handleEdit = (id) => {
-        console.log("Edit review", id);
+        console.log("Edit user", id);
     };
 
-    const handleDelete = (id) => {
-        console.log("Delete review", id);
+    const handleDelete = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this user?")) return;
+        try {
+            await deleteUser(id); // 👈 Call API
+            setUserData(prev => prev.filter(user => user.id !== id)); // 👈 Update UI
+            console.log("User deleted:", id);
+        } catch (err) {
+            console.error("Failed to delete user:", err.message);
+            setError("Failed to delete user.");
+        }
     };
 
     return (
@@ -59,7 +65,6 @@ export default function UsersTab() {
                 <Typography> No Users</Typography>
             ) : (
                 <TableContainer component={Paper} sx={{ mt: 2, maxWidth: 1550, mx: 'auto' }}>
-
                     <Table size="small">
                         <TableHead>
                             <TableRow>
@@ -76,10 +81,10 @@ export default function UsersTab() {
                                     <TableCell>{user.email}</TableCell>
                                     <TableCell>{user.role}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="primary" size="small" onClick={() => handleEdit(review.id)}>
+                                        <Button variant="contained" color="primary" size="small" onClick={() => handleEdit(user.id)}>
                                             Edit
                                         </Button>
-                                        <Button variant="contained" color="error" size="small" onClick={() => handleDelete(review.id)} sx={{ ml: 1 }}>
+                                        <Button variant="contained" color="error" size="small" onClick={() => handleDelete(user.id)} sx={{ ml: 1 }}>
                                             Delete
                                         </Button>
                                     </TableCell>
