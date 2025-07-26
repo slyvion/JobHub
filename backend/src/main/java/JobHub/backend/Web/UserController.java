@@ -2,6 +2,8 @@ package JobHub.backend.Web;
 
 import JobHub.backend.Model.*;
 import JobHub.backend.Model.Constants.UserRole;
+import JobHub.backend.Model.Dto.User.ApplyDto;
+import JobHub.backend.Model.Dto.User.UserRoleUpdateDto;
 import JobHub.backend.Service.ReviewService;
 import JobHub.backend.Service.SavedJobPostsService;
 import JobHub.backend.Service.UserService;
@@ -36,7 +38,6 @@ public class UserController {
     public UserController(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable Long id) {
@@ -81,10 +82,9 @@ public class UserController {
         return savedJobPostsService.getSavedJobPostsByUser(id);
     }
     @GetMapping("/{id}/appliedJobs")
-    public List<Apply> getAppliedJobs(@PathVariable Long id){
+    public List<ApplyDto> getAppliedJobs(@PathVariable Long id){
         return userService.findAllAppliesByUserId(id);
     }
-
 
     @PostMapping("/{id}/saveJob/{jobPostId}")
     public String saveJobPost(@PathVariable Long id,
@@ -113,5 +113,13 @@ public class UserController {
         }
         return userService.userFilter(username, email, role);
     }
+
+    @PostMapping("/{id}/roleUpdate")
+    public User roleUpdate(
+            @PathVariable("id") Long id,
+            @RequestBody UserRoleUpdateDto userRoleUpdateDto) {
+        return userService.roleUpdate(id, userRoleUpdateDto);
+    }
+
 
 }

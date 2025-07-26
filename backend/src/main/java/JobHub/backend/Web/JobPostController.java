@@ -4,11 +4,12 @@ import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.*;
 import JobHub.backend.Model.Dto.JobPostSearchDto;
 import JobHub.backend.Model.Dto.User.ApplyDto;
+import JobHub.backend.Repository.ApplicantsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,6 +29,12 @@ public class JobPostController {
 
     @Autowired
     private JobPostService jobPostService;
+
+    private final ApplicantsRepository applicantsRepository;
+
+    public JobPostController(ApplicantsRepository applicantsRepository) {
+        this.applicantsRepository = applicantsRepository;
+    }
 
     @GetMapping("/{id}")
     public JobPost getJobPostById(@PathVariable Long id) {
@@ -91,6 +98,26 @@ public class JobPostController {
                               @RequestParam Status status) {
         return jobPostService.updateStatus(jobPostId, status, applicantId);
     }
+
+    @GetMapping("/applicant/{id}")
+    public ResponseEntity<byte[]> downloadAttachment(@PathVariable Long id) {
+        Apply apply = applicantsRepository.findById(id).orElse(null);
+
+        if (apply == null || apply.getAttachment() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String filename = apply.getAttachmentFileName() != null ? apply.getAttachmentFileName() : "attachment";
+        String contentType = apply.getAttachmentContentType() != null ? apply.getAttachmentContentType() : "application/octet-stream";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.parseMediaType(contentType));
+        headers.setContentDisposition(ContentDisposition.attachment().filename(filename).build());
+        headers.setContentLength(apply.getAttachment().length);
+
+        return new ResponseEntity<>(apply.getAttachment(), headers, HttpStatus.OK);
+    }
+
 
 
 }

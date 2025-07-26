@@ -178,7 +178,7 @@ export default function CompanyProfile() {
                     value={value}
                     onChange={handleChange}
                     centered
-                    TabIndicatorProps={{ style: { backgroundColor: "blue" } }}
+                    TabIndicatorProps={{ style: { backgroundColor: "primary" } }}
                 >
                     <Tab label="About Us" sx={{ minWidth: 300, fontFamily: "'Barlow', sans-serif", fontWeight: 600 }} />
                     <Tab label="JobPosts" sx={{ minWidth: 300, fontFamily: "'Barlow', sans-serif", fontWeight: 600 }} />

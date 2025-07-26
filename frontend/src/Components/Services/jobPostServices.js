@@ -125,6 +125,47 @@ export async function updateApplicantStatus(jobPostId, applicantId, status) {
     if (!response.ok) throw new Error("Failed to update status");
 }
 
+export function downloadAttachment(applyId) {
+    fetch(`http://localhost:8080/jobposts/applicant/${applyId}`, {
+        method: "GET",
+        headers: {
+            Accept: "application/octet-stream",
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to download file.");
+            }
+
+            const disposition = response.headers.get("Content-Disposition");
+            let filename = "attachment";
+
+            if (disposition && disposition.includes("filename=")) {
+                const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+                if (match && match[1]) {
+                    filename = match[1].replace(/['"]/g, "");
+                }
+            }
+
+            return response.blob().then(blob => ({ blob, filename }));
+        })
+        .then(({ blob, filename }) => {
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = decodeURIComponent(filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error("Download failed:", error);
+        });
+}
+
+
+
 
 
 

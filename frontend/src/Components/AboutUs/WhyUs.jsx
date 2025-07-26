@@ -10,7 +10,7 @@ const fadeInUp = {
 
 export default function WhyUs() {
     return (
-        <Box sx={{ paddingBottom: 10 }}>
+        <Box sx={{ paddingBottom: 10}}>
             <Container maxWidth="lg">
                 <motion.div
                     initial="hidden"

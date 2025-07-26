@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { getApplicantsByJobPostId } from "../../Services/jobPostServices.js";
-import ApplicationDetails from "./ApplicationDetails"; // adjust path if needed
+import ApplicationDetails from "./ApplicationDetails";
 
 export default function Applicants() {
     const { id: jobPostId } = useParams();

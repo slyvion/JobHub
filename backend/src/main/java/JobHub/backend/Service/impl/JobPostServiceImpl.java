@@ -117,18 +117,22 @@ public class JobPostServiceImpl implements JobPostService {
     }
 
     @Override
-    public Apply apply(Long id,ApplyDto applyDto) {
+    public Apply apply(Long id, ApplyDto applyDto) {
         JobPost jobPost = jobPostRepository.findById(id)
                 .orElseThrow(InvalidJobPostIdException::new);
 
         User user = userRepository.findUserByEmail(UserServiceImpl.getCurrentEmail())
                 .orElseThrow(InvalidUserIdException::new);
 
-
         byte[] attachmentBytes = null;
-        if (applyDto.getAttachment() != null) {
+        String fileName = null;
+        String contentType = null;
+
+        if (applyDto.getAttachment() != null && !applyDto.getAttachment().isEmpty()) {
             try {
                 attachmentBytes = applyDto.getAttachment().getBytes();
+                fileName = applyDto.getAttachment().getOriginalFilename();
+                contentType = applyDto.getAttachment().getContentType();
             } catch (IOException e) {
                 throw new RuntimeException("Failed to process the file upload.", e);
             }
@@ -143,7 +147,9 @@ public class JobPostServiceImpl implements JobPostService {
                 attachmentBytes,
                 applyDto.getAdditionalMessage(),
                 jobPost,
-                user
+                user,
+                fileName,
+                contentType
         );
 
         Apply savedApplication = applicantsRepository.save(apply);
@@ -151,6 +157,7 @@ public class JobPostServiceImpl implements JobPostService {
 
         return savedApplication;
     }
+
 
     @Override
     public Apply updateStatus(Long jobPostId, Status status,Long applicantId) {

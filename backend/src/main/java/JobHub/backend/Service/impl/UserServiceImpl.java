@@ -2,8 +2,7 @@ package JobHub.backend.Service.impl;
 
 import JobHub.backend.Model.Apply;
 import JobHub.backend.Model.Constants.UserRole;
-import JobHub.backend.Model.Dto.User.UserDto;
-import JobHub.backend.Model.Dto.User.UserRoleUpdateDto;
+import JobHub.backend.Model.Dto.User.*;
 import JobHub.backend.Repository.ApplicantsRepository;
 import JobHub.backend.Service.UserService;
 import JobHub.backend.exceptions.InvalidUserIdException;
@@ -15,8 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import JobHub.backend.Model.Dto.User.UserEmailUpdateDto;
-import JobHub.backend.Model.Dto.User.UserPasswordUpdateDto;
 import JobHub.backend.Model.User;
 import JobHub.backend.Repository.UserRepository;
 
@@ -61,9 +58,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Apply> findAllAppliesByUserId(Long id) {
-        return applicantsRepository.findAllByUserId(id);
+    public List<ApplyDto> findAllAppliesByUserId(Long id) {
+        List<Apply> applies = applicantsRepository.findAllByUserId(id);
+
+        return applies.stream().map(apply -> {
+            ApplyDto dto = new ApplyDto();
+            dto.setFirstName(apply.getFirstName());
+            dto.setLastName(apply.getLastName());
+            dto.setEmail(apply.getEmail());
+            dto.setPhoneNumber(apply.getPhoneNumber());
+            dto.setLinkedinLink(apply.getLinkedinLink());
+            dto.setAdditionalMessage(apply.getAdditionalMessage());
+            dto.setStatus(apply.getStatus());
+            dto.setJobPostId(apply.getJobPost().getId());
+            dto.setUserId(apply.getUser().getId());
+            dto.setAttachmentFileName(apply.getAttachmentFileName());
+            dto.setAttachmentContentType(apply.getAttachmentContentType());
+            dto.setApplyId(apply.getId());
+            return dto;
+        }).toList();
     }
+
 
     @Override
     public User PasswordUpdate(Long id, UserPasswordUpdateDto passwordUpdateDto) {

@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import {AppBar, Toolbar, Button, Container, Divider, Typography, MenuItem, Drawer, IconButton, Menu, Avatar, Box } from '@mui/material';
+import {
+    AppBar, Toolbar, Button, Container, Divider, Typography,
+    MenuItem, Drawer, IconButton, Menu, Avatar, Box
+} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import { navigateToProfile } from '../Components/Services/authServices.js';
@@ -12,11 +15,12 @@ const logoStyle = {
 };
 
 function AppAppBar() {
-    const [open, setOpen] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [open, setOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [avatarUrl, setAvatarUrl] = useState(null);
+
     const location = useLocation();
     const navigate = useNavigate();
-
     const token = localStorage.getItem('token');
 
     const toggleDrawer = (newOpen) => () => {
@@ -54,6 +58,31 @@ function AppAppBar() {
         await navigateToProfile(navigate);
     };
 
+    useEffect(() => {
+        const fetchProfile = async () => {
+            if (!token) return;
+
+            try {
+                const response = await fetch('http://localhost:8080/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (!response.ok) throw new Error('Not authenticated');
+
+                const result = await response.json();
+                if (result.type === 'company') {
+                    setAvatarUrl(`http://localhost:8080/company/${result.data.id}/getLogo`);
+                }
+            } catch (err) {
+                console.error('Profile fetch error:', err);
+            }
+        };
+
+        fetchProfile();
+    }, [token]);
+
     return (
         <AppBar
             position="fixed"
@@ -83,8 +112,12 @@ function AppAppBar() {
                         borderColor: 'divider',
                         boxShadow:
                             theme.palette.mode === 'light'
-                                ? `0 0 1px rgba(85, 166, 246, 0.1), 1px 1.5px 2px -1px rgba(85, 166, 246, 0.15), 4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
-                                : '0 0 1px rgba(2, 31, 59, 0.7), 1px 1.5px 2px -1px rgba(2, 31, 59, 0.65), 4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)',
+                                ? `0 0 1px rgba(85, 166, 246, 0.1),
+                                    1px 1.5px 2px -1px rgba(85, 166, 246, 0.15),
+                                    4px 4px 12px -2.5px rgba(85, 166, 246, 0.15)`
+                                :` 0 0 1px rgba(2, 31, 59, 0.7),
+                        1px 1.5px 2px -1px rgba(2, 31, 59, 0.65),
+                        4px 4px 12px -2.5px rgba(2, 31, 59, 0.65)`,
                     })}
                 >
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', ml: '-18px', px: 0 }}>
@@ -95,20 +128,18 @@ function AppAppBar() {
                             {location.pathname === '/' && (
                                 <>
                                     <MenuItem onClick={() => scrollToSection('features')} sx={{ py: '6px', px: '12px' }}>
-                                        <Typography variant="body2" color="text.primary" >Features</Typography>
-
-
+                                        <Typography variant="body2" color="text.primary">Features</Typography>
                                     </MenuItem>
                                     <MenuItem onClick={() => scrollToSection('highlights')} sx={{ py: '6px', px: '12px' }}>
-                                        <Typography variant="body2" color="text.primary" >Highlights</Typography>
+                                        <Typography variant="body2" color="text.primary">Highlights</Typography>
                                     </MenuItem>
                                 </>
                             )}
                             <MenuItem component={Link} to="/about-us" sx={{ py: '6px', px: '12px' }}>
-                                <Typography variant="body2" color="text.primary" >About Us</Typography>
+                                <Typography variant="body2" color="text.primary">About Us</Typography>
                             </MenuItem>
                             <MenuItem component={Link} to="/companies" sx={{ py: '6px', px: '12px' }}>
-                                <Typography variant="body2" color="text.primary" >Companies</Typography>
+                                <Typography variant="body2" color="text.primary">Companies</Typography>
                             </MenuItem>
                             <MenuItem component={Link} to="/jobposts" sx={{ py: '6px', px: '12px' }}>
                                 <Typography variant="body2" color="text.primary">JobPosts</Typography>
@@ -120,7 +151,7 @@ function AppAppBar() {
                         {token ? (
                             <>
                                 <IconButton onClick={handleMenuOpen} sx={{ p: 0 }}>
-                                    <Avatar alt="User Avatar" />
+                                    <Avatar src={avatarUrl || undefined} alt="Profile" />
                                 </IconButton>
                                 <Menu
                                     anchorEl={anchorEl}
@@ -145,7 +176,13 @@ function AppAppBar() {
                     </Box>
 
                     <Box sx={{ display: { sm: '', md: 'none' } }}>
-                        <Button variant="text" color="primary" aria-label="menu" onClick={toggleDrawer(true)} sx={{ minWidth: '30px', p: '4px' }}>
+                        <Button
+                            variant="text"
+                            color="primary"
+                            aria-label="menu"
+                            onClick={toggleDrawer(true)}
+                            sx={{ minWidth: '30px', p: '4px' }}
+                        >
                             <MenuIcon />
                         </Button>
                         <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
@@ -179,12 +216,24 @@ function AppAppBar() {
                                 ) : (
                                     <>
                                         <MenuItem>
-                                            <Button color="primary" variant="contained" component={Link} to="/sign-up" sx={{ width: '100%' }}>
+                                            <Button
+                                                color="primary"
+                                                variant="contained"
+                                                component={Link}
+                                                to="/sign-up"
+                                                sx={{ width: '100%' }}
+                                            >
                                                 Sign up
                                             </Button>
                                         </MenuItem>
                                         <MenuItem>
-                                            <Button color="primary" variant="outlined" component={Link} to="/sign-in" sx={{ width: '100%' }}>
+                                            <Button
+                                                color="primary"
+                                                variant="outlined"
+                                                component={Link}
+                                                to="/sign-in"
+                                                sx={{ width: '100%' }}
+                                            >
                                                 Sign in
                                             </Button>
                                         </MenuItem>

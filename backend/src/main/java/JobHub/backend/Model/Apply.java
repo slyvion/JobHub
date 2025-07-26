@@ -23,7 +23,12 @@ public class Apply {
 
     private String linkedinLink;
 
+    @JsonIgnore
     private byte[] attachment;
+
+    private String attachmentFileName;
+
+    private String attachmentContentType;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -39,7 +44,7 @@ public class Apply {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public Apply(String firstName, String lastName, String email, String phoneNumber, String linkedinLink, byte[] attachment, String additionalMessage, JobPost jobPost, User user) {
+    public Apply(String firstName, String lastName, String email, String phoneNumber, String linkedinLink, byte[] attachment, String additionalMessage, JobPost jobPost, User user, String attachmentFileName, String attachmentContentType) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -50,6 +55,8 @@ public class Apply {
         this.additionalMessage = additionalMessage;
         this.jobPost = jobPost;
         this.user = user;
+        this.attachmentFileName = attachmentFileName;
+        this.attachmentContentType = attachmentContentType;
     }
 
     public Apply() {

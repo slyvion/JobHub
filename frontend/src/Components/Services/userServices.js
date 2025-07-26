@@ -123,3 +123,22 @@ export const verifyUserPassword = async (id, password) => {
     return response;
 };
 
+export async function updateUserRole(userId, newRole) {
+    const response = await fetch(`http://localhost:8080/user/${userId}/roleUpdate`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userRole: newRole }),
+    });
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        const errorMsg = errorData?.message || response.statusText;
+        throw new Error(`Failed to update user role: ${errorMsg}`);
+    }
+
+    return response;
+}
+
+

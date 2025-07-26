@@ -3,6 +3,7 @@ package JobHub.backend.Model.Dto.User;
 import JobHub.backend.Model.Constants.Status;
 import JobHub.backend.Model.JobPost;
 import JobHub.backend.Model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +36,13 @@ public class ApplyDto {
 
     private Status status;
 
-    private JobPost jobPost;
+    private Long jobPostId;
 
     private Long userId;
+
+    private String attachmentFileName;
+
+    private String attachmentContentType;
+
+    private Long applyId;
 }

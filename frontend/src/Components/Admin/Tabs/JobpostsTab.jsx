@@ -54,7 +54,7 @@ export default function JobpostsTab() {
         setLoading(true);
         try {
             await deleteJobPost(id);
-            await loadJobPosts(); // Refresh list
+            await loadJobPosts();
         } catch (err) {
             setError("Failed to delete job post: " + err.message);
         } finally {

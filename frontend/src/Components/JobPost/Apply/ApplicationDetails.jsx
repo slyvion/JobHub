@@ -13,7 +13,7 @@ import {
     InputLabel,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { updateApplicantStatus } from "../../Services/jobPostServices.js";
+import { updateApplicantStatus, downloadAttachment } from "../../Services/jobPostServices.js";
 
 const modalStyle = {
     position: "absolute",
@@ -39,13 +39,6 @@ export default function ApplicationDetails({ open, handleClose, applicant, jobPo
             setStatus(applicant.status || "PENDING");
         }
     }, [applicant]);
-
-    const handleDownload = () => {
-        const link = document.createElement("a");
-        link.href = applicant.attachmentUrl;
-        link.download = applicant.attachmentName || "attachment";
-        link.click();
-    };
 
     const handleSave = async () => {
         try {
@@ -160,9 +153,10 @@ export default function ApplicationDetails({ open, handleClose, applicant, jobPo
 
                     <Grid item xs={12} display="flex" justifyContent="space-between">
                         <Button
-                            variant="outlined"
-                            onClick={handleDownload}
-                            disabled={!applicant.attachmentUrl}
+                            variant="contained"
+                            onClick={() => downloadAttachment(applicant?.id)} // Daj importnigo od jobPostServices mnogu mi koci
+                            color="success"
+                            disabled={!applicant.attachmentFileName}
                         >
                             Download Attachment
                         </Button>

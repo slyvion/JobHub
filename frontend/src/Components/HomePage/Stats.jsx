@@ -4,7 +4,7 @@ import { Box, Typography, Grid } from '@mui/material';
 const StatsCounter = () => {
     const [stats, setStats] = useState([
         { label: 'Companies', target: 0 },
-        { label: 'Reviews', target: 0 },
+        { label: 'Reviews', target: 11 },
         { label: 'Users', target: 0 },
         { label: 'Jobposts', target: 0 },
     ]);

@@ -79,9 +79,6 @@ export default function ReviewsTab() {
                                     <TableCell>{review.rating}</TableCell>
                                     <TableCell>{review.postDate.slice(0, 10)}</TableCell>
                                     <TableCell>
-                                        <Button variant="contained" color="primary" size="small" onClick={() => handleEdit(review.id)}>
-                                            Edit
-                                        </Button>
                                         <Button variant="contained" color="error" size="small" onClick={() => handleDelete(review.id)} sx={{ ml: 1 }}>
                                             Delete
                                         </Button>

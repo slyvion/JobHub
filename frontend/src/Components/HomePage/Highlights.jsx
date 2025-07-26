@@ -13,7 +13,6 @@ import InsightsRoundedIcon from '@mui/icons-material/InsightsRounded';
 import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import { motion } from 'framer-motion';
 
-// Create motion version of Stack
 const MotionStack = motion(Stack);
 
 const items = [
