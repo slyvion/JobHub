@@ -196,8 +196,8 @@ export default function FullJobPost() {
                                             }}
                                             onClick={() => {
                                                 if (!user) {
-                                                    navigate('/sign-in');
-                                                } else {
+                                                    navigate('/sign-in', { state: { from: `/jobposts/${id}/apply` } });
+                                            } else {
                                                     navigate(`/jobposts/${id}/apply`);
                                                 }
                                             }}

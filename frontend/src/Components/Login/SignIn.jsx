@@ -1,11 +1,26 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
-    Button, CssBaseline, TextField, FormControlLabel, Checkbox, Link,
-    Grid, Box, Typography, Container, Modal, Paper, createTheme,
-    ThemeProvider, Snackbar, Alert, Divider
+    Button,
+    CssBaseline,
+    TextField,
+    FormControlLabel,
+    Checkbox,
+    Link,
+    Grid,
+    Box,
+    Typography,
+    Container,
+    Modal,
+    Paper,
+    createTheme,
+    ThemeProvider,
+    Snackbar,
+    Alert,
+    Divider,
 } from '@mui/material';
-import {login} from '../Services/authServices.js';
-import {useUser} from "../../store/UserContext.jsx";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { login } from '../Services/authServices.js';
+import { useUser } from "../../store/UserContext.jsx";
 
 function Copyright(props) {
     return (
@@ -31,6 +46,10 @@ export default function SignIn() {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
+    const navigate = useNavigate();
+    const location = useLocation();
+    const redirectPath = location.state?.from || '/';
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
@@ -52,7 +71,9 @@ export default function SignIn() {
         setSnackbarMessage('Password reset link sent (mock).');
         setSnackbarOpen(true);
     };
-    const {loadUser} = useUser();
+
+    const { loadUser } = useUser();
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -66,8 +87,9 @@ export default function SignIn() {
             setSnackbarSeverity('success');
             setSnackbarMessage('Login successful!');
             setSnackbarOpen(true);
+
             setTimeout(() => {
-                window.location.href = '/';
+                navigate(redirectPath);
             }, 1000);
         } catch (error) {
             setSnackbarSeverity('error');
@@ -78,9 +100,12 @@ export default function SignIn() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Container component="main" maxWidth="xs"
-                       sx={{background: 'white', paddingTop: '100px', minHeight: '100vh'}}>
-                <CssBaseline/>
+            <Container
+                component="main"
+                maxWidth="xs"
+                sx={{ background: 'white', paddingTop: '100px', minHeight: '100vh' }}
+            >
+                <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 8,
@@ -90,10 +115,12 @@ export default function SignIn() {
                     }}
                 >
                     <Link href={'/'}>
-                        <img src={'src/Logo.png'} alt="logo of JobHub"/>
+                        <img src={'src/Logo.png'} alt="logo of JobHub" />
                     </Link>
-                    <Typography component="h1" variant="h5">Sign in</Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+                    <Typography component="h1" variant="h5">
+                        Sign in
+                    </Typography>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
                             required
@@ -115,31 +142,36 @@ export default function SignIn() {
                             autoComplete="current-password"
                         />
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary"/>}
+                            control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
                         />
-                        <Button type="submit" fullWidth variant="contained" sx={{mt: 3, mb: 1}}>
+                        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 1 }}>
                             Sign In
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2" onClick={handleOpen}>Forgot password?</Link>
+                                <Link href="#" variant="body2" onClick={handleOpen}>
+                                    Forgot password?
+                                </Link>
                             </Grid>
                             <Grid item>
-                                <Link href={'/sign-up'} variant="body2">{"Don't have an account? Sign Up"}</Link>
+                                <Link href={'/sign-up'} variant="body2">
+                                    {"Don't have an account? Sign Up"}
+                                </Link>
                             </Grid>
                         </Grid>
                     </Box>
                 </Box>
-                <Copyright sx={{mt: 8, mb: 4}}/>
+                <Copyright sx={{ mt: 8, mb: 4 }} />
             </Container>
 
+            {/* Password reset modal */}
             <Modal open={open} onClose={handleClose}>
-                <Paper sx={{width: 400, p: 4, mx: 'auto', mt: '20%', textAlign: 'center'}}>
+                <Paper sx={{ width: 400, p: 4, mx: 'auto', mt: '20%', textAlign: 'center' }}>
                     <Typography variant="h4" gutterBottom>
                         Change your password
                     </Typography>
-                    <Typography sx={{opacity: '0.7'}} variant="body2" gutterBottom>
+                    <Typography sx={{ opacity: '0.7' }} variant="body2" gutterBottom>
                         Enter the e-mail address that you registered your account with and we will send you a link to
                         change your password.
                     </Typography>
@@ -153,9 +185,13 @@ export default function SignIn() {
                         error={!!emailError}
                         helperText={emailError}
                     />
-                    <Box sx={{display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1}}>
-                        <Button onClick={handleClose} variant="outlined">Close</Button>
-                        <Button variant="contained" onClick={handleSend}>Send</Button>
+                    <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2, gap: 1 }}>
+                        <Button onClick={handleClose} variant="outlined">
+                            Close
+                        </Button>
+                        <Button variant="contained" onClick={handleSend}>
+                            Send
+                        </Button>
                     </Box>
                 </Paper>
             </Modal>
@@ -164,9 +200,9 @@ export default function SignIn() {
                 open={snackbarOpen}
                 autoHideDuration={6000}
                 onClose={() => setSnackbarOpen(false)}
-                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             >
-                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{width: '100%'}}>
+                <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity} sx={{ width: '100%' }}>
                     {snackbarMessage}
                 </Alert>
             </Snackbar>

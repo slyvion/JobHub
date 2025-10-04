@@ -16,7 +16,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "../../store/UserContext.jsx";
 
-
 import Review from "../Review/Review.jsx";
 import JobPost from "../JobPost/JobPost.jsx";
 import EditCompanyProfile from "./EditCompanyProfile";
@@ -92,10 +91,9 @@ export default function CompanyProfile() {
         if (token) {
             navigate(`/company/${id}/add-review`);
         } else {
-            navigate('/sign-in');
+            navigate('/sign-in', { state: { from: `/company/${id}/add-review` } });
         }
     };
-
 
     const handleAddJobpost = () => {
         navigate('/createJobpost');
@@ -136,12 +134,14 @@ export default function CompanyProfile() {
 
     if (loading) {
         return (
-            <div style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: '100vh',
-            }}>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100vh',
+                }}
+            >
                 <CircularProgress style={{ width: '10rem', height: '10rem' }} />
             </div>
         );
@@ -163,11 +163,17 @@ export default function CompanyProfile() {
                 <LogoContainer>
                     <StyledAvatar src={logoUrl || "/companyLogo.jpg"} variant="square" />
                     <CompanyInfo>
-                        <Typography variant="h4" sx={{fontFamily: "'Barlow', sans-serif",fontWeight: 600}}>{company.companyName}</Typography>
-                        <Typography variant="h6" sx={{ paddingTop: '7px', fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>{company.location}</Typography>
+                        <Typography variant="h4" sx={{ fontFamily: "'Barlow', sans-serif", fontWeight: 600 }}>
+                            {company.companyName}
+                        </Typography>
+                        <Typography variant="h6" sx={{ paddingTop: '7px', fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
+                            {company.location}
+                        </Typography>
                         <Box display="flex" alignItems="center" sx={{ gap: 1 }}>
                             <StarIcon sx={{ color: "#FFD700" }} />
-                            <Typography variant="h6" sx={{fontFamily: "'Barlow', sans-serif", fontWeight: 500}}>{company.rating || "N/A"}</Typography>
+                            <Typography variant="h6" sx={{ fontFamily: "'Barlow', sans-serif", fontWeight: 500 }}>
+                                {company.rating || "N/A"}
+                            </Typography>
                         </Box>
                     </CompanyInfo>
                 </LogoContainer>
@@ -205,11 +211,9 @@ export default function CompanyProfile() {
                             )}
                             <Box display="flex" justifyContent="center" mt={2}>
                                 {user && user.type === 'company' && user.id === Number(id) && (
-                                    <Box display="flex" justifyContent="center" mt={2}>
-                                        <Button variant="contained" color="primary" onClick={handleAddJobpost}>
-                                            Add Jobpost
-                                        </Button>
-                                    </Box>
+                                    <Button variant="contained" color="primary" onClick={handleAddJobpost}>
+                                        Add Jobpost
+                                    </Button>
                                 )}
                             </Box>
                         </Box>
@@ -224,11 +228,9 @@ export default function CompanyProfile() {
                             )}
                             <Box display="flex" justifyContent="center" mt={2}>
                                 {(!user || user.type === 'user') && (
-                                    <Box display="flex" justifyContent="center" mt={2}>
-                                        <Button variant="contained" color="primary" onClick={handleAddReviewClick}>
-                                            Add Review
-                                        </Button>
-                                    </Box>
+                                    <Button variant="contained" color="primary" onClick={handleAddReviewClick}>
+                                        Add Review
+                                    </Button>
                                 )}
                             </Box>
                         </Box>
