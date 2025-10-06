@@ -57,7 +57,7 @@ export default function Hero() {
                             variant="h1"
 
                             sx={{
-                                fontFamily: "Barlow, sans-serif",
+                                fontFamily: "DIN2014, sans-serif",
                                 fontWeight: 500,
                                 fontSize: 'clamp(3rem, 10vw, 4rem)',
                                 color: (theme) =>

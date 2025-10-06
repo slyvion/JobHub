@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import AppAppBar from "../AppAppBar.jsx";
 import { Box, Tabs, Tab, Typography, Avatar, CircularProgress } from "@mui/material";
 import Footer from "../HomePage/Footer.jsx";
@@ -7,21 +7,36 @@ import PersonIcon from "@mui/icons-material/Person";
 import WorkIcon from "@mui/icons-material/Work";
 import RateReviewIcon from "@mui/icons-material/RateReview";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import DescriptionIcon from '@mui/icons-material/Description';
+import DescriptionIcon from "@mui/icons-material/Description";
 import UserData from "./UserTabs/UserData.jsx";
 import UserReviews from "./UserTabs/UserReviews.jsx";
 import SavedJobs from "./UserTabs/SavedJobs.jsx";
 import JobApplications from "./UserTabs/JobApplications.jsx";
 import Help from "./UserTabs/Help.jsx";
 import { fetchUserData, fetchUserReviews } from "../Services/userServices";
+import { useUser } from "../../store/UserContext.jsx"
 
 export default function UserProfile() {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { user: loggedUser } = useUser();
+
     const [user, setUser] = useState(null);
     const [reviews, setReviews] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [value, setValue] = useState(0);
+
+    useEffect(() => {
+        if (loggedUser === null) {
+            navigate("/sign-in");
+            return;
+        }
+        if (loggedUser?.id && parseInt(id) !== loggedUser.id) {
+            navigate("/unauthorized");
+            return;
+        }
+    }, [loggedUser, id, navigate]);
 
     useEffect(() => {
         async function loadData() {
@@ -42,13 +57,31 @@ export default function UserProfile() {
     }, [id]);
 
     return (
-        <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh", backgroundColor: "#f0f0f0", justifyContent: "center", alignItems: "center" }}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "column",
+                minHeight: "100vh",
+                backgroundColor: "#f0f0f0",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
             <AppAppBar />
-
-            <Box sx={{ backgroundColor: "white", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", padding: "20px", paddingTop: "100px", marginTop: 0, position: "relative", zIndex: 10, width: 1 }} />
-
-            <Box sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", width: "100%", maxWidth: "1200px"}}>
-                <Box sx={{ display: "flex", alignItems: "center", paddingLeft: '90px'}}>
+            <Box
+                sx={{
+                    backgroundColor: "white",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    padding: "20px",
+                    paddingTop: "100px",
+                    marginTop: 0,
+                    position: "relative",
+                    zIndex: 10,
+                    width: 1,
+                }}
+            />
+            <Box sx={{ display: "flex", flexDirection: "column", paddingTop: "30px", width: "100%", maxWidth: "1200px" }}>
+                <Box sx={{ display: "flex", alignItems: "center", paddingLeft: '90px' }}>
                     {loading ? (
                         <CircularProgress />
                     ) : error ? (
@@ -81,13 +114,12 @@ export default function UserProfile() {
                     <Box sx={{ flex: 1 }}>
                         {value === 0 && user && <UserData user={user} />}
                         {value === 1 && <SavedJobs userId={id} />}
-                        {value === 2 && <Typography> <JobApplications /> </Typography>}
+                        {value === 2 && <JobApplications />}
                         {value === 3 && <UserReviews reviews={reviews} />}
-                        {value === 4 && <Typography> <Help /></Typography>}
+                        {value === 4 && <Help />}
                     </Box>
                 </Box>
             </Box>
-
             <Footer />
         </Box>
     );

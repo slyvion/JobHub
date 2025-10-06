@@ -128,7 +128,7 @@ function AppAppBar() {
                             {location.pathname === '/' && (
                                 <>
                                     <MenuItem onClick={() => scrollToSection('features')} sx={{ py: '6px', px: '12px' }}>
-                                        <Typography variant="body2" color="text.primary">Features</Typography>
+                                        <Typography variant="body2" color="text.primary" sx={{}}>Features</Typography>
                                     </MenuItem>
                                     <MenuItem onClick={() => scrollToSection('highlights')} sx={{ py: '6px', px: '12px' }}>
                                         <Typography variant="body2" color="text.primary">Highlights</Typography>

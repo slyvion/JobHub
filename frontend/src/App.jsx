@@ -25,6 +25,7 @@ import {Divider} from "@mui/material";
 import CareersFeatures from "./Components/HomePage/CareersFeatures.jsx";
 import About from "./Components/HomePage/About.jsx";
 import AboutUsPage from "./Components/AboutUs/AboutUsPage.jsx";
+import UnauthorizedPage from "./Components/UnauthorizedPage.jsx";
 
 function App() {
 
@@ -69,6 +70,7 @@ function App() {
                 <Route path="jobposts/:id/applications" element={<Applicants />} />
                 <Route path="/admin" element={<Dashboard />} />
 
+                <Route path="/unauthorized" element={<UnauthorizedPage />} />
                 <Route path="/*" element={<ErrorPage />} />
 
             </Routes>
